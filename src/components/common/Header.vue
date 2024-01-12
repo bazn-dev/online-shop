@@ -21,7 +21,10 @@
       <Navigation class="d-none d-lg-block" />
 
       <div class="header__icons-wrapper d-flex">
-        <div class="header__icon-wrapper">
+        <div
+          class="header__icon-wrapper"
+          @click="$emit('showSearch')"
+        >
           <Icon name="search" />
         </div>
         <div class="header__icon-wrapper">
@@ -94,6 +97,8 @@ export default {
     }
 
     &__icon-wrapper {
+      cursor: pointer;
+
       a {
         text-decoration: none;
       }

@@ -38,8 +38,18 @@ const routes = [
     component: catalog
   },
   {
+    name: 'catalog',
+    path: '/catalog/:category/:subCategory',
+    component: catalog
+  },
+  {
+    name: 'catalog',
+    path: '/catalog/:category/:subCategory/:subSubCategory',
+    component: catalog
+  },
+  {
     name: 'product',
-    path: '/catalog/:category/:vendorCode',
+    path: '/product/:vendorCode',
     component: product
   },
   {

@@ -96,7 +96,6 @@ export default {
       this.$router.push({
         name: 'product',
         params: {
-          category: this.$route.params.category,
           vendorCode: this.product.vendorCode
         },
       });

@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <Header />
+    <Header
+      @showSearch="showSearch"
+    />
+    <Search
+      v-if="displaySearch"
+      @hideSearch="hideSearch"
+    />
     <Drawer />
     <main>
       <router-view />
@@ -13,9 +19,9 @@
 </template>
 
 <script>
-import Cookie from 'js-cookie';
 import { createOrder } from '@/api/orders'
 import Header from './components/common/Header.vue'
+import Search from './components/common/Search.vue'
 import Drawer from './components/common/Drawer.vue'
 import Footer from './components/common/Footer.vue'
 import Icon from './components/common/Icon.vue'
@@ -24,21 +30,33 @@ export default {
   name: 'App',
   components: {
     Header,
+    Search,
     Drawer,
     Footer,
     Icon
   },
+  data() {
+    return {
+      displaySearch: false
+    }
+  },
   async beforeMount() {
-    if (!Cookie.get('userId') && !Cookie.get('orderId'))
+    if (!localStorage.getItem('userId') && !localStorage.getItem('orderId'))
     await this.createEmptyOrder();
   },
   methods: {
     async createEmptyOrder() {
       const { orderId, userId } = await createOrder();
       if (orderId && userId) {
-        Cookie.set('orderId', orderId, { expires: 30 });
-        Cookie.set('userId', userId, { expires: 30 });
+        localStorage.setItem('orderId', orderId);
+        localStorage.setItem('userId', userId);
       }
+    },
+    showSearch() {
+      this.displaySearch = true
+    },
+    hideSearch() {
+      this.displaySearch = false
     }
   }
 }

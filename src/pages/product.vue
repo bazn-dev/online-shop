@@ -17,24 +17,37 @@
             <ProductCardSlider :product="product" />
 
             <div class="product__block__sidebar --mobile d-lg-none">
-              <ProductInfo :product="product" />
+              <ProductInfo
+                :product="product"
+                @addToCart="addProductToOrder"
+              />
             </div>
           </div>
 
           <ul class="product__block__main__tabs nav nav-pills">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Описание</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Отзывы(4)</a>
+            <li
+              v-for="tab in tabs"
+              :key="`tab.${tab.name}`"
+              class="nav-item"
+              @click="setActiveTab(tab.name)"
+            >
+              <div
+                class="nav-link"
+                :class="{ 'active': isActiveTab(tab.name) }"
+              >
+                {{ tab.title }}
+              </div>
             </li>
           </ul>
 
-          <ProductDescription :product="product" />
-<!--          <ProductReviews />-->
+          <ProductDescription v-if="isActiveTab('description')" :product="product" />
+          <ProductReviews  v-else-if="isActiveTab('reviews')"/>
         </div>
         <div class="product__block__sidebar d-none d-lg-block">
-          <ProductInfo :product="product" />
+          <ProductInfo
+            :product="product"
+            @addToCart="addProductToOrder"
+          />
         </div>
       </div>
     </div>
@@ -42,10 +55,14 @@
 </template>
 
 <script>
-import { getProductByVendorCode } from '@/api/products'
+import { getProductByVendorCode as getProductByVendorCodeRequest } from '@/api/products'
+import {
+  addProductToOrder as addProductToOrderRequest,
+  getOrderById as getOrderByIdRequest,
+} from '@/api/orders'
 import ProductCardSlider from '../components/product/ProductCardSlider'
 import ProductDescription from '../components/product/ProductDescription'
-// import ProductReviews from '../components/product/ProductReviews'
+import ProductReviews from '../components/product/ProductReviews'
 import ProductInfo from '../components/product/ProductInfo'
 
 export default {
@@ -53,12 +70,23 @@ export default {
   components: {
     ProductCardSlider,
     ProductDescription,
-    // ProductReviews,
+    ProductReviews,
     ProductInfo
   },
   data() {
     return {
-      product: null
+      product: null,
+      tabs: [
+        {
+          name: 'description',
+          title: 'Описание'
+        },
+        {
+          name: 'reviews',
+          title: 'Отзывы(4)'
+        }
+      ],
+      activeTab: 'description'
     }
   },
   async beforeMount() {
@@ -66,8 +94,23 @@ export default {
   },
   methods: {
     async initData() {
-      this.product = await getProductByVendorCode(this.$route.params.vendorCode)
-      console.log("product", this.product)
+      this.product = await getProductByVendorCodeRequest(this.$route.params.vendorCode)
+      const order = await getOrderByIdRequest(localStorage.getItem('orderId'))
+      console.log(order)
+    },
+    async addProductToOrder(count) {
+      await addProductToOrderRequest({
+        order: localStorage.getItem('orderId'),
+        productVendorCode: this.$route.params.vendorCode,
+        qty: count
+      })
+    },
+
+    isActiveTab(tab) {
+      return this.activeTab === tab
+    },
+    setActiveTab(tab) {
+      this.activeTab = tab
     }
   }
 }
@@ -122,7 +165,11 @@ export default {
           margin-top: 2.133rem;
           margin-bottom: 39px !important;
 
-          & .nav-link {
+          .nav-item {
+            cursor: pointer;
+          }
+
+          .nav-link {
             font-size: .733em;
             line-height: 1.3em;
             text-transform: uppercase;

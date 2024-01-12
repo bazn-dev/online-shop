@@ -1,21 +1,35 @@
 <template>
   <div class="product-info">
     <div class="product-info__price">{{ product.price }} руб.</div>
-    <div v-if="product.inStock" class="product-info__count">
-      <div class="product-info__count-indicator"></div>
-      <div class="product-info__count-text">Много</div>
+    <div v-if="product.inStock" class="product-info__availability">
+      <div class="product-info__availability-indicator"></div>
+      <div class="product-info__availability-text">Много</div>
     </div>
     <div class="d-flex align-items-center">
       <div class="product-info__change-count col-sm-6 row">
-        <div class="col-sm-4 d-flex justify-content-center align-items-center">
+        <div
+          class="col-sm-4 d-flex justify-content-center align-items-center"
+          @click="decrementCount"
+        >
           <Icon name="minus" />
         </div>
-        <div class="col-sm-4 d-flex justify-content-center align-items-center">1</div>
         <div class="col-sm-4 d-flex justify-content-center align-items-center">
+          {{ count }}
+        </div>
+        <div
+          class="col-sm-4 d-flex justify-content-center align-items-center"
+          @click="incrementCount"
+        >
           <Icon name="plus" />
         </div>
       </div>
-      <button type="button" class="product-info__basket-btn btn btn-lg">В корзину</button>
+      <button
+        type="button"
+        class="product-info__basket-btn btn btn-lg"
+        @click="addToCart"
+      >
+        В корзину
+      </button>
     </div>
 
     <div class="product-info__characteristics">
@@ -47,6 +61,24 @@ export default {
       type: Object,
       default: () => null
     }
+  },
+  data() {
+    return {
+      count: 1
+    }
+  },
+  methods: {
+    incrementCount() {
+      this.count++;
+    },
+    decrementCount() {
+      if (this.count > 1) {
+        this.count--;
+      }
+    },
+    addToCart() {
+      this.$emit('addToCart', this.count)
+    }
   }
 }
 </script>
@@ -60,14 +92,14 @@ export default {
       color: #333333;
     }
 
-    &__count {
+    &__availability {
       display: flex;
       align-items: center;
       margin-top: 5px;
       margin-bottom: 18px;
     }
 
-    &__count-indicator {
+    &__availability-indicator {
       width: 6px;
       height: 6px;
       background-color: #5fa800;
@@ -75,7 +107,7 @@ export default {
       margin-right: 8px;
     }
 
-    &__count-text {
+    &__availability-text {
       font-size: 12px;
       line-height: 14px;
       color: #5fa800;
@@ -90,6 +122,10 @@ export default {
       border-radius: 3px;
       border: 1px solid #eee;
       margin-right: 12px !important;
+
+      div:nth-child(2) {
+        pointer-events: none;
+      }
 
       div:nth-child(1),
       div:nth-child(3) {
@@ -116,6 +152,7 @@ export default {
 
     &__characteristics-title {
       margin-bottom: 10px;
+      pointer-events: none;
     }
 
     &__characteristics-list {

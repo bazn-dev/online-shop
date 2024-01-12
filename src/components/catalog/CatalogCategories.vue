@@ -1,20 +1,39 @@
 <template>
   <div class="catalog-categories row flexbox">
-    <div v-for="item in 13" :key="item" class="catalog-categories__item col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12">
+    <a
+      v-for="category in categories"
+      :href="$router.resolve({path: `${$route.fullPath}/${category.name}`}).href"
+      :key="`category.${category.name}`"
+      class="catalog-categories__item col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12"
+    >
       <div class="catalog-categories__item-image-wrapper">
         <img src="@/assets/img/catalog/categories/flavored-tea.webp" class="catalog-categories__item-image img-fluid"  alt="">
       </div>
       <div class="catalog-categories__item-content">
-        <div class="catalog-categories__item-title">Ароматизированный чай</div>
-        <div class="catalog-categories__item-subtitle">6 товаров</div>
+        <div class="catalog-categories__item-title">{{ category.displayName }}</div>
+        <div class="catalog-categories__item-subtitle">{{ category.productsCount }} товаров</div>
       </div>
-    </div>
+    </a>
   </div>
 </template>
 
 <script>
 export default {
-  name: "CatalogCategories"
+  name: "CatalogCategories",
+  props: {
+    categories: {
+      type: Array,
+      default: () => []
+    }
+  },
+  methods: {
+    async toSubCategory(subCategory) {
+      await this.$router.push({
+        path: `${this.$route.fullPath}/${subCategory}`
+      })
+      this.$router.go(0)
+    }
+  }
 }
 </script>
 
@@ -28,6 +47,8 @@ export default {
       padding: 24px 25px !important;
       margin: 0 0 -1px -1px;
       border: 1px solid #ececec;
+      cursor: pointer;
+      text-decoration: none;
       transition: transform ease 0.2s,box-shadow ease .2s;
 
       &:hover {

@@ -1,11 +1,8 @@
 import axios from "../axios";
 
-export default (data) => {
-  const url = `/catalog/${data.categoryName}`;
-
+export default (url, data) => {
   return axios
-    .get(url)
-    // .get(url, { params: data })
+    .get(url, { params: data })
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error));
 };

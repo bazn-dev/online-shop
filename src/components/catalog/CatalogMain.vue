@@ -80,22 +80,28 @@ export default {
       activeSortItem: null,
       sortItems: [
         {
-          title: 'По популярности (убывание)'
+          title: 'По популярности (убывание)',
+          name: 'totalRating,desc'
         },
         {
-          title: 'По популярности (возрастание)'
+          title: 'По популярности (возрастание)',
+          name: 'totalRating,asc'
         },
         {
-          title: 'По алфавиту (убывание)'
+          title: 'По алфавиту (убывание)',
+          name: 'name,desc'
         },
         {
-          title: 'По алфавиту (возрастание)'
+          title: 'По алфавиту (возрастание)',
+          name: 'name,asc'
         },
         {
-          title: 'По цене (убывание)'
+          title: 'По цене (убывание)',
+          name: 'price,desc'
         },
         {
-          title: 'По цене (возрастание)'
+          title: 'По цене (возрастание)',
+          name: 'price,asc'
         }
       ]
     }
@@ -109,6 +115,7 @@ export default {
     },
     setActiveSortItem(item) {
       this.activeSortItem = item;
+      this.$emit('sort', this.activeSortItem.name)
     },
     async addToOrderRequest(data) {
       await addProductToOrder(data)
