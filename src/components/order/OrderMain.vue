@@ -1,13 +1,13 @@
 <template>
   <div class="order-main">
-    <OrderProductList />
+    <OrderProductList :entries="order.entries" />
     <OrderCustomerTypeRegion />
     <div class="row d-flex align-items-stretch">
       <div class="col-md-6">
-        <OrderDeliveryMethod />
+        <OrderDeliveryMethod :deliveryModes="deliveryModes" />
       </div>
       <div class="col-md-6">
-        <OrderPaymentMethod />
+        <OrderPaymentMethod :paymentModes="paymentModes" />
       </div>
     </div>
     <OrderCustomerInfo />
@@ -15,7 +15,7 @@
     <div class="order-main__footer">
       <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Я согласен на обработку персональных данных</label>
+        <label class="form-check-label" for="flexSwitchCheckDefault">Я согласен на <router-link to="license" target="_blank">обработку персональных данных</router-link></label>
       </div>
 
       <button class="order-main__submit-button btn btn-primary btn-lg">Оформить заказ</button>
@@ -38,6 +38,20 @@ export default {
     OrderDeliveryMethod,
     OrderPaymentMethod,
     OrderCustomerInfo,
+  },
+  props: {
+    order: {
+      type: Object,
+      default: () => null
+    },
+    deliveryModes: {
+      type: Array,
+      default: () => []
+    },
+    paymentModes: {
+      type: Array,
+      default: () => []
+    }
   }
 }
 </script>

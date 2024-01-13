@@ -11,14 +11,29 @@
       </nav>
 
       <div class="basket__block">
-        <BasketCheckout />
-        <BasketList />
+        <div
+          v-if="!order || (order && order.entries.length === 0)"
+          class="basket__block-empty d-flex flex-column align-items-center"
+        >
+          <div class="basket__block-empty-title">Ваша корзина пуста</div>
+          <div class="basket__block-empty-text">
+            <router-link to="/catalog/tea">Нажмите здесь</router-link>, чтобы продолжить покупки
+          </div>
+        </div>
+        <template v-else>
+          <BasketCheckout :order="order" />
+          <BasketList
+            :entries="order.entries"
+            @updateOrder="getOrderById"
+          />
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getOrderById as getOrderByIdRequest} from '@/api/orders'
 import BasketCheckout from '../components/basket/BasketCheckout'
 import BasketList from '../components/basket/BasketList'
 
@@ -27,6 +42,19 @@ export default {
   components: {
     BasketCheckout,
     BasketList,
+  },
+  data() {
+    return {
+      order: null
+    }
+  },
+  async beforeMount() {
+    await this.getOrderById()
+  },
+  methods: {
+    async getOrderById() {
+      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
+    },
   }
 }
 </script>
@@ -61,8 +89,28 @@ export default {
     }
   }
 
-  &__block {
+  &__block-empty-title {
+    font-size: 1.6em;
+    margin: 2.2rem 0 1.2rem;
+    color: #333;
+  }
 
+  &__block-empty-text {
+    font-size: .933em;
+    color: #777;
+    line-height: 1.714em;
+    margin-bottom: 42px;
+
+    a {
+      color: #8d8170;
+      text-decoration: none;
+      outline: none;
+
+      &:hover,
+      &:focus {
+        color: #333;
+      }
+    }
   }
 }
 </style>

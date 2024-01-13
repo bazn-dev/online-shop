@@ -1,16 +1,14 @@
 <template>
   <div class="order-payment-method">
     <div class="order-payment-method__title">Способ оплаты</div>
-    <div class="form-check">
+    <div
+      v-for="(paymentMode, index) in paymentModes"
+      :key="`payment-mode.${index}`"
+      class="form-check"
+    >
       <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
       <label class="form-check-label" for="flexRadioDefault1">
-        Оплата через ЕРИП (скидка 2%)
-      </label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-      <label class="form-check-label" for="flexRadioDefault2">
-        Оплата наличными
+        {{ paymentMode.option }}
       </label>
     </div>
     <div class="form-check-notion">В вашем интернет-банкинге в разделе "Платежи": Система Расчет ЕРИП -> Интернет-магазины и сервисы -> A-Z -> R -> Roast.by, введите ваш номер заказа и оплатите его.</div>
@@ -19,7 +17,13 @@
 
 <script>
 export default {
-  name: "OrderPaymentMethod"
+  name: "OrderPaymentMethod",
+  props: {
+    paymentModes: {
+      type: Array,
+      default: () => []
+    }
+  }
 }
 </script>
 

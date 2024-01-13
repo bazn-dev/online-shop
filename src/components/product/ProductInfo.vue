@@ -6,30 +6,40 @@
       <div class="product-info__availability-text">Много</div>
     </div>
     <div class="d-flex align-items-center">
-      <div class="product-info__change-count col-sm-6 row">
-        <div
-          class="col-sm-4 d-flex justify-content-center align-items-center"
-          @click="decrementCount"
-        >
-          <Icon name="minus" />
-        </div>
-        <div class="col-sm-4 d-flex justify-content-center align-items-center">
-          {{ count }}
-        </div>
-        <div
-          class="col-sm-4 d-flex justify-content-center align-items-center"
-          @click="incrementCount"
-        >
-          <Icon name="plus" />
-        </div>
-      </div>
       <button
+        v-if="alreadyInBasket"
         type="button"
-        class="product-info__basket-btn btn btn-lg"
-        @click="addToCart"
+        class="product-info__basket-btn --full-width btn btn-lg"
+        @click="goToCart"
       >
-        В корзину
+        <Icon name="check" /> В корзине
       </button>
+      <template v-else>
+        <div class="product-info__change-count col-sm-6 row">
+          <div
+            class="col-sm-4 d-flex justify-content-center align-items-center"
+            @click="decrementCount"
+          >
+            <Icon name="minus" />
+          </div>
+          <div class="col-sm-4 d-flex justify-content-center align-items-center">
+            {{ count }}
+          </div>
+          <div
+            class="col-sm-4 d-flex justify-content-center align-items-center"
+            @click="incrementCount"
+          >
+            <Icon name="plus" />
+          </div>
+        </div>
+        <button
+          type="button"
+          class="product-info__basket-btn btn btn-lg"
+          @click="addToBasket"
+        >
+          В корзину
+        </button>
+      </template>
     </div>
 
     <div class="product-info__characteristics">
@@ -60,6 +70,10 @@ export default {
     product: {
       type: Object,
       default: () => null
+    },
+    alreadyInBasket: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -76,8 +90,13 @@ export default {
         this.count--;
       }
     },
-    addToCart() {
-      this.$emit('addToCart', this.count)
+    addToBasket() {
+      this.$emit('addToBasket', this.count)
+    },
+    goToCart() {
+      this.$router.push({
+        name: 'basket'
+      })
     }
   }
 }
@@ -143,6 +162,18 @@ export default {
       border-color: #978d7f;
       color: #ffffff;
       text-transform: uppercase;
+
+      &.--full-width {
+        width: 100%;
+      }
+
+      ::v-deep .icon {
+        margin-right: 10px;
+      }
+
+      ::v-deep .icon path {
+        fill: #ffffff;
+      }
     }
 
     &__characteristics {

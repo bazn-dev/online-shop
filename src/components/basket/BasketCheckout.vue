@@ -11,9 +11,14 @@
             <div class="basket-checkout__total-title">Итого:</div>
             <div class="basket-checkout__total-text">Сумма НДС: 0 руб.</div>
           </div>
-          <div class="basket-checkout__total-price">10.50 руб.</div>
+          <div class="basket-checkout__total-price">{{ order?.totalAmount || 0 }} руб.</div>
         </div>
-        <button class="basket-checkout__button btn btn-primary btn-lg">Оформить заказ</button>
+        <button
+          class="basket-checkout__button btn btn-primary btn-lg"
+          @click="goToOrder"
+        >
+          Оформить заказ
+        </button>
       </div>
     </div>
   </div>
@@ -22,6 +27,19 @@
 <script>
 export default {
   name: "BasketCheckout",
+  props: {
+    order: {
+      type: Object,
+      default: () => null
+    }
+  },
+  methods: {
+    goToOrder() {
+      this.$router.push({
+        name: 'order'
+      })
+    }
+  }
 }
 </script>
 

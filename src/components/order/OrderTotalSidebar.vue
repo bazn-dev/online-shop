@@ -2,28 +2,46 @@
   <div class="order-total-sidebar">
     <div class="order-total-sidebar__header d-flex justify-content-between align-items-center">
       <div class="order-total-sidebar__title">Ваш заказ</div>
-      <button class="btn btn-link">Изменить</button>
+      <button
+        class="btn btn-link"
+        @click="goToBasket"
+      >
+        Изменить
+      </button>
     </div>
     <div class="order-total-sidebar__body">
       <div class="order-total-sidebar__total-line d-flex justify-content-between align-items-center">
         <div class="order-total-sidebar__total-line-text">Товаров на:</div>
-        <div class="order-total-sidebar__total-line-value">26 руб.</div>
+        <div class="order-total-sidebar__total-line-value">{{ order?.totalAmount || 0 }} руб.</div>
       </div>
       <div class="order-total-sidebar__total-line d-flex justify-content-between align-items-center">
         <div class="order-total-sidebar__total-line-text">Доставка:</div>
-        <div class="order-total-sidebar__total-line-value">бесплатно</div>
+        <div class="order-total-sidebar__total-line-value --free">бесплатно</div>
       </div>
     </div>
     <div class="order-total-sidebar__footer d-flex justify-content-between align-items-center">
       <div class="order-total-sidebar__total-text">Итого:</div>
-      <div class="order-total-sidebar__total-value">26 руб.</div>
+      <div class="order-total-sidebar__total-value">{{ order?.totalAmount || 0 }} руб.</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "OrderTotalSidebar"
+  name: "OrderTotalSidebar",
+  props: {
+    order: {
+      type: Object,
+      default: () => null
+    }
+  },
+  methods: {
+    goToBasket() {
+      this.$router.push({
+        name: 'basket'
+      })
+    }
+  }
 }
 </script>
 
@@ -83,6 +101,10 @@ export default {
       padding-left: 12px;
       background: #fff;
       z-index: 1;
+
+      &.--free {
+        color: #257210;
+      }
     }
 
     &__footer {

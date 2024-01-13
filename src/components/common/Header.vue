@@ -33,7 +33,12 @@
         <div class="header__icon-wrapper">
           <router-link to="/basket" class="d-flex align-items-center">
             <Icon name="basket" />
-            <div class="header__icon-value">1</div>
+            <div
+              v-if="countProductInBasket > 0"
+              class="header__icon-value"
+            >
+              {{ countProductInBasket }}
+            </div>
           </router-link>
         </div>
       </div>
@@ -52,6 +57,17 @@ export default {
     ModalAuth,
     Navigation,
     Icon
+  },
+  props: {
+    order: {
+      type: Object,
+      default: () => null
+    },
+  },
+  computed: {
+    countProductInBasket() {
+      return this.order ? this.order.entries.length : 0;
+    }
   }
 }
 </script>

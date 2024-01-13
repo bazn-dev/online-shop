@@ -2,7 +2,7 @@
   <div class="order-product-list">
     <div class="order-product-list__header d-flex justify-content-between align-items-center">
       <div class="order-product-list__title">Товары в заказе</div>
-      <button class="btn btn-link">Подробнее</button>
+<!--      <button class="btn btn-link">Подробнее</button>-->
     </div>
     <div class="order-product-list__body">
       <table class="table">
@@ -16,21 +16,24 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr
+            v-for="entry in entries"
+            :key="`entry.${entry.productDto.vendorCode}`"
+          >
             <td>
               <div class="row">
                 <div class="col-lg-4 col-md-4">
                   <img src="@/assets/img/catalog/product.webp" class="basket-list__item-image img-fluid"  alt="">
                 </div>
                 <div class="basket-list__item-title col-lg-8 col-md-8">
-                  Матча (Маття) Изумруд
+                  {{ entry.productDto.name }}
                 </div>
               </div>
             </td>
             <td>0%</td>
-            <td class="--price">10.50 руб.</td>
-            <td>1 шт</td>
-            <td class="--price">10.50 руб.</td>
+            <td class="--price">{{ entry.productDto.price }} руб.</td>
+            <td>{{ entry.qty }} шт</td>
+            <td class="--price">{{ entry.totalPrice }} руб.</td>
           </tr>
         </tbody>
       </table>
@@ -44,7 +47,13 @@
 
 <script>
 export default {
-  name: "OrderProductList"
+  name: "OrderProductList",
+  props: {
+    entries: {
+      type: Array,
+      default: () => []
+    }
+  }
 }
 </script>
 
@@ -102,6 +111,11 @@ export default {
 
         &:last-child {
           padding-right: 24px;
+        }
+
+        &:nth-child(3),
+        &:nth-child(5) {
+          min-width: 120px;
         }
 
         &.--price {

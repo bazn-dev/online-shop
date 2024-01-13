@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Header
+      :order="order"
       @showSearch="showSearch"
     />
     <Search
@@ -19,7 +20,10 @@
 </template>
 
 <script>
-import { createOrder } from '@/api/orders'
+import {
+  createOrder as createOrderRequest,
+  getOrderById as getOrderByIdRequest
+} from '@/api/orders'
 import Header from './components/common/Header.vue'
 import Search from './components/common/Search.vue'
 import Drawer from './components/common/Drawer.vue'
@@ -37,20 +41,26 @@ export default {
   },
   data() {
     return {
+      order: null,
       displaySearch: false
     }
   },
   async beforeMount() {
-    if (!localStorage.getItem('userId') && !localStorage.getItem('orderId'))
-    await this.createEmptyOrder();
+    if (!localStorage.getItem('userId') && !localStorage.getItem('orderId')) {
+      await this.createEmptyOrder()
+    }
+    await this.getOrderById()
   },
   methods: {
     async createEmptyOrder() {
-      const { orderId, userId } = await createOrder();
+      const { orderId, userId } = await createOrderRequest()
       if (orderId && userId) {
-        localStorage.setItem('orderId', orderId);
-        localStorage.setItem('userId', userId);
+        localStorage.setItem('orderId', orderId)
+        localStorage.setItem('userId', userId)
       }
+    },
+    async getOrderById() {
+      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
     },
     showSearch() {
       this.displaySearch = true

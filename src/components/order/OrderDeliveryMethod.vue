@@ -1,26 +1,29 @@
 <template>
   <div class="order-delivery-method">
     <div class="order-delivery-method__title">Способ доставки</div>
-    <div class="form-check">
+    <div
+      v-for="(deliveryMode, index) in deliveryModes"
+      :key="`delivery-mode.${index}`"
+      class="form-check"
+    >
       <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
       <label class="form-check-label" for="flexRadioDefault1">
-        Самовывоз
+        {{ deliveryMode.option }}
       </label>
       <div class="form-check-notion">Вы можете самостоятельно забрать заказ из нашего офиса-кофейни Blackmill в г. Минске</div>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-      <label class="form-check-label" for="flexRadioDefault2">
-        Доставка курьером платно
-      </label>
-      <div class="form-check-notion">Доставка курьером по г. Минску. Бесплатно при заказе от 49 рублей. Укажите в комментарии желаемое время доставки.</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "OrderDeliveryMethod"
+  name: "OrderDeliveryMethod",
+  props: {
+    deliveryModes: {
+      type: Array,
+      default: () => []
+    }
+  }
 }
 </script>
 

@@ -10,6 +10,7 @@ import about from '../pages/about'
 import basket from '../pages/basket'
 import order from '../pages/order'
 import info from '../pages/info'
+import license from '../pages/license'
 
 const routes = [
   {
@@ -71,6 +72,11 @@ const routes = [
     name: 'info',
     path: '/info',
     component: info
+  },
+  {
+    name: 'license',
+    path: '/license',
+    component: license
   },
   {
     path: "*",

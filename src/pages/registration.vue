@@ -358,7 +358,7 @@
                 type="checkbox"
                 id="entityAgreeCheckbox"
               />
-              <label class="form-check-label" for="entityAgreeCheckbox">Я согласен на обработку персональных данных</label>
+              <label class="form-check-label" for="entityAgreeCheckbox">Я согласен на <router-link to="license" target="_blank">обработку персональных данных</router-link></label>
             </div>
             <div v-if="!model.agree" class="invalid-feedback">
               Согласитесь с условиями
@@ -430,6 +430,7 @@ export default {
 
       if (isValid && this.model.agree) {
         const data = this.type === 'individual' ? {
+          userId: localStorage.getItem('userId'),
           name: this.model.name,
           phone: this.model.phone,
           email: this.model.email,
@@ -437,6 +438,7 @@ export default {
           passwordConfirmation: this.model.passwordConfirmation,
           individual: true
         } : {
+          userId: localStorage.getItem('userId'),
           ...this.model,
           individual: false
         };

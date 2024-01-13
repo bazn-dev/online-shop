@@ -40,7 +40,9 @@
       </div>
       <div class="footer__networks d-flex justify-content-center">
         <div class="footer__networks__social-wrapper">
-            <div class="footer__networks__social">1</div>
+            <div class="footer__networks__social d-flex justify-content-center align-items-center">
+              <Icon name="instagram" />
+            </div>
         </div>
         <div class="footer__networks__separator"></div>
       </div>
@@ -65,10 +67,14 @@
 </template>
 
 <script>
+import Icon from '@/components/common/Icon.vue'
 import moment from 'moment';
 
 export default {
   name: "Footer",
+  components: {
+    Icon
+  },
   computed: {
     currentYear() {
       return moment().format('YYYY')
@@ -178,6 +184,20 @@ export default {
         border: 1px solid rgba(255,255,255,.2);
         background-color: #333333;
         z-index: 2;
+        cursor: pointer;
+
+        .icon {
+          padding-bottom: 2px;
+        }
+
+        ::v-deep .icon svg {
+          width: 16px;
+          height: 16px;
+        }
+
+        ::v-deep .icon svg path {
+          fill: #999999;
+        }
       }
     }
 

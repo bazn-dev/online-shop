@@ -12,10 +12,14 @@
 
       <div class="order__block row">
         <div class="order__main-block col-lg-9 col-md-12 order-lg-1 order-md-2 order-sm-2 order-xs-2">
-          <OrderMain />
+          <OrderMain
+            :order="order"
+            :deliveryModes="deliveryModes"
+            :paymentModes="paymentModes"
+          />
         </div>
         <div class="order__sidebar-block col-lg-3 col-md-12 order-lg-2 order-md-1 order-sm-1 order-xs-1">
-          <OrderTotalSidebar />
+          <OrderTotalSidebar :order="order" />
         </div>
       </div>
     </div>
@@ -23,6 +27,11 @@
 </template>
 
 <script>
+import {
+  getOrderById as getOrderByIdRequest,
+  getDeliveryModes as getDeliveryModesRequest,
+  getPaymentModes as getPaymentModesRequest,
+} from '@/api/orders'
 import OrderMain from '../components/order/OrderMain'
 import OrderTotalSidebar from '../components/order/OrderTotalSidebar'
 
@@ -31,6 +40,29 @@ export default {
   components: {
     OrderMain,
     OrderTotalSidebar
+  },
+  data() {
+    return {
+      order: null,
+      deliveryModes: [],
+      paymentModes: []
+    }
+  },
+  async beforeMount() {
+    await this.getOrderById()
+    await this.getDeliveryModes()
+    await this.getPaymentModes()
+  },
+  methods: {
+    async getOrderById() {
+      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
+    },
+    async getDeliveryModes() {
+      this.deliveryModes = await getDeliveryModesRequest()
+    },
+    async getPaymentModes() {
+      this.paymentModes = await getPaymentModesRequest()
+    },
   }
 }
 </script>

@@ -19,6 +19,7 @@
             <div class="product__block__sidebar --mobile d-lg-none">
               <ProductInfo
                 :product="product"
+                :alreadyInBasket="alreadyInBasket"
                 @addToCart="addProductToOrder"
               />
             </div>
@@ -46,7 +47,8 @@
         <div class="product__block__sidebar d-none d-lg-block">
           <ProductInfo
             :product="product"
-            @addToCart="addProductToOrder"
+            :alreadyInBasket="alreadyInBasket"
+            @addToBasket="addProductToOrder"
           />
         </div>
       </div>
@@ -75,6 +77,7 @@ export default {
   },
   data() {
     return {
+      order: null,
       product: null,
       tabs: [
         {
@@ -89,14 +92,20 @@ export default {
       activeTab: 'description'
     }
   },
+  computed: {
+    alreadyInBasket() {
+      return this.order?.entries
+        .map(product => product.productDto.vendorCode)
+        .find(item => item === this.$route.params.vendorCode) !== undefined;
+    }
+  },
   async beforeMount() {
     await this.initData()
   },
   methods: {
     async initData() {
+      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
       this.product = await getProductByVendorCodeRequest(this.$route.params.vendorCode)
-      const order = await getOrderByIdRequest(localStorage.getItem('orderId'))
-      console.log(order)
     },
     async addProductToOrder(count) {
       await addProductToOrderRequest({

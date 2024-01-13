@@ -2,22 +2,31 @@
   <div class="basket-list">
     <div class="basket-list__header d-md-flex justify-content-between">
       <div>
-        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Фильтр">
+        <input
+          v-model="search"
+          type="text"
+          class="form-control"
+          placeholder="Фильтр"
+        >
       </div>
       <div class="basket-list__info-wrapper d-flex align-items-center">
-        <div class="basket-list__total-price">В корзине 2 товара</div>
+        <div class="basket-list__total-price">В корзине {{ entries.length }} товар</div>
         <button class="basket-list__clear-button btn btn-link">Очистить</button>
       </div>
     </div>
     <ul class="basket-list__items">
-      <li class="basket-list__item row">
+      <li
+        v-for="entry in displayedEntries"
+        :key="`entry.${entry.productDto.vendorCode}`"
+        class="basket-list__item row"
+      >
         <div class="col-lg-6">
           <div class="row">
             <div class="col-lg-4 col-md-4">
               <img src="@/assets/img/catalog/product.webp" class="basket-list__item-image img-fluid"  alt="">
             </div>
             <div class="basket-list__item-title col-lg-8 col-md-8">
-              Матча (Маття) Изумруд
+              {{ entry.productDto.name }}
             </div>
           </div>
         </div>
@@ -25,7 +34,7 @@
           <div class="row">
             <div class="col-lg-3 col-md-3">
               <div class="basket-list__item-price">
-                15.50 руб.
+                {{ entry.productDto.price }} руб.
               </div>
               <div class="basket-list__item-price-notion">
                 цена за 1 шт
@@ -34,18 +43,37 @@
             <div class="col-lg-5 col-md-5">
               <div class="basket-list__item-change-count-wrapper">
                 <div class="basket-list__item-change-count col-sm-6 row">
-                  <div class="col-sm-4 d-flex justify-content-center align-items-center">-</div>
-                  <div class="col-sm-4 d-flex justify-content-center align-items-center">1</div>
-                  <div class="col-sm-4 d-flex justify-content-center align-items-center">+</div>
+                  <div
+                    class="col-sm-4 d-flex justify-content-center align-items-center"
+                    @click="decrementCount(entry.productDto.vendorCode)"
+                  >
+                    -
+                  </div>
+                  <div
+                    class="col-sm-4 d-flex justify-content-center align-items-center"
+                  >
+                    {{ entry.qty }}
+                  </div>
+                  <div
+                    class="col-sm-4 d-flex justify-content-center align-items-center"
+                    @click="incrementCount(entry.productDto.vendorCode)"
+                  >
+                    +
+                  </div>
                 </div>
                 <div class="basket-list__item-change-count-notion">шт</div>
               </div>
             </div>
             <div class="col-lg-3 col-md-3">
-              <div class="basket-list__item-price">15.50 руб.</div>
+              <div class="basket-list__item-price">{{ entry.totalPrice }} руб.</div>
             </div>
             <div class="col-lg-1 col-md-1">
-              <div class="basket-list__item-clear">X</div>
+              <div
+                class="basket-list__item-clear"
+                @click="deleteProductFromOrder(entry.productDto.vendorCode)"
+              >
+                <Icon name="close" />
+              </div>
             </div>
           </div>
         </div>
@@ -55,8 +83,78 @@
 </template>
 
 <script>
+import {
+  addProductToOrder as addProductToOrderRequest,
+  deleteProductFromOrder as deleteProductFromOrderRequest,
+} from '@/api/orders'
+import Icon from '@/components/common/Icon'
+
 export default {
   name: "BasketList",
+  components: {
+    Icon
+  },
+  props: {
+    entries: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      search: '',
+      isLoadingChangeCount: false
+    }
+  },
+  computed: {
+    displayedEntries() {
+      return this.entries.filter(entry => entry.productDto.name.includes(this.search))
+    }
+  },
+  methods: {
+    async incrementCount(vendorCode) {
+      if (this.isLoadingChangeCount) {
+        return
+      }
+      this.isLoadingChangeCount = true
+      const currentCount = this.entries.find(entry => entry.productDto.vendorCode === vendorCode).qty
+      await addProductToOrderRequest({
+        order: localStorage.getItem('orderId'),
+        productVendorCode: vendorCode,
+        qty: currentCount + 1
+      })
+      this.$emit('updateOrder')
+      this.isLoadingChangeCount = false
+    },
+    async decrementCount(vendorCode) {
+      if (this.isLoadingChangeCount) {
+        return
+      }
+      const currentCount = this.entries.find(entry => entry.productDto.vendorCode === vendorCode).qty
+      if (currentCount > 1) {
+        this.isLoadingChangeCount = true
+        await addProductToOrderRequest({
+          order: localStorage.getItem('orderId'),
+          productVendorCode: vendorCode,
+          qty: currentCount - 1
+        })
+        this.$emit('updateOrder')
+      }
+      this.isLoadingChangeCount = false
+    },
+    async deleteProductFromOrder(vendorCode) {
+      if (this.isLoadingChangeCount) {
+        return
+      }
+      this.isLoadingChangeCount = true
+      await deleteProductFromOrderRequest({
+        order: Number(localStorage.getItem('orderId')),
+        productVendorCode: vendorCode
+      })
+      this.$emit('updateOrder')
+      this.isLoadingChangeCount = false
+    }
+  }
 }
 </script>
 
@@ -112,11 +210,9 @@ export default {
     }
   }
 
-  &__items {
-    padding: 24px 29px !important;
-  }
-
   &__item {
+    padding: 24px 29px !important;
+
     &:not(:last-child) {
       border-bottom: 1px solid #f2f2f2;
     }
@@ -163,6 +259,27 @@ export default {
     line-height: 14px;
     color: #a1a1a1;
     text-align: center;
+  }
+
+  &__item-clear {
+    position: relative;
+    top: -15px;
+    cursor: pointer;
+
+    ::v-deep .icon svg {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::v-deep .icon svg path {
+      fill: #b8b8b8;
+    }
+
+    &:hover {
+      ::v-deep .icon svg path {
+        fill: #978d7f;
+      }
+    }
   }
 }
 </style>
