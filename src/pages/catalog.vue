@@ -16,7 +16,6 @@
             :class="{ 'active': !breadcrumb.link }"
           >
             <a v-if="index < breadcrumbs.length - 1" :href="$router.resolve({path: breadcrumb.link}).href">{{ breadcrumb.title }}</a>
-<!--            <router-link v-if="index < breadcrumbs.length - 1" :to="breadcrumb.link">{{ breadcrumb.title }}</router-link>-->
             <span v-else>{{ breadcrumb.title }}</span>
           </li>
         </ol>
@@ -27,7 +26,7 @@
       <div class="catalog__block d-flex justify-content-between">
         <CatalogSidebar :categories="categories" />
         <CatalogMain
-          :products="products"
+          :productsData="productsData"
           @sort="sort"
         />
       </div>
@@ -56,7 +55,9 @@ export default {
       maxSize: 20,
       activePage: 0,
       activeSort: '',
+      inStockFilter: undefined,
       categories: [],
+      productsData: null,
       products: []
     }
   },
@@ -105,30 +106,38 @@ export default {
       return breadcrumbs;
     }
   },
+  watch:{
+    async '$route'() {
+      await this.initData()
+    }
+  },
   async beforeMount() {
-    await this.initData();
+    await this.initData()
   },
   methods: {
     async initData() {
-      await this.getCategories();
-      await this.getProductsByCategory();
+      await this.getCategories()
+      await this.getProductsByCategory()
     },
     async getCategories() {
-      this.categories = await getCategoriesRequest();
+      this.categories = await getCategoriesRequest()
     },
     async getProductsByCategory() {
       const data = await getProductsByCategoryRequest(this.$route.fullPath, {
         userId: localStorage.getItem("userId"),
         page: this.activePage,
         size: this.maxSize,
-        sort: this.activeSort
-      });
-      this.products = data.productsDto.content;
+        sort: this.activeSort,
+        inStock: this.inStockFilter
+      })
+      this.products = data.productsDto.content
+      this.productsData = data.productsDto
     },
-    async sort(sort) {
-      this.activeSort = sort;
-      this.activePage = 0;
-      await this.getProductsByCategory();
+    async sort(sort, inStockFilter = undefined) {
+      this.activeSort = sort
+      this.activePage = 0
+      this.inStockFilter = inStockFilter ? true : undefined
+      await this.getProductsByCategory()
     }
   }
 }

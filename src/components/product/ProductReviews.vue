@@ -4,38 +4,178 @@
       <div class="product-reviews__title">Отзывы</div>
       <button type="button" class="product-reviews__btn btn btn-lg">Оставить отзыв</button>
     </div>
+
+    <div class="product-reviews__review-form">
+      <validation-observer
+        ref="validator"
+        tag="div"
+      >
+        <div class="row">
+          <validation-provider
+            rules="required"
+            v-slot="{ errors }"
+            name="username"
+            class="col-sm-6 col-12 mb-3"
+            tag="div"
+          >
+            <label for="username" class="product-reviews__review-form-label form-label">Ваше имя <span class="--required">*</span></label>
+            <input
+              v-model="model.username"
+              type="text"
+              class="form-control"
+              id="username"
+            />
+            <div v-if="errors.length > 0" class="invalid-feedback">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
+          <validation-provider
+            rules="required|email"
+            v-slot="{ errors }"
+            name="individualEmail"
+            class="col-sm-6 col-12 mb-3"
+            tag="div"
+          >
+            <label for="individualEmail" class="product-reviews__review-form-label form-label">E-mail <span class="--required">*</span></label>
+            <input
+              v-model="model.email"
+              type="email"
+              class="form-control"
+              id="individualEmail"
+            />
+            <div v-if="errors.length > 0" class="invalid-feedback">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
+        </div>
+        <div class="mb-3">
+          <label class="product-reviews__review-form-label form-label">Ваша оценка</label>
+          <div class="product-reviews__review-form-rating">
+            <Icon
+              v-for="item in 5"
+              :key="`review-form.stars.${item}`"
+              name="star-fill"
+              @mouseenter="onHoverRating(item)"
+            />
+            <span class="product-reviews__review-form-rating-text">&mdash; &nbsp;&nbsp;Без оценки</span>
+          </div>
+        </div>
+        <validation-provider
+          rules="required"
+          v-slot="{ errors }"
+          name="comment"
+          class="mb-3"
+          tag="div"
+        >
+          <label for="comment" class="product-reviews__review-form-label form-label">Комментарий <span class="--required">*</span></label>
+          <textarea
+            v-model="model.comment"
+            class="form-control"
+            id="comment"
+            rows="3"
+          />
+          <div v-if="errors.length > 0" class="invalid-feedback">
+            {{ errors[0] }}
+          </div>
+        </validation-provider>
+      </validation-observer>
+      <div class="d-flex">
+        <button type="submit" class="product-reviews__review-form-btn btn btn-lg" @click="addReview">Опубликовать отзыв</button>
+      </div>
+    </div>
+
     <div class="product-reviews__list">
-      <div class="product-reviews__item">
+      <div
+        v-for="(review, index) in reviews"
+        :key="`review.${index}`"
+        class="product-reviews__item"
+      >
         <div class="product-reviews__item-header">
           <div class="product-reviews__item-comment-info">
-            <div class="product-reviews__item-comment-user">Ольга Кузнецова</div>
-            <div class="product-reviews__item-comment-date-time">16.05.2022 22:49:33</div>
+            <div class="product-reviews__item-comment-user">{{ review.username }}</div>
+            <div class="product-reviews__item-comment-date-time">{{ formatCreatedDateTime(review.creationDate) }}</div>
           </div>
-          <div class="product-reviews__item-rating"></div>
+          <div class="product-reviews__item-rating">
+            <Icon
+              v-for="item in 5"
+              :key="`review.${index}.stars.${item}`"
+              name="star-fill"
+            />
+          </div>
         </div>
         <div class="product-reviews__item-content-wrapper">
           <div class="product-reviews__item-content">
-            <div class="product-reviews__item-content-title">
-              Достоинства
-            </div>
             <div class="product-reviews__item-content-text">
-              Матча хороший чай, готовим с кокосовым молоком. Нам нравится с мужем, получается дешевле, чем в кафешке.
+              {{ review.comment }}
             </div>
           </div>
 <!--          <div class="product-reviews__item-content"></div>-->
 <!--          <div class="product-reviews__item-content"></div>-->
         </div>
-        <div class="product-reviews__item-actions">
-          <div class="product-reviews__btn-answer">Ответить</div>
-        </div>
+<!--        <div class="product-reviews__item-actions">-->
+<!--          <div class="product-reviews__btn-answer">Ответить</div>-->
+<!--        </div>-->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
+import { extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
+import Icon from '@/components/common/Icon';
+import moment from 'moment'
+
 export default {
   name: "ProductReviews",
+  components: {
+    ValidationObserver,
+    ValidationProvider,
+    Icon
+  },
+  props: {
+    reviews: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      hoverRatingIndex: 0,
+      model: {
+        username: '',
+        email: '',
+        rating: 0,
+        comment: '',
+      }
+    }
+  },
+  beforeMount() {
+    extend('required', {
+      ...required,
+      message: 'Это поле обязательное'
+    })
+    extend('email', {
+      ...email,
+      message: 'Введите корректный E-mail'
+    })
+  },
+  methods: {
+    formatCreatedDateTime(dateTime) {
+      return moment(dateTime).format('DD.MM.YYYY hh:mm:ss')
+    },
+    async addReview() {
+      // const isValid = await this.$refs.validator.validate()
+      //
+      // if (isValid) {
+      //
+      // }
+    },
+    onHoverRating(index) {
+      console.log(index)
+    }
+  }
 }
 </script>
 
@@ -66,6 +206,58 @@ export default {
       text-transform: uppercase;
     }
 
+    &__review-form {
+      padding: 34px;
+      margin-bottom: 50px;
+      border: 1px solid #ececec;
+      border-radius: 3px;
+    }
+
+    &__review-form-label {
+      font-size: 13px;
+      margin-bottom: 6px;
+      font-weight: 400;
+      color: #888;
+
+      .--required {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 0;
+        margin: 0 0 0 4px;
+        position: relative;
+        color: red;
+      }
+    }
+
+    &__review-form-rating {
+      ::v-deep svg {
+        width: 25px;
+        height: 25px;
+        margin-right: 3px;
+        cursor: pointer;
+      }
+    }
+
+    &__review-form-rating-text {
+      margin-left: 10px;
+      line-height: 24px;
+      vertical-align: middle;
+    }
+
+    &__review-form-btn {
+      font-size: .7333em;
+      font-weight: 400;
+      text-transform: uppercase;
+      text-decoration: none;
+      letter-spacing: .8px;
+      border-radius: 3px;
+      padding: 16px 26px;
+      margin: 10px 0 0;
+      background-color: #978d7f;
+      border: 1px solid #978d7f;
+      color: #ffffff;
+    }
+
     &__item {
       padding: 24px 32px 24px;
       border-radius: 3px;
@@ -76,6 +268,12 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    &__item-rating {
+      i:not(:last-child) {
+        margin-right: 2px;
+      }
     }
 
     &__item-comment-info {

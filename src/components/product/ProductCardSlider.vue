@@ -2,11 +2,11 @@
   <div class="product-card-slider">
     <div class="product-card-slider__header d-flex align-items-center">
       <div class="product-card-slider__info-rating d-flex align-items-center">
-        <Icon name="star-fill" />
-        <Icon name="star-fill" />
-        <Icon name="star-fill" />
-        <Icon name="star-fill" />
-        <Icon name="star-fill" />
+        <Icon
+          v-for="item in 5"
+          :key="`main-stars.${item}`"
+          name="star-fill"
+        />
         <span class="product-card-slider__info-rating-value">{{ product.totalRating }}/5</span>
       </div>
       <div class="product-card-slider__code">Артикул: {{ product.vendorCode }}</div>
@@ -19,11 +19,11 @@
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="@/assets/img/catalog/product.webp" class="d-block w-100" alt="...">
+            <img :src="image" class="d-block w-100" alt="...">
           </div>
-          <div class="carousel-item">
-            <img src="@/assets/img/catalog/product.webp" class="d-block w-100" alt="...">
-          </div>
+<!--          <div class="carousel-item">-->
+<!--            <img src="@/assets/img/catalog/product.webp" class="d-block w-100" alt="...">-->
+<!--          </div>-->
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -51,7 +51,14 @@ export default {
       type: Object,
       default: () => null
     }
-  }
+  },
+  computed: {
+    image() {
+      return this.product.bigImageUrl === 'ссылка'
+        ? require('@/assets/img/catalog/product.webp')
+        : `http://178.172.201.242${this.product.bigImageUrl}`
+    }
+  },
 }
 </script>
 

@@ -39,11 +39,11 @@
         </div>
       </div>
       <div class="footer__networks d-flex justify-content-center">
-        <div class="footer__networks__social-wrapper">
-            <div class="footer__networks__social d-flex justify-content-center align-items-center">
-              <Icon name="instagram" />
-            </div>
-        </div>
+<!--        <div class="footer__networks__social-wrapper">-->
+<!--            <div class="footer__networks__social d-flex justify-content-center align-items-center">-->
+<!--              <Icon name="instagram" />-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="footer__networks__separator"></div>
       </div>
       <div class="footer__info row">
@@ -67,17 +67,32 @@
 </template>
 
 <script>
-import Icon from '@/components/common/Icon.vue'
+import { getCompanyDataByCode as getCompanyDataByCodeRequest } from '@/api/company'
+// import Icon from '@/components/common/Icon.vue'
 import moment from 'moment';
 
 export default {
   name: "Footer",
   components: {
-    Icon
+    // Icon
+  },
+  data() {
+    return {
+      contacts: null
+    }
   },
   computed: {
     currentYear() {
       return moment().format('YYYY')
+    }
+  },
+  async beforeMount() {
+    // await this.initData()
+  },
+  methods: {
+    async initData() {
+      this.contacts = await getCompanyDataByCodeRequest('contact')
+      console.log(this.contacts)
     }
   }
 }

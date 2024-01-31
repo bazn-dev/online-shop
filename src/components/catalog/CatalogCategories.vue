@@ -25,14 +25,6 @@ export default {
       type: Array,
       default: () => []
     }
-  },
-  methods: {
-    async toSubCategory(subCategory) {
-      await this.$router.push({
-        path: `${this.$route.fullPath}/${subCategory}`
-      })
-      this.$router.go(0)
-    }
   }
 }
 </script>

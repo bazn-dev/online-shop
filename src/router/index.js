@@ -9,6 +9,7 @@ import notFound from '../pages/notFound'
 import about from '../pages/about'
 import basket from '../pages/basket'
 import order from '../pages/order'
+import success from '../pages/success'
 import info from '../pages/info'
 import license from '../pages/license'
 
@@ -62,6 +63,11 @@ const routes = [
     name: 'order',
     path: '/order',
     component: order
+  },
+  {
+    name: 'success',
+    path: '/order/success',
+    component: success
   },
   {
     name: 'about',

@@ -4,8 +4,8 @@
       <div class="row">
         <div class="home-about-company__col-text col-lg-6 col-md-12">
           <div class="home-about-company__subtitle">О компании</div>
-          <h3 class="home-about-company__title">Интернет-магазин свежего кофе Roast.by</h3>
-          <p class="home-about-company__text">Наша цель — создать лучшую компанию по обжарке кофе.</p>
+          <h3 class="home-about-company__title">{{ about.displayName }}</h3>
+          <div v-html="about.value" class="home-about-company__text"></div>
           <button class="home-about-company__button btn btn-primary">Перейти в каталог</button>
         </div>
         <div class="home-about-company__col-image col-lg-6 col-md-12">
@@ -18,7 +18,13 @@
 
 <script>
 export default {
-  name: "HomeAboutCompany"
+  name: "HomeAboutCompany",
+  props: {
+    about: {
+      type: Object,
+      default: () => null
+    }
+  }
 }
 </script>
 
@@ -31,6 +37,10 @@ export default {
 
     &__wrapper {
       box-sizing: border-box;
+    }
+
+    &__col-text {
+      padding-bottom: 40px;
     }
 
     &__subtitle {
@@ -51,6 +61,7 @@ export default {
 
     &__text {
       margin: 1.666rem 0;
+      padding-right: 30px;
     }
 
     &__button {

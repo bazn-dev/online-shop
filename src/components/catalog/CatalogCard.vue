@@ -14,7 +14,7 @@
             {{ sticker.name }}
           </div>
         </div>
-        <img src="@/assets/img/catalog/product.webp" class="catalog-card__card-image img-fluid"  alt="">
+        <img :src="image" class="catalog-card__card-image img-fluid"  alt="">
       </div>
       <div class="catalog-card__card-info">
         <div class="catalog-card__card-info-rating d-flex align-items-center">
@@ -42,7 +42,12 @@
       </div>
     </div>
     <div class="catalog-card__card-more">
-      <div class="row">
+      <div v-if="alreadyInBasket">
+        <div class="catalog-card__card-more-btn col-sm-12" @click="goToBasket">
+          <Icon name="check" /> В корзинe
+        </div>
+      </div>
+      <div v-else class="row">
         <div class="catalog-card__card-more-count col-sm-6 row">
           <div
             class="col-sm-4 d-flex justify-content-center align-items-center"
@@ -76,11 +81,22 @@ export default {
     product: {
       type: Object,
       default: () => {}
+    },
+    alreadyInBasket: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       count: 1
+    }
+  },
+  computed: {
+    image() {
+      return this.product.smallImageUrl === 'ссылка'
+          ? require('@/assets/img/catalog/product.webp')
+          : `http://178.172.201.242${this.product.smallImageUrl}`
     }
   },
   methods: {
@@ -103,8 +119,13 @@ export default {
     addProductToOrder() {
       this.$emit("addToOrder", {
         productVendorCode: this.product.vendorCode,
-        qty: this.count
+        count: this.count
       });
+    },
+    goToBasket() {
+      this.$router.push({
+        name: 'basket'
+      })
     }
   }
 }
@@ -201,6 +222,7 @@ export default {
         font-size: .933em;
         line-height: 1.5em;
         color: #333333;
+        height: 65px;
         margin-bottom: 7px;
       }
 
@@ -253,6 +275,16 @@ export default {
         text-align: center;
         text-transform: uppercase;
         cursor: pointer;
+
+        ::v-deep .icon {
+          position: relative;
+          bottom: 1px;
+          margin-right: 10px;
+        }
+
+        ::v-deep .icon path {
+          fill: #ffffff;
+        }
       }
 
       &-more-count {

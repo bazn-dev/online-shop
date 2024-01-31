@@ -27,7 +27,22 @@
         >
           <Icon name="search" />
         </div>
-        <div class="header__icon-wrapper">
+        <div v-if="isLoggedIn" class="header__icon-wrapper">
+          <div class="dropdown">
+            <Icon name="account" class="header__account-icon dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" />
+            <ul class="header__account-menu-list dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li
+                v-for="item in accountMenuItems"
+                :key="`account-menu-item.${item.name}`"
+                class="header__account-menu-item"
+                @click="selectMenuItem(item.name)"
+              >
+                {{ item.title }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div v-else class="header__icon-wrapper">
           <ModalAuth />
         </div>
         <div class="header__icon-wrapper">
@@ -47,6 +62,7 @@
 </template>
 
 <script>
+import { logout as logoutRequest} from '@/api/auth'
 import Navigation from './Navigation'
 import ModalAuth from './ModalAuth'
 import Icon from './Icon'
@@ -64,9 +80,56 @@ export default {
       default: () => null
     },
   },
+  data() {
+    return {
+      accountMenuItems: [
+        {
+          name: 'my-cabinet',
+          title: 'Мой кабинет'
+        },
+        {
+          name: 'personal-data',
+          title: 'Личные данные'
+        },
+        {
+          name: 'orders-history',
+          title: 'История заказов'
+        },
+        {
+          name: 'sign-out',
+          title: 'Выйти'
+        }
+      ]
+    }
+  },
   computed: {
     countProductInBasket() {
       return this.order ? this.order.entries.length : 0;
+    },
+    isLoggedIn() {
+      return localStorage.getItem('token');
+    }
+  },
+  methods: {
+    async selectMenuItem(name) {
+      if (name === 'sign-out') {
+        await this.signOut()
+        return
+      }
+
+      await this.$router.push({
+        name: 'personal',
+        query: {
+          tab: name
+        }
+      })
+    },
+    async signOut() {
+      await logoutRequest(localStorage.getItem('token'))
+      localStorage.removeItem('token');
+      await this.$router.push({
+        name: '/'
+      })
     }
   }
 }
@@ -135,6 +198,39 @@ export default {
       color: #ffffff;
       text-align: center;
       border-radius: 100%;
+    }
+
+    &__account-icon {
+      &::after {
+        padding-bottom: 1px;
+        margin-left: 7px !important;
+        vertical-align: 0.1em !important;
+      }
+    }
+
+    &__account-menu-list {
+      width: 200px;
+      border: none;
+      margin: 10px 0 0 !important;
+      padding: 0;
+      border-radius: 0 0 3px 3px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
+
+    &__account-menu-item {
+      font-size: 13px;
+      letter-spacing: 0;
+      line-height: 25px;
+      padding: 11px 43px 12px 19px !important;
+      border-top: 1px solid #f0f0f0;
+
+      &:first-child {
+        border: none;
+      }
+
+      &:hover {
+        background-color: #fafafa;
+      }
     }
   }
 </style>

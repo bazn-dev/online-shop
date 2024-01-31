@@ -1,14 +1,10 @@
 import axios from "../axios";
 
-export default (token) => {
-  const url = "/users";
+export default (data) => {
+  const url = `/orders`;
 
   return axios
-    .get(url, {
-        params: {
-          'Authorization': token,
-        }
-    })
+    .delete(url, { params: data })
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error));
 };

@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300italic,400italic,500italic,700italic,400,300,500,700subset=latin,cyrillic-ext&display=swap');
+/*@import url('https://fonts.googleapis.com/css?family=Montserrat:300italic,400italic,500italic,700italic,400,300,500,700subset=latin,cyrillic-ext&display=swap');*/
 
 html, body {
     margin: 0;
     padding: 0 !important;
     overflow-x: hidden;
-    font: 15px/25px Montserrat, Arial, sans-serif;
+    font: 15px/25px Arial, Helvetica, sans-serif;
     color: #777;
 }
 

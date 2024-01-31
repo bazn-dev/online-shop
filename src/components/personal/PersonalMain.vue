@@ -1,17 +1,26 @@
 <template>
   <div class="personal-main">
     <div class="personal-main__menu row">
-      <div class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12">
+      <div
+        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12"
+        @click="setActive('basket')"
+      >
         <div class="personal-main__menu-item d-flex justify-content-center">
           Текущие заказы
         </div>
       </div>
-      <div class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12">
+      <div
+        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12"
+        @click="setActive('personal-data')"
+      >
         <div class="personal-main__menu-item d-flex justify-content-center">
           Личные данные
         </div>
       </div>
-      <div class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12">
+      <div
+        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12"
+        @click="setActive('orders-history')"
+      >
         <div class="personal-main__menu-item d-flex justify-content-center">
           История заказов
         </div>
@@ -22,7 +31,12 @@
 
 <script>
 export default {
-  name: "PersonalMain"
+  name: "PersonalMain",
+  methods: {
+    setActive(name) {
+      this.$emit('setActive', name)
+    }
+  }
 }
 </script>
 
@@ -33,6 +47,7 @@ export default {
     &__menu-item-wrapper {
       padding: 0 10px !important;
       margin-bottom: 20px;
+      cursor: pointer;
     }
 
     &__menu-item {

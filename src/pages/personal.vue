@@ -11,10 +11,17 @@
       </nav>
 
       <div class="personal__block d-flex justify-content-between">
-        <PersonalSidebar />
-<!--        <PersonalOrders />-->
-<!--        <PersonalMain />-->
-        <PersonalPrivate />
+        <PersonalSidebar
+          :active="activeMenuItem"
+          :menuItems="menuItems"
+          @setActive="setActiveMenuItem"
+        />
+        <PersonalMain
+          v-if="activeMenuItem === 'my-cabinet'"
+          @setActive="setActiveMenuItem"
+        />
+        <PersonalPrivate v-else-if="activeMenuItem === 'personal-data'" />
+        <PersonalOrders v-else-if="activeMenuItem === 'orders-history'" />
       </div>
     </div>
 
@@ -22,18 +29,92 @@
 </template>
 
 <script>
+import { logout as logoutRequest} from '@/api/auth'
+import { getUser as getUserRequest} from '@/api/users'
 import PersonalSidebar from '../components/personal/PersonalSidebar'
-// import PersonalMain from '../components/personal/PersonalMain'
-// import PersonalOrders from '../components/personal/PersonalOrders'
+import PersonalMain from '../components/personal/PersonalMain'
+import PersonalOrders from '../components/personal/PersonalOrders'
 import PersonalPrivate from '../components/personal/PersonalPrivate'
 
 export default {
   name: "personal",
   components: {
     PersonalSidebar,
-    // PersonalMain,
-    // PersonalOrders,
+    PersonalMain,
+    PersonalOrders,
     PersonalPrivate
+  },
+  data() {
+    return {
+      activeMenuItem: 'my-cabinet',
+      menuItems: [
+        {
+          name: 'my-cabinet',
+          title: 'Мой кабинет'
+        },
+        {
+          name: 'personal-data',
+          title: 'Личные данные'
+        },
+        {
+          name: 'orders-history',
+          title: 'История заказов'
+        },
+        {
+          name: 'basket',
+          title: 'Корзина'
+        },
+        {
+          name: 'sign-out',
+          title: 'Выйти'
+        }
+      ]
+    }
+  },
+  async beforeMount() {
+    await this.initData()
+  },
+  methods: {
+    async initData() {
+      console.log(this.$route.query.tab)
+      if (this.$route.query.tab) {
+        this.activeMenuItem = this.$route.query.tab
+      } else {
+        this.activeMenuItem = 'my-cabinet'
+      }
+      const user = await getUserRequest(localStorage.getItem('token'))
+      console.log(user)
+    },
+    async setActiveMenuItem(name) {
+      if (name === 'basket') {
+        this.goToBasket()
+        return
+      }
+      if (name === 'sign-out') {
+        await this.signOut()
+        return
+      }
+
+      await this.$router.push({
+        name: 'personal',
+        query: {
+          tab: name
+        }
+      })
+      this.activeMenuItem = name
+    },
+    goToBasket() {
+      this.$router.push({
+        name: 'basket'
+      })
+    },
+    async signOut() {
+      await logoutRequest(localStorage.getItem('token'))
+      localStorage.removeItem('token');
+      await this.$router.push({
+        name: '/'
+      })
+    }
   }
 }
 </script>

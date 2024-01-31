@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { Events } from "./events";
 import {
   createOrder as createOrderRequest,
   getOrderById as getOrderByIdRequest
@@ -44,6 +45,11 @@ export default {
       order: null,
       displaySearch: false
     }
+  },
+  created() {
+    Events.on('updateBasket', async () => {
+      await this.getOrderById()
+    })
   },
   async beforeMount() {
     if (!localStorage.getItem('userId') && !localStorage.getItem('orderId')) {

@@ -36,13 +36,19 @@
                 class="nav-link"
                 :class="{ 'active': isActiveTab(tab.name) }"
               >
-                {{ tab.title }}
+                {{ tab.title }}{{ tab.name === 'reviews' ? `(${product?.reviews?.length})` : '' }}
               </div>
             </li>
           </ul>
 
-          <ProductDescription v-if="isActiveTab('description')" :product="product" />
-          <ProductReviews  v-else-if="isActiveTab('reviews')"/>
+          <ProductDescription
+            v-if="isActiveTab('description')"
+            :product="product"
+          />
+          <ProductReviews
+            v-else-if="isActiveTab('reviews')"
+            :reviews="product.reviews"
+          />
         </div>
         <div class="product__block__sidebar d-none d-lg-block">
           <ProductInfo
@@ -57,6 +63,7 @@
 </template>
 
 <script>
+import { Events } from '../events'
 import { getProductByVendorCode as getProductByVendorCodeRequest } from '@/api/products'
 import {
   addProductToOrder as addProductToOrderRequest,
@@ -86,7 +93,7 @@ export default {
         },
         {
           name: 'reviews',
-          title: 'Отзывы(4)'
+          title: 'Отзывы'
         }
       ],
       activeTab: 'description'
@@ -104,17 +111,21 @@ export default {
   },
   methods: {
     async initData() {
-      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
+      await this.setOrder()
       this.product = await getProductByVendorCodeRequest(this.$route.params.vendorCode)
+    },
+    async setOrder() {
+      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
     },
     async addProductToOrder(count) {
       await addProductToOrderRequest({
-        order: localStorage.getItem('orderId'),
+        orderId: Number(localStorage.getItem('orderId')),
         productVendorCode: this.$route.params.vendorCode,
         qty: count
       })
+      await this.setOrder()
+      Events.emit('updateBasket')
     },
-
     isActiveTab(tab) {
       return this.activeTab === tab
     },

@@ -10,69 +10,76 @@
       <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
     </div>
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/1.webp') + ')'}">
+      <div
+        v-for="(banner, index) in banners"
+        :key="`banner.${index}`"
+        class="carousel-item"
+        :class="{ 'active': index === 0 }"
+      >
+        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + getBackgroundLink(banner.imageUrl) + ')'}">
+          <img src="http://178.172.201.242/media/products/1360_200x200.jpg">
+          <img src="http://178.172.201.242/media/banners/banner_1.jpg">
           <div class="home-slider__content">
-            <div class="home-slider__content-title">Кофе свежей обжарки</div>
-            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>
+            <div class="home-slider__content-title">{{ banner.header }}</div>
+            <div class="home-slider__content-description">{{ banner.description }}</div>
             <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
           </div>
         </div>
       </div>
-      <div class="carousel-item">
-        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/2.webp') + ')'}">
-          <div class="home-slider__content">
-            <div class="home-slider__content-title">Кофе свежей обжарки</div>
-            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>
-            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/3.webp') + ')'}">
-          <div class="home-slider__content">
-            <div class="home-slider__content-title">Кофе свежей обжарки</div>
-            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>
-            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/4.webp') + ')'}">
-          <div class="home-slider__content">
-            <div class="home-slider__content-title">Кофе свежей обжарки</div>
-            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>
-            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/5.webp') + ')'}">
-          <div class="home-slider__content">
-            <div class="home-slider__content-title">Кофе свежей обжарки</div>
-            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>
-            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/6.webp') + ')'}">
-          <div class="home-slider__content">
-            <div class="home-slider__content-title">Кофе свежей обжарки</div>
-            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>
-            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/7.webp') + ')'}">
-          <div class="home-slider__content">
-            <div class="home-slider__content-title">Кофе свежей обжарки</div>
-            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>
-            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
-          </div>
-        </div>
-      </div>
+<!--      <div class="carousel-item active">-->
+<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/2.webp') + ')'}">-->
+<!--          <div class="home-slider__content">-->
+<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
+<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
+<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="carousel-item">-->
+<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/3.webp') + ')'}">-->
+<!--          <div class="home-slider__content">-->
+<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
+<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
+<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="carousel-item">-->
+<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/4.webp') + ')'}">-->
+<!--          <div class="home-slider__content">-->
+<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
+<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
+<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="carousel-item">-->
+<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/5.webp') + ')'}">-->
+<!--          <div class="home-slider__content">-->
+<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
+<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
+<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="carousel-item">-->
+<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/6.webp') + ')'}">-->
+<!--          <div class="home-slider__content">-->
+<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
+<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
+<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="carousel-item">-->
+<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/7.webp') + ')'}">-->
+<!--          <div class="home-slider__content">-->
+<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
+<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
+<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -88,7 +95,16 @@
 <script>
 export default {
   name: "HomeSlider",
+  props: {
+    banners: {
+      type: Array,
+      default: () => []
+    }
+  },
   methods: {
+    getBackgroundLink(link) {
+      return `http://178.172.201.242${link}`
+    },
     toCatalog() {
       this.$router.push({
         name: "catalog",

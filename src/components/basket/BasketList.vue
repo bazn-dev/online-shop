@@ -11,7 +11,12 @@
       </div>
       <div class="basket-list__info-wrapper d-flex align-items-center">
         <div class="basket-list__total-price">В корзине {{ entries.length }} товар</div>
-        <button class="basket-list__clear-button btn btn-link">Очистить</button>
+        <button
+          class="basket-list__clear-button btn btn-link"
+          @click="deleteAllProductsFromOrder"
+        >
+          Очистить
+        </button>
       </div>
     </div>
     <ul class="basket-list__items">
@@ -86,6 +91,7 @@
 import {
   addProductToOrder as addProductToOrderRequest,
   deleteProductFromOrder as deleteProductFromOrderRequest,
+  deleteAllProductsFromOrder as deleteAllProductsFromOrderRequest,
 } from '@/api/orders'
 import Icon from '@/components/common/Icon'
 
@@ -119,7 +125,7 @@ export default {
       this.isLoadingChangeCount = true
       const currentCount = this.entries.find(entry => entry.productDto.vendorCode === vendorCode).qty
       await addProductToOrderRequest({
-        order: localStorage.getItem('orderId'),
+        orderId: Number(localStorage.getItem('orderId')),
         productVendorCode: vendorCode,
         qty: currentCount + 1
       })
@@ -134,7 +140,7 @@ export default {
       if (currentCount > 1) {
         this.isLoadingChangeCount = true
         await addProductToOrderRequest({
-          order: localStorage.getItem('orderId'),
+          orderId: Number(localStorage.getItem('orderId')),
           productVendorCode: vendorCode,
           qty: currentCount - 1
         })
@@ -148,8 +154,19 @@ export default {
       }
       this.isLoadingChangeCount = true
       await deleteProductFromOrderRequest({
-        order: Number(localStorage.getItem('orderId')),
+        orderId: Number(localStorage.getItem('orderId')),
         productVendorCode: vendorCode
+      })
+      this.$emit('updateOrder')
+      this.isLoadingChangeCount = false
+    },
+    async deleteAllProductsFromOrder() {
+      if (this.isLoadingChangeCount) {
+        return
+      }
+      this.isLoadingChangeCount = true
+      await deleteAllProductsFromOrderRequest({
+        orderId: Number(localStorage.getItem('orderId'))
       })
       this.$emit('updateOrder')
       this.isLoadingChangeCount = false

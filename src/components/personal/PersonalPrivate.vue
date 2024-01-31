@@ -1,54 +1,195 @@
 <template>
   <div class="personal-private">
     <div class="personal-private__wrapper">
-      <form class="personal-private__form">
+      <validation-observer
+        ref="validator"
+        tag="div"
+        class="personal-private__form"
+      >
         <div class="d-flex mb-3">
-          <div class="w-50">
+          <validation-provider
+            rules="required"
+            v-slot="{ errors }"
+            name="name"
+            class="w-50"
+            tag="div"
+          >
             <label for="name" class="form-label">Фамилия Имя Отчество</label>
-            <input type="email" class="form-control" id="name" aria-describedby="emailHelp">
-          </div>
+            <input
+              v-model="model.name"
+              type="text"
+              class="form-control"
+              id="name"
+            />
+            <div v-if="errors.length > 0" class="invalid-feedback">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
           <div class="personal-private__input-note w-50">Заполните, чтобы мы знали, как к вам обращаться</div>
         </div>
         <div class="d-flex mb-3">
-          <div class="w-50">
-            <label for="email" class="form-label">E-mail</label>
-            <input type="password" class="form-control" id="email">
-          </div>
+          <validation-provider
+            rules="required|email"
+            v-slot="{ errors }"
+            name="individualEmail"
+            class="w-50"
+            tag="div"
+          >
+            <label for="individualEmail" class="form-label">E-mail</label>
+            <input
+              v-model="model.email"
+              type="email"
+              class="form-control"
+              id="individualEmail"
+            />
+            <div v-if="errors.length > 0" class="invalid-feedback">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
           <div class="personal-private__input-note w-50">
             <p>Для отправки уведомлений о статусе заказа.</p>
             <p>Используйте как логин для входа в личный кабинет</p>
           </div>
         </div>
         <div class="d-flex mb-3">
-          <div class="w-50">
-            <label for="phone" class="form-label">Телефон</label>
-            <input type="password" class="form-control" id="phone">
-          </div>
+          <validation-provider
+            rules="required"
+            v-slot="{ errors }"
+            name="individualPhone"
+            class="w-50"
+            tag="div"
+          >
+            <label for="individualPhone" class="form-label">Телефон</label>
+            <input
+              v-model="model.phone"
+              type="text"
+              class="form-control"
+              id="individualPhone"
+            />
+            <div v-if="errors.length > 0" class="invalid-feedback">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
           <div class="personal-private__input-note w-50">Необходим для уточнения деталей заказа</div>
         </div>
         <div class="mb-3">
-          <div class="w-50">
-            <label for="password" class="form-label">Пароль</label>
-            <input type="password" class="form-control" id="password">
-          </div>
+          <validation-provider
+            rules="required"
+            v-slot="{ errors }"
+            name="individualPassword"
+            class="w-50"
+            tag="div"
+          >
+            <label for="individualPassword" class="form-label">Пароль</label>
+            <input
+              v-model="model.password"
+              type="password"
+              class="form-control"
+              id="individualPassword"
+            />
+            <div v-if="errors.length > 0" class="invalid-feedback">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
         </div>
         <div class="mb-3">
-          <div class="w-50">
-            <label for="confirmPassword" class="form-label">Подтверждение пароля</label>
-            <input type="password" class="form-control" id="confirmPassword">
-          </div>
+          <validation-provider
+            v-model="model.passwordConfirmation"
+            rules="required|password:@individualPassword"
+            v-slot="{ errors }"
+            name="individualConfirmPassword"
+            class="w-50"
+            tag="div"
+          >
+            <label for="individualConfirmPassword" class="form-label">Подтверждение пароля</label>
+            <input
+              v-model="model.passwordConfirmation"
+              type="password"
+              class="form-control"
+              id="individualConfirmPassword"
+            />
+            <div v-if="errors.length > 0" class="invalid-feedback">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
         </div>
         <div class="d-flex justify-content-start">
-          <button type="submit" class="personal-private__submit btn btn-lg btn-primary">Сохранить изменения</button>
+          <button
+            type="submit"
+            class="personal-private__submit btn btn-lg btn-primary"
+            @click="update"
+          >
+            Сохранить изменения
+          </button>
         </div>
-      </form>
+      </validation-observer>
     </div>
   </div>
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
+import { extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
+import { updateUser as updateUserRequest } from '@/api/users';
+
 export default {
-  name: "PersonalPrivate"
+  name: "PersonalPrivate",
+  components: {
+    ValidationObserver,
+    ValidationProvider,
+  },
+  data() {
+    return {
+      model: {
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        passwordConfirmation: '',
+      }
+    }
+  },
+  beforeMount() {
+    extend('required', {
+      ...required,
+      message: 'Это поле обязательное'
+    });
+    extend('email', {
+      ...email,
+      message: 'Введите корректный E-mail'
+    });
+    extend('password', {
+      params: ['target'],
+      validate(value, { target }) {
+        return value === target;
+      },
+      message: 'Пароли не совпадают'
+    });
+  },
+  methods: {
+    async update() {
+      const isValid = await this.$refs.validator.validate()
+
+      if (isValid && this.model.agree) {
+        const data = {
+          userId: localStorage.getItem('userId'),
+          name: this.model.name,
+          phone: this.model.phone,
+          email: this.model.email,
+          password: this.model.password,
+          passwordConfirmation: this.model.passwordConfirmation
+        }
+        try {
+          await updateUserRequest(data)
+          this.$toasted.show(`Обновление данных прошло успешно!`, { type: 'success', duration: 3000 })
+        } catch (e) {
+          this.$toasted.show(`Ошибка обновления данных: ${e.message}`, { type: 'error', duration: 3000 })
+          throw new Error(e);
+        }
+      }
+    }
+  }
 }
 </script>
 

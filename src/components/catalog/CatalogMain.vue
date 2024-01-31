@@ -1,7 +1,7 @@
 <template>
   <div class="catalog-main">
     <div class="catalog-main__sort-wrapper d-flex justify-content-between">
-      <div class="dropdown">
+      <div v-if="activeSortItem" class="dropdown">
         <button class="catalog-main__dropdown-sort btn btn-link btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
           {{ activeSortItem.title }}
         </button>
@@ -15,9 +15,16 @@
           </li>
         </ul>
       </div>
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">В наличии</label>
+      <div class="form-check form-switch">
+        <input
+          v-model="inStockFilter"
+          type="checkbox"
+          id="inStockCheckbox"
+          class="form-check-input"
+          role="switch"
+          @change="toggleInStockFilter"
+        />
+        <label class="form-check-label" for="inStockCheckbox">В наличии</label>
       </div>
     </div>
     <div class="catalog-main__products row">
@@ -25,28 +32,28 @@
         v-for="product in products"
         :key="`product.${product.vendorCode}`"
         :product="product"
+        :alreadyInBasket="alreadyInBasket(product.vendorCode)"
         @addToOrder="addToOrderRequest"
       />
     </div>
-    <nav aria-label="Page navigation example">
+    <nav v-if="productsData?.totalPages > 1" aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
-        <li class="page-item">
+        <li v-if="!productsData.first" class="page-item">
           <div class="page-link" aria-label="Previous">
             <span aria-hidden="true">
               <Icon name="arrow-up" class="pagination__prev-icon" />
             </span>
           </div>
         </li>
-        <li class="page-item active">
-          <div class="page-link">1</div>
+        <li
+          v-for="page in productsData?.totalPages"
+          :key="`page.${page}`"
+          class="page-item"
+          :class="{ 'active': page === productsData.number + 1 }"
+        >
+          <div class="page-link">{{ page }}</div>
         </li>
-        <li class="page-item">
-          <div class="page-link">2</div>
-        </li>
-        <li class="page-item">
-          <div class="page-link">3</div>
-        </li>
-        <li class="page-item">
+        <li v-if="!productsData.last" class="page-item">
           <div class="page-link" aria-label="Next">
             <span aria-hidden="true">
               <Icon name="arrow-up" class="pagination__next-icon" />
@@ -59,9 +66,13 @@
 </template>
 
 <script>
+import { Events } from '../../events'
 import CatalogCard from './CatalogCard'
 import Icon from '@/components/common/Icon'
-import { addProductToOrder } from '@/api/orders'
+import {
+  addProductToOrder as addProductToOrderRequest,
+  getOrderById as getOrderByIdRequest,
+} from '@/api/orders'
 
 export default {
   name: "CatalogMain",
@@ -70,9 +81,9 @@ export default {
     Icon
   },
   props: {
-    products: {
-      type: Array,
-      default: () => []
+    productsData: {
+      type: Object,
+      default: () => null
     }
   },
   data() {
@@ -81,44 +92,69 @@ export default {
       sortItems: [
         {
           title: 'По популярности (убывание)',
-          name: 'totalRating,desc'
-        },
-        {
-          title: 'По популярности (возрастание)',
           name: 'totalRating,asc'
         },
         {
-          title: 'По алфавиту (убывание)',
-          name: 'name,desc'
+          title: 'По популярности (возрастание)',
+          name: 'totalRating,desc'
         },
         {
-          title: 'По алфавиту (возрастание)',
+          title: 'По алфавиту (убывание)',
           name: 'name,asc'
         },
         {
+          title: 'По алфавиту (возрастание)',
+          name: 'name,desc'
+        },
+        {
           title: 'По цене (убывание)',
-          name: 'price,desc'
+          name: 'price,asc'
         },
         {
           title: 'По цене (возрастание)',
-          name: 'price,asc'
+          name: 'price,desc'
         }
-      ]
+      ],
+      inStockFilter: false,
+      order: null
     }
   },
-  beforeMount() {
-    this.initData()
+  computed: {
+    products() {
+      return this.productsData?.content ? this.productsData.content : []
+    }
+  },
+  async beforeMount() {
+    await this.initData()
   },
   methods: {
-    initData() {
+    async initData() {
+      await this.setOrder()
       this.setActiveSortItem(this.sortItems[0])
+    },
+    async setOrder() {
+      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
     },
     setActiveSortItem(item) {
       this.activeSortItem = item;
       this.$emit('sort', this.activeSortItem.name)
     },
     async addToOrderRequest(data) {
-      await addProductToOrder(data)
+      await addProductToOrderRequest({
+        orderId: Number(localStorage.getItem('orderId')),
+        productVendorCode: data.productVendorCode,
+        qty: data.count
+      })
+      await this.setOrder()
+      Events.emit('updateBasket')
+    },
+    alreadyInBasket(vendorCode) {
+      return this.order?.entries
+        .map(product => product.productDto.vendorCode)
+        .find(item => item === vendorCode) !== undefined;
+    },
+    toggleInStockFilter() {
+      this.$emit('sort', this.activeSortItem.name, this.inStockFilter)
     }
   }
 }

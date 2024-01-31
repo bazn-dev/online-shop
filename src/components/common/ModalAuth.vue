@@ -112,10 +112,11 @@ export default {
 
       if (isValid) {
         try {
-          await login({
+          const { token } = await login({
             email: this.email,
             password: this.password
           })
+          localStorage.setItem('token', token)
           this.closeModal();
         } catch (e) {
           this.$toasted.show(`Ошибка авторизации: ${e.message}`, { type: 'error', duration: 3000 })

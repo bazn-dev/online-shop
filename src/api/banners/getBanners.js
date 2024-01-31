@@ -1,14 +1,10 @@
 import axios from "../axios";
 
-export default (token) => {
-  const url = "/users";
+export default () => {
+  const url = "/banners";
 
   return axios
-    .get(url, {
-        params: {
-          'Authorization': token,
-        }
-    })
+    .get(url)
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error));
 };
