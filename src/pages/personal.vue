@@ -20,8 +20,12 @@
           v-if="activeMenuItem === 'my-cabinet'"
           @setActive="setActiveMenuItem"
         />
-        <PersonalPrivate v-else-if="activeMenuItem === 'personal-data'" />
-        <PersonalOrders v-else-if="activeMenuItem === 'orders-history'" />
+        <PersonalPrivate
+          v-else-if="activeMenuItem === 'personal-data'"
+          :user="user"
+        />
+<!--        <PersonalOrders v-else-if="activeMenuItem === 'orders-history'" />-->
+        <PersonalOrder v-else-if="activeMenuItem === 'orders-history'" />
       </div>
     </div>
 
@@ -30,10 +34,14 @@
 
 <script>
 import { logout as logoutRequest} from '@/api/auth'
-import { getUser as getUserRequest} from '@/api/users'
+import {
+  getUser as getUserRequest,
+  getAllOrdersByUser as getAllOrdersByUserRequest
+} from '@/api/users'
 import PersonalSidebar from '../components/personal/PersonalSidebar'
 import PersonalMain from '../components/personal/PersonalMain'
-import PersonalOrders from '../components/personal/PersonalOrders'
+// import PersonalOrders from '../components/personal/PersonalOrders'
+import PersonalOrder from '../components/personal/PersonalOrder'
 import PersonalPrivate from '../components/personal/PersonalPrivate'
 
 export default {
@@ -41,7 +49,8 @@ export default {
   components: {
     PersonalSidebar,
     PersonalMain,
-    PersonalOrders,
+    // PersonalOrders,
+    PersonalOrder,
     PersonalPrivate
   },
   data() {
@@ -68,7 +77,9 @@ export default {
           name: 'sign-out',
           title: 'Выйти'
         }
-      ]
+      ],
+      user: null,
+      orders: []
     }
   },
   async beforeMount() {
@@ -76,14 +87,15 @@ export default {
   },
   methods: {
     async initData() {
-      console.log(this.$route.query.tab)
       if (this.$route.query.tab) {
         this.activeMenuItem = this.$route.query.tab
       } else {
         this.activeMenuItem = 'my-cabinet'
       }
-      const user = await getUserRequest(localStorage.getItem('token'))
-      console.log(user)
+      document.title = this.menuItems.find(item => item.name === this.activeMenuItem)?.title ?? 'Мой кабинет';
+      this.user = await getUserRequest(localStorage.getItem('token'))
+      this.orders = await getAllOrdersByUserRequest(localStorage.getItem('token'))
+      console.log(this.orders)
     },
     async setActiveMenuItem(name) {
       if (name === 'basket') {
@@ -102,6 +114,7 @@ export default {
         }
       })
       this.activeMenuItem = name
+      document.title = this.menuItems.find(item => item.name === this.activeMenuItem)?.title ?? 'Мой кабинет';
     },
     goToBasket() {
       this.$router.push({

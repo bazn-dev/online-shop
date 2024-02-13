@@ -2,8 +2,24 @@
   <div class="basket-checkout">
     <div class="basket-checkout__wrapper d-lg-flex justify-content-between">
       <div>
-        <label for="exampleInputEmail1" class="form-label">Введите код купона для скидки:</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <label for="promoInput" class="form-label">Введите код купона для скидки:</label>
+        <div class="input-group">
+          <input
+            v-model="promoCode"
+            type="text"
+            id="promoInput"
+            class="basket-checkout__promo-input form-control"
+            aria-describedby="promo-button"
+          />
+          <button
+            type="button"
+            id="promo-button"
+            class="basket-checkout__promo-btn btn"
+            @click="addPromo"
+          >
+            <Icon name="arrow-left" class="basket-checkout__promo-icon" />
+          </button>
+        </div>
       </div>
       <div class="basket-checkout__total-wrapper d-md-flex align-items-center">
         <div class="d-flex align-items-center">
@@ -25,15 +41,37 @@
 </template>
 
 <script>
+import {
+  addPromo as addPromoRequest
+} from '@/api/orders'
+import Icon from '../common/Icon.vue'
+
 export default {
   name: "BasketCheckout",
+  components: {
+    Icon
+  },
   props: {
     order: {
       type: Object,
       default: () => null
     }
   },
+  data() {
+    return {
+      promoCode: ''
+    }
+  },
   methods: {
+    async addPromo() {
+      console.log(this.promoCode)
+      if (this.promoCode) {
+        await addPromoRequest({
+          orderId: this.order.id,
+          promoCode: this.promoCode
+        })
+      }
+    },
     goToOrder() {
       this.$router.push({
         name: 'order'
@@ -54,6 +92,36 @@ export default {
 
     &__wrapper {
       box-sizing: border-box;
+    }
+
+    &__promo-input {
+      border-right: none;
+
+      &:focus,
+      &:visited,
+      &:active {
+        border-right: none !important;
+      }
+    }
+
+    &__promo-btn {
+      border: 1px solid #dee2e6;
+      border-left: none;
+    }
+
+    &__promo-icon {
+      position: relative;
+      top: -2px;
+
+      ::v-deep svg {
+        transform: rotate(180deg);
+      }
+
+      &:hover {
+        ::v-deep svg path {
+          fill: #333;
+        }
+      }
     }
 
     &__total-wrapper {

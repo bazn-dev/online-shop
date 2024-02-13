@@ -17,8 +17,6 @@
         :class="{ 'active': index === 0 }"
       >
         <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + getBackgroundLink(banner.imageUrl) + ')'}">
-          <img src="http://178.172.201.242/media/products/1360_200x200.jpg">
-          <img src="http://178.172.201.242/media/banners/banner_1.jpg">
           <div class="home-slider__content">
             <div class="home-slider__content-title">{{ banner.header }}</div>
             <div class="home-slider__content-description">{{ banner.description }}</div>

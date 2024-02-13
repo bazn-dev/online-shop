@@ -23,7 +23,7 @@
             <td>
               <div class="row">
                 <div class="col-lg-4 col-md-4">
-                  <img src="@/assets/img/catalog/product.webp" class="basket-list__item-image img-fluid"  alt="">
+                  <img :src="getImage(entry.productDto.smallImageUrl)" class="basket-list__item-image img-fluid"  alt="">
                 </div>
                 <div class="basket-list__item-title col-lg-8 col-md-8">
                   {{ entry.productDto.name }}
@@ -53,6 +53,13 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  methods: {
+    getImage(link) {
+      return link === 'ссылка'
+        ? require('@/assets/img/catalog/product.webp')
+        : `http://178.172.201.242${link}`
+    }
   }
 }
 </script>
@@ -64,14 +71,28 @@ export default {
     border-radius: 3px;
 
     &__header {
-      padding: 33px;
+      padding: 31px 19px 32px 84px;
       border-bottom: 1px solid #ececec;
     }
 
     &__title {
+      position: relative;
       font-size: 1.466em;
       line-height: 1.2em;
       color: #333;
+
+      &:before {
+        content: "";
+        position: absolute;
+        left: -50px;
+        top: -3px;
+        margin: 0;
+        width: 30px;
+        height: 30px;
+        background-image: url(../../assets/img/checkout_icons_white.png);
+        background-position: -30px -30px;
+        background-color: #978d7f;
+      }
     }
 
     &__body {

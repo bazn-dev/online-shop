@@ -131,12 +131,12 @@
           <div class="mb-3">
             <div class="form-check form-switch">
               <input
-                v-model="model.agree"
-                class="form-check-input"
-                type="checkbox"
-                id="individualAgree"
+                  v-model="model.agree"
+                  class="form-check-input"
+                  type="checkbox"
+                  id="fizEntityAgreeCheckbox"
               />
-              <label class="form-check-label" for="individualAgree">Я согласен на обработку персональных данных</label>
+              <label class="form-check-label" for="fizEntityAgreeCheckbox">Я согласен на <router-link to="/license" target="_blank">обработку персональных данных</router-link></label>
             </div>
             <div v-if="!model.agree" class="invalid-feedback">
               Согласитесь с условиями
@@ -358,7 +358,7 @@
                 type="checkbox"
                 id="entityAgreeCheckbox"
               />
-              <label class="form-check-label" for="entityAgreeCheckbox">Я согласен на <router-link to="license" target="_blank">обработку персональных данных</router-link></label>
+              <label class="form-check-label" for="entityAgreeCheckbox">Я согласен на <router-link to="/license" target="_blank">обработку персональных данных</router-link></label>
             </div>
             <div v-if="!model.agree" class="invalid-feedback">
               Согласитесь с условиями
@@ -403,6 +403,9 @@ export default {
         agree: true
       }
     }
+  },
+  beforeCreate() {
+    document.title = 'Регистрация';
   },
   beforeMount() {
     extend('required', {
@@ -568,6 +571,18 @@ export default {
     background-color: #978d7f;
     border: 1px solid #978d7f;
     color: #ffffff;
+  }
+}
+
+label[for="entityAgreeCheckbox"],
+label[for="fizEntityAgreeCheckbox"] {
+  a {
+    color: #8d8170;
+    text-decoration: none;
+
+    &:hover {
+      color: #333;
+    }
   }
 }
 </style>

@@ -15,7 +15,10 @@
 <script>
 
 export default {
-  name: "notFound"
+  name: "notFound",
+  beforeCreate() {
+    document.title = 'Страница не найдена';
+  },
 }
 </script>
 

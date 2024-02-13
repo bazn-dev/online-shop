@@ -128,7 +128,7 @@ export default {
       await logoutRequest(localStorage.getItem('token'))
       localStorage.removeItem('token');
       await this.$router.push({
-        name: '/'
+        path: '/'
       })
     }
   }

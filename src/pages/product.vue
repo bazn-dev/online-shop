@@ -48,6 +48,7 @@
           <ProductReviews
             v-else-if="isActiveTab('reviews')"
             :reviews="product.reviews"
+            @addReview="addReview"
           />
         </div>
         <div class="product__block__sidebar d-none d-lg-block">
@@ -64,7 +65,10 @@
 
 <script>
 import { Events } from '../events'
-import { getProductByVendorCode as getProductByVendorCodeRequest } from '@/api/products'
+import {
+  getProductByVendorCode as getProductByVendorCodeRequest,
+  addReview as addReviewRequest
+} from '@/api/products'
 import {
   addProductToOrder as addProductToOrderRequest,
   getOrderById as getOrderByIdRequest,
@@ -113,6 +117,7 @@ export default {
     async initData() {
       await this.setOrder()
       this.product = await getProductByVendorCodeRequest(this.$route.params.vendorCode)
+      document.title = this.product.name;
     },
     async setOrder() {
       this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
@@ -125,6 +130,13 @@ export default {
       })
       await this.setOrder()
       Events.emit('updateBasket')
+    },
+    async addReview(data) {
+      await addReviewRequest({
+        productVendorCode: this.$route.params.vendorCode,
+        ...data
+      })
+      await this.initData()
     },
     isActiveTab(tab) {
       return this.activeTab === tab

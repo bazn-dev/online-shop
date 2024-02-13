@@ -5,7 +5,7 @@
         <Icon
           v-for="item in 5"
           :key="`main-stars.${item}`"
-          name="star-fill"
+          :name="item <= product.totalRating ? 'star-fill' : 'star-empty'"
         />
         <span class="product-card-slider__info-rating-value">{{ product.totalRating }}/5</span>
       </div>

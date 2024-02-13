@@ -2,10 +2,16 @@
   <div class="product-reviews">
     <div class="product-reviews__header">
       <div class="product-reviews__title">Отзывы</div>
-      <button type="button" class="product-reviews__btn btn btn-lg">Оставить отзыв</button>
+      <button
+        type="button"
+        class="product-reviews__btn btn btn-lg"
+        @click="toggleReviewForm"
+      >
+        Оставить отзыв
+      </button>
     </div>
 
-    <div class="product-reviews__review-form">
+    <div v-if="displayReviewForm" class="product-reviews__review-form">
       <validation-observer
         ref="validator"
         tag="div"
@@ -15,7 +21,7 @@
             rules="required"
             v-slot="{ errors }"
             name="username"
-            class="col-sm-6 col-12 mb-3"
+            class="col-sm-6 col-12 mb-3 pr-3"
             tag="div"
           >
             <label for="username" class="product-reviews__review-form-label form-label">Ваше имя <span class="--required">*</span></label>
@@ -33,7 +39,7 @@
             rules="required|email"
             v-slot="{ errors }"
             name="individualEmail"
-            class="col-sm-6 col-12 mb-3"
+            class="col-sm-6 col-12 mb-3 pl-3"
             tag="div"
           >
             <label for="individualEmail" class="product-reviews__review-form-label form-label">E-mail <span class="--required">*</span></label>
@@ -49,15 +55,20 @@
           </validation-provider>
         </div>
         <div class="mb-3">
-          <label class="product-reviews__review-form-label form-label">Ваша оценка</label>
+          <label class="product-reviews__review-form-label form-label mb-0">Ваша оценка</label>
           <div class="product-reviews__review-form-rating">
-            <Icon
+            <span
               v-for="item in 5"
               :key="`review-form.stars.${item}`"
-              name="star-fill"
               @mouseenter="onHoverRating(item)"
-            />
-            <span class="product-reviews__review-form-rating-text">&mdash; &nbsp;&nbsp;Без оценки</span>
+              @mouseleave="onLeaveRating(item)"
+              @click="setRating(item)"
+            >
+              <Icon
+                :name="item <= hoverRatingIndex || item <= model.rating ? 'star-fill' : 'star-empty'"
+              />
+            </span>
+            <span class="product-reviews__review-form-rating-text">&mdash; &nbsp;&nbsp;{{ ratingText }}</span>
           </div>
         </div>
         <validation-provider
@@ -99,7 +110,7 @@
             <Icon
               v-for="item in 5"
               :key="`review.${index}.stars.${item}`"
-              name="star-fill"
+              :name="item <= review.rating ? 'star-fill' : 'star-empty'"
             />
           </div>
         </div>
@@ -142,6 +153,7 @@ export default {
   },
   data() {
     return {
+      displayReviewForm: false,
       hoverRatingIndex: 0,
       model: {
         username: '',
@@ -149,6 +161,25 @@ export default {
         rating: 0,
         comment: '',
       }
+    }
+  },
+  computed: {
+    ratingText() {
+      switch (this.hoverRatingIndex) {
+        case 0:
+          return 'Без оценки'
+        case 1:
+          return 'Очень плохо'
+        case 2:
+          return 'Плохо'
+        case 3:
+          return 'Нормально'
+        case 4:
+          return 'Хорошо'
+        case 5:
+          return 'Отлично'
+      }
+      return 'Без оценки'
     }
   },
   beforeMount() {
@@ -166,14 +197,30 @@ export default {
       return moment(dateTime).format('DD.MM.YYYY hh:mm:ss')
     },
     async addReview() {
-      // const isValid = await this.$refs.validator.validate()
-      //
-      // if (isValid) {
-      //
-      // }
+      const isValid = await this.$refs.validator.validate()
+
+      if (isValid) {
+        await this.$emit('addReview', this.model)
+        this.toggleReviewForm()
+      }
+    },
+    toggleReviewForm() {
+      if (this.displayReviewForm) {
+        this.model.username = ''
+        this.model.email = ''
+        this.model.rating = 0
+        this.model.comment = ''
+      }
+      this.displayReviewForm = !this.displayReviewForm
     },
     onHoverRating(index) {
-      console.log(index)
+      this.hoverRatingIndex = index
+    },
+    onLeaveRating(index) {
+      this.hoverRatingIndex = index
+    },
+    setRating(index) {
+      this.model.rating = index
     }
   }
 }
@@ -327,5 +374,13 @@ export default {
         color: #777;
       }
     }
+  }
+
+  .pl-3 {
+    padding-left: 16px !important;
+  }
+
+  .pr-3 {
+    padding-right: 16px !important;
   }
 </style>

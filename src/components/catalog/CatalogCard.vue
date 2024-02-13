@@ -18,12 +18,17 @@
       </div>
       <div class="catalog-card__card-info">
         <div class="catalog-card__card-info-rating d-flex align-items-center">
-          <Icon name="star-fill" />
-          <Icon name="star-fill" />
-          <Icon name="star-fill" />
-          <Icon name="star-fill" />
-          <Icon name="star-fill" />
-          <span class="catalog-card__card-info-rating-value">{{ product.totalRating }}/5</span>
+          <Icon
+            v-for="item in 5"
+            :key="`catalog-product-stars.${item}`"
+            :name="item <= product.totalRating ? 'star-fill' : 'star-empty'"
+          />
+          <span
+            v-if="product.totalRating > 0"
+            class="catalog-card__card-info-rating-value"
+          >
+            {{ product.totalRating }}/5
+          </span>
         </div>
         <div class="catalog-card__card-info-title">{{ product.name }}</div>
         <div class="catalog-card__card-info-additional">

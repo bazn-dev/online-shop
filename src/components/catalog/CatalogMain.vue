@@ -38,7 +38,11 @@
     </div>
     <nav v-if="productsData?.totalPages > 1" aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
-        <li v-if="!productsData.first" class="page-item">
+        <li
+          v-if="!productsData.first"
+          class="page-item"
+          @click="setActivePage(activePage)"
+        >
           <div class="page-link" aria-label="Previous">
             <span aria-hidden="true">
               <Icon name="arrow-up" class="pagination__prev-icon" />
@@ -49,11 +53,16 @@
           v-for="page in productsData?.totalPages"
           :key="`page.${page}`"
           class="page-item"
-          :class="{ 'active': page === productsData.number + 1 }"
+          :class="{ 'active': page === activePage + 1 }"
+          @click="setActivePage(page)"
         >
           <div class="page-link">{{ page }}</div>
         </li>
-        <li v-if="!productsData.last" class="page-item">
+        <li
+          v-if="!productsData.last"
+          class="page-item"
+          @click="setActivePage(activePage + 2)"
+        >
           <div class="page-link" aria-label="Next">
             <span aria-hidden="true">
               <Icon name="arrow-up" class="pagination__next-icon" />
@@ -84,6 +93,10 @@ export default {
     productsData: {
       type: Object,
       default: () => null
+    },
+    activePage: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -138,6 +151,9 @@ export default {
     setActiveSortItem(item) {
       this.activeSortItem = item;
       this.$emit('sort', this.activeSortItem.name)
+    },
+    setActivePage(page) {
+      this.$emit('sort', this.activeSortItem.name, this.inStockFilter, page - 1)
     },
     async addToOrderRequest(data) {
       await addProductToOrderRequest({

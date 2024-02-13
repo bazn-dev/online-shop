@@ -15,7 +15,7 @@
           <div class="d-flex justify-content-center">
             <Icon name="check" class="success__check-icon"/>
           </div>
-          <p>Ваш заказ <b>№131546</b> от 19.01.2024 12:20 успешно создан. Номер вашей оплаты: <b>№131546/1</b></p>
+          <p>Ваш заказ <b>№{{ orderId }}</b> от {{ placedOrderDateTime }} успешно создан. Номер вашей оплаты: <b>№{{ orderId }}</b></p>
           <p>Вы можете следить за выполнением заказа в Персональном разделе сайта. Обратите внимение, что для входа в этот раздел вам необходимо ввести логин и пароль пользователя сайта.</p>
 
 <!--          <div class="success__order-details">-->
@@ -39,6 +39,7 @@
 
 <script>
 import Icon from '../components/common/Icon.vue'
+import moment from 'moment';
 
 export default {
   name: "success",
@@ -46,7 +47,14 @@ export default {
     Icon
   },
   data() {
-    return {}
+    return {
+      orderId: '',
+      placedOrderDateTime: ''
+    }
+  },
+  beforeMount() {
+    this.orderId = this.$route.query.orderId
+    this.placedOrderDateTime = moment(this.$route.query.placedOrderDateTime).format('DD.MM.YYYY HH:mm')
   }
 }
 </script>

@@ -49,7 +49,7 @@
         >
           <div class="home-best-offers__card-image-wrapper">
             <div class="home-best-offers__card-label">Хит</div>
-            <img src="@/assets/img/catalog/1.webp" class="home-best-offers__card-image img-fluid"  alt="">
+            <img :src="getImage(product.smallImageUrl)" class="home-best-offers__card-image img-fluid"  alt="">
           </div>
           <div class="home-best-offers__card-info">
             <div class="home-best-offers__card-info-rating"></div>
@@ -102,7 +102,11 @@ export default {
     },
     async getProductsByStickerRequest(sticker) {
       this.products = await getProductsBySticker(sticker);
-      console.log(this.products)
+    },
+    getImage(link) {
+      return link === 'ссылка'
+        ? require('@/assets/img/catalog/product.webp')
+        : `http://178.172.201.242${link}`
     }
   }
 }

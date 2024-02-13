@@ -160,6 +160,9 @@
 
 export default {
   name: "license",
+  beforeCreate() {
+    document.title = 'Соглашение на обработку персональных данных';
+  },
 }
 </script>
 

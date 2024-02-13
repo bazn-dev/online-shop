@@ -1,14 +1,10 @@
 import axios from "../axios";
 
-export default (token) => {
-  const url = "/auth/logout";
+export default (data) => {
+  const url = "/products/review";
 
   return axios
-    .post(url, {}, {
-      params: {
-        'Authorization': token
-      }
-    })
+    .post(url, data)
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error));
 };

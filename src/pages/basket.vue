@@ -49,6 +49,9 @@ export default {
       order: null
     }
   },
+  beforeCreate() {
+    document.title = 'Корзина';
+  },
   async beforeMount() {
     await this.getOrderById()
   },

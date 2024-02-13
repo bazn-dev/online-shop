@@ -51,6 +51,9 @@
 
 export default {
   name: "about",
+  beforeCreate() {
+    document.title = 'О нас';
+  },
 }
 </script>
 

@@ -46,7 +46,10 @@ export default {
     // InfoWarranty,
     // InfoHelp,
     // InfoLicensesDetail
-  }
+  },
+  beforeCreate() {
+    document.title = 'Вопросы и ответы';
+  },
 }
 </script>
 

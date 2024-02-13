@@ -48,6 +48,9 @@ export default {
       paymentModes: []
     }
   },
+  beforeCreate() {
+    document.title = 'Оформление заказа';
+  },
   async beforeMount() {
     await this.getOrderById()
     await this.getDeliveryModes()

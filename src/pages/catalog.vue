@@ -27,6 +27,7 @@
         <CatalogSidebar :categories="categories" />
         <CatalogMain
           :productsData="productsData"
+          :activePage="activePage"
           @sort="sort"
         />
       </div>
@@ -111,6 +112,9 @@ export default {
       await this.initData()
     }
   },
+  beforeCreate() {
+    document.title = 'Каталог';
+  },
   async beforeMount() {
     await this.initData()
   },
@@ -133,9 +137,9 @@ export default {
       this.products = data.productsDto.content
       this.productsData = data.productsDto
     },
-    async sort(sort, inStockFilter = undefined) {
+    async sort(sort, inStockFilter = undefined, page = 0) {
       this.activeSort = sort
-      this.activePage = 0
+      this.activePage = page
       this.inStockFilter = inStockFilter ? true : undefined
       await this.getProductsByCategory()
     }

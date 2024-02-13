@@ -28,7 +28,7 @@
         <div class="col-lg-6">
           <div class="row">
             <div class="col-lg-4 col-md-4">
-              <img src="@/assets/img/catalog/product.webp" class="basket-list__item-image img-fluid"  alt="">
+              <img :src="getImage(entry.productDto.smallImageUrl)" class="basket-list__item-image img-fluid"  alt="">
             </div>
             <div class="basket-list__item-title col-lg-8 col-md-8">
               {{ entry.productDto.name }}
@@ -170,6 +170,11 @@ export default {
       })
       this.$emit('updateOrder')
       this.isLoadingChangeCount = false
+    },
+    getImage(link) {
+      return link === 'ссылка'
+        ? require('@/assets/img/catalog/product.webp')
+        : `http://178.172.201.242${link}`
     }
   }
 }

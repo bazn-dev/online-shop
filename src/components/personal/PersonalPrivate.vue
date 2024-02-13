@@ -139,6 +139,12 @@ export default {
     ValidationObserver,
     ValidationProvider,
   },
+  props: {
+    user: {
+      type: Object,
+      default: () => null
+    }
+  },
   data() {
     return {
       model: {
@@ -147,6 +153,16 @@ export default {
         phone: '',
         password: '',
         passwordConfirmation: '',
+      }
+    }
+  },
+  watch: {
+    user(val) {
+      if (val) {
+        console.log(val)
+        this.model.name = val.name
+        this.model.email = val.email
+        this.model.phone = val.phone
       }
     }
   },
@@ -171,9 +187,9 @@ export default {
     async update() {
       const isValid = await this.$refs.validator.validate()
 
-      if (isValid && this.model.agree) {
+      if (isValid) {
         const data = {
-          userId: localStorage.getItem('userId'),
+          userId: Number(localStorage.getItem('userId')),
           name: this.model.name,
           phone: this.model.phone,
           email: this.model.email,
@@ -183,6 +199,8 @@ export default {
         try {
           await updateUserRequest(data)
           this.$toasted.show(`Обновление данных прошло успешно!`, { type: 'success', duration: 3000 })
+          this.model.password = ''
+          this.model.passwordConfirmation = ''
         } catch (e) {
           this.$toasted.show(`Ошибка обновления данных: ${e.message}`, { type: 'error', duration: 3000 })
           throw new Error(e);
