@@ -10,11 +10,13 @@
             id="promoInput"
             class="basket-checkout__promo-input form-control"
             aria-describedby="promo-button"
+            :disabled="order?.promoCode"
           />
           <button
             type="button"
             id="promo-button"
             class="basket-checkout__promo-btn btn"
+            :disabled="order?.promoCode"
             @click="addPromo"
           >
             <Icon name="arrow-left" class="basket-checkout__promo-icon" />
@@ -27,7 +29,17 @@
             <div class="basket-checkout__total-title">Итого:</div>
             <div class="basket-checkout__total-text">Сумма НДС: 0 руб.</div>
           </div>
-          <div class="basket-checkout__total-price">{{ order?.totalAmount || 0 }} руб.</div>
+          <div class="basket-checkout__total-price-wrapper">
+            <div class="--total">
+              {{ order?.promoCode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
+            </div>
+            <div v-if="order?.promoCode" class="--old-price">
+              {{ order?.totalAmount || 0 }} руб.
+            </div>
+            <div v-if="order?.promoCode" class="--discount">
+              {{ (order.totalAmount - order.totalAmountWithDiscount) || 0 }} руб.
+            </div>
+          </div>
         </div>
         <button
           class="basket-checkout__button btn btn-primary btn-lg"
@@ -62,14 +74,22 @@ export default {
       promoCode: ''
     }
   },
+  watch: {
+    order(val) {
+      this.promoCode = val.promoCode ?? ''
+    }
+  },
+  beforeMount() {
+    this.promoCode = this.order.promoCode ?? ''
+  },
   methods: {
     async addPromo() {
-      console.log(this.promoCode)
       if (this.promoCode) {
         await addPromoRequest({
           orderId: this.order.id,
           promoCode: this.promoCode
         })
+        this.$emit('updateOrder')
       }
     },
     goToOrder() {
@@ -148,17 +168,39 @@ export default {
       color: #a1a1a1;
     }
 
-    &__total-price {
-      font-size: 26px;
-      font-weight: 700;
-      line-height: 36px;
-      color: #2f3435;
+    &__total-price-wrapper {
       margin-left: 37px;
       margin-right: 60px;
 
       @media (max-width: 767px) {
         font-size: 20px;
         margin-right: 0;
+      }
+
+      & .--total {
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 36px;
+        color: #2f3435;
+      }
+
+      & .--old-price {
+        font-size: 16px;
+        color: #999;
+        text-decoration: line-through;
+      }
+
+      & .--discount {
+        font-size: 11px;
+        line-height: 12px;
+        color: #333;
+        padding: 2px 4px;
+        background: #fff8db;
+        border: 1px solid #ffd83a;
+        border-radius: 3px;
+        white-space: nowrap;
+        margin: 7px 0 0;
+        width: max-content;
       }
     }
 

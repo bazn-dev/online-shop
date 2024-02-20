@@ -21,7 +21,10 @@
           </div>
         </div>
         <template v-else>
-          <BasketCheckout :order="order" />
+          <BasketCheckout
+            :order="order"
+            @updateOrder="getOrderById"
+          />
           <BasketList
             :entries="order.entries"
             @updateOrder="getOrderById"
@@ -53,12 +56,15 @@ export default {
     document.title = 'Корзина';
   },
   async beforeMount() {
-    await this.getOrderById()
+    await this.initData()
   },
   methods: {
+    async initData() {
+      await this.getOrderById()
+      Events.emit('updateBasket')
+    },
     async getOrderById() {
       this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
-      Events.emit('updateBasket')
     },
   }
 }

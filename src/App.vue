@@ -52,7 +52,7 @@ export default {
     })
   },
   async beforeMount() {
-    if (!localStorage.getItem('userId') && !localStorage.getItem('orderId')) {
+    if (!localStorage.getItem('userId') || !localStorage.getItem('orderId')) {
       await this.createEmptyOrder()
     }
     await this.getOrderById()
@@ -91,6 +91,7 @@ export default {
   border-radius: 50%;
   opacity: 1;
   transition: opacity .3s;
+  z-index: 10;
 
   ::v-deep(.icon) {
     margin-bottom: 2px;

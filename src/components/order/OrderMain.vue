@@ -1,6 +1,9 @@
 <template>
   <div class="order-main">
-    <OrderProductList :entries="order?.entries" />
+    <OrderProductList
+      :order="order"
+      :entries="order?.entries"
+    />
 <!--    <OrderCustomerTypeRegion />-->
     <div class="row d-flex align-items-stretch">
       <div class="col-md-6">
@@ -84,8 +87,6 @@ export default {
     async orderPlace() {
       const activeDeliveryMode = this.$refs.deliveryInfo.$data.activeDeliveryMode
       const activePaymentMode = this.$refs.paymentMethodInfo.$data.activePaymentMode
-      console.log(activeDeliveryMode)
-      console.log(activePaymentMode)
       const isValidCustomerInfo = await this.$refs.customerInfo.$refs.validator.validate()
 
       if (isValidCustomerInfo && activeDeliveryMode && activePaymentMode) {

@@ -25,7 +25,7 @@
                 <div class="col-lg-4 col-md-4">
                   <img :src="getImage(entry.productDto.smallImageUrl)" class="basket-list__item-image img-fluid"  alt="">
                 </div>
-                <div class="basket-list__item-title col-lg-8 col-md-8">
+                <div class="order-product-list__item-title col-lg-8 col-md-8">
                   {{ entry.productDto.name }}
                 </div>
               </div>
@@ -39,22 +39,74 @@
       </table>
     </div>
     <div class="order-product-list__footer">
-      <label for="exampleInputEmail1" class="form-label">Применить купон:</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      <label for="promoInput" class="form-label">Применить купон:</label>
+      <div class="input-group">
+        <input
+            v-model="promoCode"
+            type="text"
+            id="promoInput"
+            class="order-product-list__promo-input form-control"
+            aria-describedby="promo-button"
+            :disabled="order?.promoCode"
+        />
+        <button
+            type="button"
+            id="promo-button"
+            class="order-product-list__promo-btn btn"
+            :disabled="order?.promoCode"
+            @click="addPromo"
+        >
+          <Icon name="arrow-left" class="order-product-list__promo-icon" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  addPromo as addPromoRequest
+} from '@/api/orders'
+import Icon from '../common/Icon.vue'
+
 export default {
   name: "OrderProductList",
+  components: {
+    Icon
+  },
   props: {
+    order: {
+      type: Object,
+      default: () => null
+    },
     entries: {
       type: Array,
       default: () => []
     }
   },
+  data() {
+    return {
+      promoCode: ''
+    }
+  },
+  watch: {
+    order(val) {
+      this.promoCode = val.promoCode ?? ''
+    }
+  },
+  beforeMount() {
+    this.promoCode = this.order?.promoCode ?? ''
+  },
   methods: {
+    async addPromo() {
+      if (this.promoCode) {
+        await addPromoRequest({
+          orderId: this.order.id,
+          promoCode: this.promoCode
+        })
+        // this.$emit('updateOrder')
+      }
+    },
     getImage(link) {
       return link === 'ссылка'
         ? require('@/assets/img/catalog/product.webp')
@@ -157,6 +209,36 @@ export default {
         font-weight: 400;
         line-height: 20px;
         color: #777;
+      }
+    }
+
+    &__promo-input {
+      border-right: none;
+
+      &:focus,
+      &:visited,
+      &:active {
+        border-right: none !important;
+      }
+    }
+
+    &__promo-btn {
+      border: 1px solid #dee2e6;
+      border-left: none;
+    }
+
+    &__promo-icon {
+      position: relative;
+      top: -2px;
+
+      ::v-deep svg {
+        transform: rotate(180deg);
+      }
+
+      &:hover {
+        ::v-deep svg path {
+          fill: #333;
+        }
       }
     }
   }

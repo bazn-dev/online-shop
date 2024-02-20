@@ -445,7 +445,6 @@ export default {
           ...this.model,
           individual: false
         };
-        console.log(data);
         await this.registerRequest(data);
       }
     },

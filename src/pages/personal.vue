@@ -95,7 +95,6 @@ export default {
       document.title = this.menuItems.find(item => item.name === this.activeMenuItem)?.title ?? 'Мой кабинет';
       this.user = await getUserRequest(localStorage.getItem('token'))
       this.orders = await getAllOrdersByUserRequest(localStorage.getItem('token'))
-      console.log(this.orders)
     },
     async setActiveMenuItem(name) {
       if (name === 'basket') {

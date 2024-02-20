@@ -74,7 +74,7 @@
         </div>
         <div class="mb-3">
           <validation-provider
-            rules="required"
+            rules=""
             v-slot="{ errors }"
             name="individualPassword"
             class="w-50"
@@ -95,7 +95,7 @@
         <div class="mb-3">
           <validation-provider
             v-model="model.passwordConfirmation"
-            rules="required|password:@individualPassword"
+            rules="password:@individualPassword"
             v-slot="{ errors }"
             name="individualConfirmPassword"
             class="w-50"
@@ -159,7 +159,6 @@ export default {
   watch: {
     user(val) {
       if (val) {
-        console.log(val)
         this.model.name = val.name
         this.model.email = val.email
         this.model.phone = val.phone

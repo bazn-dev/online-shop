@@ -26,6 +26,7 @@
       <div class="catalog__block d-flex justify-content-between">
         <CatalogSidebar :categories="categories" />
         <CatalogMain
+          :order="order"
           :productsData="productsData"
           :activePage="activePage"
           @sort="sort"
@@ -36,6 +37,9 @@
 </template>
 
 <script>
+import {
+  getOrderById as getOrderByIdRequest,
+} from '@/api/orders'
 import {
   getCategories as getCategoriesRequest,
   getProductsByCategory as getProductsByCategoryRequest
@@ -55,8 +59,9 @@ export default {
     return {
       maxSize: 20,
       activePage: 0,
-      activeSort: '',
+      activeSort: 'totalRating,asc',
       inStockFilter: undefined,
+      order: null,
       categories: [],
       productsData: null,
       products: []
@@ -121,7 +126,11 @@ export default {
   methods: {
     async initData() {
       await this.getCategories()
+      await this.setOrder()
       await this.getProductsByCategory()
+    },
+    async setOrder() {
+      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
     },
     async getCategories() {
       this.categories = await getCategoriesRequest()

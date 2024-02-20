@@ -78,10 +78,7 @@
 import { Events } from '../../events'
 import CatalogCard from './CatalogCard'
 import Icon from '@/components/common/Icon'
-import {
-  addProductToOrder as addProductToOrderRequest,
-  getOrderById as getOrderByIdRequest,
-} from '@/api/orders'
+import { addProductToOrder as addProductToOrderRequest } from '@/api/orders'
 
 export default {
   name: "CatalogMain",
@@ -90,6 +87,10 @@ export default {
     Icon
   },
   props: {
+    order: {
+      type: Object,
+      default: () => null
+    },
     productsData: {
       type: Object,
       default: () => null
@@ -101,35 +102,37 @@ export default {
   },
   data() {
     return {
-      activeSortItem: null,
+      activeSortItem: {
+        title: 'По популярности (убывание)',
+        name: 'totalRating,asc'
+      },
       sortItems: [
         {
           title: 'По популярности (убывание)',
-          name: 'totalRating,asc'
-        },
-        {
-          title: 'По популярности (возрастание)',
           name: 'totalRating,desc'
         },
         {
-          title: 'По алфавиту (убывание)',
-          name: 'name,asc'
+          title: 'По популярности (возрастание)',
+          name: 'totalRating,asc'
         },
         {
-          title: 'По алфавиту (возрастание)',
+          title: 'По алфавиту (убывание)',
           name: 'name,desc'
         },
         {
+          title: 'По алфавиту (возрастание)',
+          name: 'name,asc'
+        },
+        {
           title: 'По цене (убывание)',
-          name: 'price,asc'
+          name: 'price,desc'
         },
         {
           title: 'По цене (возрастание)',
-          name: 'price,desc'
+          name: 'price,asc'
         }
       ],
-      inStockFilter: false,
-      order: null
+      inStockFilter: false
     }
   },
   computed: {
@@ -137,17 +140,7 @@ export default {
       return this.productsData?.content ? this.productsData.content : []
     }
   },
-  async beforeMount() {
-    await this.initData()
-  },
   methods: {
-    async initData() {
-      await this.setOrder()
-      this.setActiveSortItem(this.sortItems[0])
-    },
-    async setOrder() {
-      this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
-    },
     setActiveSortItem(item) {
       this.activeSortItem = item;
       this.$emit('sort', this.activeSortItem.name)
@@ -167,7 +160,7 @@ export default {
     alreadyInBasket(vendorCode) {
       return this.order?.entries
         .map(product => product.productDto.vendorCode)
-        .find(item => item === vendorCode) !== undefined;
+        .find(item => Number(item) === Number(vendorCode)) !== undefined;
     },
     toggleInStockFilter() {
       this.$emit('sort', this.activeSortItem.name, this.inStockFilter)

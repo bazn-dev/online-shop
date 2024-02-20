@@ -31,7 +31,7 @@
       >
         <div class="maxwidth-theme d-flex align-items-center">
           <div class="search__result-image-wrapper">
-            <img src="@/assets/img/catalog/product.webp">
+            <img :src="getImage(result.smallImageUrl)"  alt=""/>
           </div>
           <div class="search__result-info">
             <div>{{ result.name }}</div>
@@ -61,11 +61,12 @@ export default {
   },
   methods: {
     async searchProducts() {
-      this.results = await searchProductsRequest({
+      this.results = (await searchProductsRequest({
         params: {
           query: this.search
         }
-      })
+      }))?.content || []
+      console.log(this.results)
     },
     goToProduct(vendorCode) {
       this.$emit('hideSearch')
@@ -74,7 +75,12 @@ export default {
         params: {
           vendorCode: vendorCode
         },
-      });
+      })
+    },
+    getImage(link) {
+      return link === 'ссылка'
+          ? require('@/assets/img/catalog/product.webp')
+          : `http://178.172.201.242${link}`
     }
   }
 }

@@ -60,7 +60,6 @@ export default {
   },
   methods: {
     setActivePaymentMode(code) {
-      console.log(code)
       this.activePaymentMode = code
     }
   }

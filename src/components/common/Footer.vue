@@ -24,18 +24,22 @@
           <li class="footer__mobile-item list-group-item">Корзина</li>
         </ul>
 
-        <div class="footer__nav col-md-12 col-sm-12">
-          <div class="footer__nav-content">
-            +375 33 300-33-34
-          </div>
-          <div class="footer__nav-content">
-            info@roast.by
-          </div>
-          <div class="footer__nav-content">
-            г. Минск, ул. Белинского 23 (вход в кофейню BlackMill)
-            Заказы через сайт — круглосуточно.
-            Кофейня (+375 29 344 33 34): пн-пт с 8:00 до 20:00, сб-вск с 9:00 до 21:00 (самовывоз)
-          </div>
+        <div
+          v-if="contacts"
+          v-html="contacts"
+          class="footer__nav col-md-12 col-sm-12"
+        >
+<!--          <div class="footer__nav-content">-->
+<!--            +375 33 300-33-34-->
+<!--          </div>-->
+<!--          <div class="footer__nav-content">-->
+<!--            info@roast.by-->
+<!--          </div>-->
+<!--          <div class="footer__nav-content">-->
+<!--            г. Минск, ул. Белинского 23 (вход в кофейню BlackMill)-->
+<!--            Заказы через сайт — круглосуточно.-->
+<!--            Кофейня (+375 29 344 33 34): пн-пт с 8:00 до 20:00, сб-вск с 9:00 до 21:00 (самовывоз)-->
+<!--          </div>-->
         </div>
       </div>
       <div class="footer__networks d-flex justify-content-center">
@@ -87,11 +91,11 @@ export default {
     }
   },
   async beforeMount() {
-    // await this.initData()
+    await this.initData()
   },
   methods: {
     async initData() {
-      this.contacts = await getCompanyDataByCodeRequest('contact')
+      this.contacts = (await getCompanyDataByCodeRequest(['footer']))?.[0]?.value || null
       console.log(this.contacts)
     }
   }
@@ -138,18 +142,18 @@ export default {
         color: #ffffff;
         text-decoration: none;
       }
-    }
 
-    &__nav-content {
-      text-align: center;
+      &::v-deep p {
+        text-align: center;
 
-      &:not(:last-child) {
-        margin-bottom: 15px;
-      }
+        &:not(:last-child) {
+          margin-bottom: 15px;
+        }
 
-      &:first-child {
-        @media (min-width: 767px) {
-          margin-top: 40px;
+        &:first-child {
+          @media (min-width: 767px) {
+            margin-top: 40px;
+          }
         }
       }
     }

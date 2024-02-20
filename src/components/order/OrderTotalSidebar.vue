@@ -10,18 +10,36 @@
       </button>
     </div>
     <div class="order-total-sidebar__body">
-      <div class="order-total-sidebar__total-line d-flex justify-content-between align-items-center">
+      <div class="order-total-sidebar__total-line d-flex justify-content-between">
         <div class="order-total-sidebar__total-line-text">Товаров на:</div>
-        <div class="order-total-sidebar__total-line-value">{{ order?.totalAmount || 0 }} руб.</div>
+        <div class="order-total-sidebar__total-line-value">
+          <div>
+            {{ order?.promoCode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
+          </div>
+          <div
+            v-if="order?.promoCode"
+            class="--old-price"
+          >
+            {{ order?.totalAmount || 0 }} руб.
+          </div>
+        </div>
       </div>
       <div class="order-total-sidebar__total-line d-flex justify-content-between align-items-center">
         <div class="order-total-sidebar__total-line-text">Доставка:</div>
         <div class="order-total-sidebar__total-line-value --free">бесплатно</div>
       </div>
+      <div v-if="discount" class="order-total-sidebar__total-line d-flex justify-content-between align-items-center">
+        <div class="order-total-sidebar__total-line-text">Экономия:</div>
+        <div class="order-total-sidebar__total-line-value">
+          <span class="--discount">{{ discount }}</span>
+        </div>
+      </div>
     </div>
     <div class="order-total-sidebar__footer d-flex justify-content-between align-items-center">
       <div class="order-total-sidebar__total-text">Итого:</div>
-      <div class="order-total-sidebar__total-value">{{ order?.totalAmount || 0 }} руб.</div>
+      <div class="order-total-sidebar__total-value">
+        {{ order?.promoCode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
+      </div>
     </div>
   </div>
 </template>
@@ -33,6 +51,14 @@ export default {
     order: {
       type: Object,
       default: () => null
+    }
+  },
+  computed: {
+    discount() {
+      if (this.order?.promoCode) {
+        return `${this.order.totalAmount - this.order.totalAmountWithDiscount} руб.`
+      }
+      return 0
     }
   },
   methods: {
@@ -104,6 +130,21 @@ export default {
 
       &.--free {
         color: #257210;
+      }
+
+      & .--discount {
+        border: 1px solid #ffd83a;
+        border-radius: 3px;
+        background: #fff8db;
+        padding: 0 5px;
+      }
+
+      & .--old-price {
+        font-size: 12px;
+        line-height: 20px;
+        color: #777;
+        text-decoration: line-through;
+        text-align: right;
       }
     }
 
