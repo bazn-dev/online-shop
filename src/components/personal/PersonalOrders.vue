@@ -1,18 +1,28 @@
 <template>
   <div class="personal-orders">
     <div class="personal-orders__wrapper d-flex flex-column">
-      <h3 class="personal-orders__title">Заказы в статусе «Заказ доставлен в пункт самовывоза»</h3>
+      <h3 class="personal-orders__title">Заказы в статусе «{{ orders?.[0]?.orderStatus }}»</h3>
 
-      <div class="personal-orders__order">
+      <div
+          v-for="order in orders"
+          :key="`order.${order.id}`"
+          class="personal-orders__order"
+      >
         <div class="personal-orders__order-header d-flex justify-content-between">
-          <div class="personal-orders__order-title">Заказ № 131546 от 19.01.2024 12:20:37, 1 товар на сумму 15.40 руб.</div>
-          <div class="personal-orders__order-status">
-            <span>Заказ выполнен</span>
-            <span>23.01.2024</span>
-          </div>
+          <div class="personal-orders__order-title">Заказ № {{ order.id }} от {{ formatDateTime(order.creationDate) }}, {{ order.entries.length }} товар на сумму
+            {{ order.totalAmountWithDiscount }} руб.</div>
+<!--          <div class="personal-orders__order-status">-->
+<!--            <span>Заказ выполнен</span>-->
+<!--            <span>23.01.2024</span>-->
+<!--          </div>-->
         </div>
         <div class="personal-orders__order-footer d-flex justify-content-between">
-          <button class="personal-orders__order-footer-btn --covered btn btn-lg">Подробнее о заказе</button>
+          <button
+            class="personal-orders__order-footer-btn --covered btn btn-lg"
+            @click="toOrder(order.id)"
+          >
+            Подробнее о заказе
+          </button>
           <button class="personal-orders__order-footer-btn --outlined btn btn-lg">Повторить заказ</button>
         </div>
       </div>
@@ -23,8 +33,26 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
-  name: "PersonalOrders"
+  name: "PersonalOrders",
+  props: {
+    orders: {
+      type: Array,
+      default: () => []
+    }
+  },
+  methods: {
+    formatDateTime(dateTime) {
+      return moment(dateTime).format('DD.MM.YYYY HH:mm:ss')
+    },
+    async toOrder(id) {
+      await this.$router.push({
+        path: `/personal?tab=orders-history&orderId=${id}`
+      })
+    }
+  }
 }
 </script>
 

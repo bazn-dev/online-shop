@@ -1,11 +1,16 @@
 <template>
-  <div class="personal-order">
+  <div v-if="order" class="personal-order">
     <div class="personal-order__wrapper d-flex flex-column">
-      <h3 class="personal-order__title">Мой заказ №131546, создан 19.01.2024</h3>
-      <a href="#" class="personal-order__link">← Вернуться в список заказов</a>
+      <h3 class="personal-order__title">Мой заказ №{{ order.id }}, создан {{ formatDate(order.creationDate) }}</h3>
+      <div
+        class="personal-order__link"
+        @click="toOrders"
+      >
+        ← Вернуться в список заказов
+      </div>
 
       <div class="personal-order__content">
-        <div class="personal-order__content-header">Заказ №131546 от 19.01.2024, 1 товар на сумму 15.40 руб.</div>
+        <div class="personal-order__content-header">Заказ №{{ order.id }} от {{ formatDate(order.creationDate) }}, {{ order.entries.length }} товар на сумму {{ order.totalAmountWithDiscount }} руб.</div>
         <div class="personal-order__content-body">
           <div class="personal-order__content-title">Информация о заказе</div>
           <div class="row">
@@ -20,7 +25,7 @@
             <div class="col-md-2 col-sm-6">
               <div class="personal-order__content-subtitle">Сумма:</div>
               <div class="personal-order__content-text">
-                <strong>15.40 руб.</strong>
+                <strong>{{ order.totalAmountWithDiscount }} руб.</strong>
               </div>
             </div>
             <div class="col-md-2 col-sm-6">
@@ -32,18 +37,18 @@
         <div class="personal-order__content-body">
           <div class="d-flex">
             <div class="personal-order__content-subtitle">Способ оплаты:</div>
-            <div class="personal-order__content-text --ml-5">Наличные</div>
+            <div class="personal-order__content-text --ml-5">{{ order.paymentMode }}</div>
           </div>
           <div class="d-flex">
             <div class="personal-order__content-subtitle">Сумма заказа:</div>
-            <div class="personal-order__content-text --ml-5">15.40 руб.</div>
+            <div class="personal-order__content-text --ml-5">{{ order.totalAmountWithDiscount }} руб.</div>
           </div>
         </div>
         <div class="personal-order__content-header">Параметры доставки</div>
         <div class="personal-order__content-body">
           <div class="d-flex">
             <div class="personal-order__content-subtitle">Способ доставки:</div>
-            <div class="personal-order__content-text --ml-5">Курьером</div>
+            <div class="personal-order__content-text --ml-5">{{ order.deliveryMode }}</div>
           </div>
           <div class="d-flex">
             <div class="personal-order__content-subtitle">Адрес доставки/самовывоза:</div>
@@ -63,20 +68,23 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr
+                  v-for="(entry, index) in order.entries"
+                  :key="`entry.${index}`"
+                >
                   <td>
                     <div class="row">
                       <div class="col-lg-4 col-md-4">
-                        <img src="@/assets/img/catalog/1.webp" class="personal-order__item-image img-fluid"  alt="">
+                        <img :src="getImage(entry.productDto.smallImageUrl)" class="personal-order__item-image img-fluid"  alt="">
                       </div>
                       <div class="basket-list__item-title col-lg-8 col-md-8 d-flex align-items-center">
-                        Фирменная смесь Roast.by (200, Под чашку)
+                        {{ entry.productDto.name }}
                       </div>
                     </div>
                   </td>
-                  <td class="--price"><b>15.40 руб.</b></td>
-                  <td>1 шт</td>
-                  <td class="--price"><b>15.40 руб.</b></td>
+                  <td class="--price"><b>{{ entry.productDto.price }} руб.</b></td>
+                  <td>{{ entry.qty }} шт</td>
+                  <td class="--price"><b>{{ entry.totalPrice }} руб.</b></td>
                 </tr>
               </tbody>
             </table>
@@ -89,7 +97,7 @@
           </div>
           <div class="personal-order__total-row d-flex">
             <div><b>Итого:</b></div>
-            <div><b>15.40 руб.</b></div>
+            <div><b>{{ order.totalAmountWithDiscount }} руб.</b></div>
           </div>
         </div>
       </div>
@@ -98,8 +106,31 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
-  name: "PersonalOrder"
+  name: "PersonalOrder",
+  props: {
+    order: {
+      type: Object,
+      default: () => null
+    }
+  },
+  methods: {
+    formatDate(date) {
+      return moment(date).format('DD.MM.YYYY')
+    },
+    getImage(link) {
+      return link === 'ссылка'
+          ? require('@/assets/img/catalog/product.webp')
+          : `http://178.172.201.242${link}`
+    },
+    async toOrders() {
+      await this.$router.push({
+        path: `/personal?tab=orders-history`
+      })
+    }
+  }
 }
 </script>
 
@@ -113,6 +144,11 @@ export default {
       color: #978d7f;
       margin-bottom: 18px;
       text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        color: #333;
+      }
     }
 
     &__title {

@@ -21,6 +21,9 @@
               class="form-control"
               id="name"
             />
+            <div v-if="errorValidation?.name" class="invalid-feedback">
+              {{ errorValidation.name }}
+            </div>
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
             </div>
@@ -44,6 +47,9 @@
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
+            </div>
+            <div v-if="errorValidation?.email" class="invalid-feedback">
+              {{ errorValidation.email }}
             </div>
           </validation-provider>
           <div class="personal-private__input-note w-50">
@@ -69,6 +75,9 @@
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
             </div>
+            <div v-if="errorValidation?.phone" class="invalid-feedback">
+              {{ errorValidation.phone }}
+            </div>
           </validation-provider>
           <div class="personal-private__input-note w-50">Необходим для уточнения деталей заказа</div>
         </div>
@@ -90,6 +99,9 @@
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
             </div>
+            <div v-if="errorValidation?.password" class="invalid-feedback">
+              {{ errorValidation.password }}
+            </div>
           </validation-provider>
         </div>
         <div class="mb-3">
@@ -109,7 +121,10 @@
               id="individualConfirmPassword"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
-              {{ errors[0] }}
+              {{ errors }}
+            </div>
+            <div v-if="errorValidation?.passwordConfirmation" class="invalid-feedback">
+              {{ errorValidation.passwordConfirmation }}
             </div>
           </validation-provider>
         </div>
@@ -153,7 +168,8 @@ export default {
         phone: '',
         password: '',
         passwordConfirmation: '',
-      }
+      },
+      errorValidation: null
     }
   },
   watch: {
@@ -201,8 +217,8 @@ export default {
           this.model.password = ''
           this.model.passwordConfirmation = ''
         } catch (e) {
+          this.errorValidation = e.response.data
           this.$toasted.show(`Ошибка обновления данных: ${e.message}`, { type: 'error', duration: 3000 })
-          throw new Error(e);
         }
       }
     }

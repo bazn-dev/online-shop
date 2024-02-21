@@ -24,8 +24,14 @@
           v-else-if="activeMenuItem === 'personal-data'"
           :user="user"
         />
-<!--        <PersonalOrders v-else-if="activeMenuItem === 'orders-history'" />-->
-        <PersonalOrder v-else-if="activeMenuItem === 'orders-history'" />
+        <PersonalOrders
+          v-else-if="activeMenuItem === 'orders-history' && !activeOrder"
+          :orders="orders"
+        />
+        <PersonalOrder
+          v-else-if="activeMenuItem === 'orders-history' && activeOrder"
+          :order="activeOrder"
+        />
       </div>
     </div>
 
@@ -40,7 +46,7 @@ import {
 } from '@/api/users'
 import PersonalSidebar from '../components/personal/PersonalSidebar'
 import PersonalMain from '../components/personal/PersonalMain'
-// import PersonalOrders from '../components/personal/PersonalOrders'
+import PersonalOrders from '../components/personal/PersonalOrders'
 import PersonalOrder from '../components/personal/PersonalOrder'
 import PersonalPrivate from '../components/personal/PersonalPrivate'
 
@@ -49,7 +55,7 @@ export default {
   components: {
     PersonalSidebar,
     PersonalMain,
-    // PersonalOrders,
+    PersonalOrders,
     PersonalOrder,
     PersonalPrivate
   },
@@ -79,7 +85,8 @@ export default {
         }
       ],
       user: null,
-      orders: []
+      orders: [],
+      activeOrder: null
     }
   },
   async beforeMount() {
@@ -95,6 +102,9 @@ export default {
       document.title = this.menuItems.find(item => item.name === this.activeMenuItem)?.title ?? 'Мой кабинет';
       this.user = await getUserRequest(localStorage.getItem('token'))
       this.orders = await getAllOrdersByUserRequest(localStorage.getItem('token'))
+      if (this.$route.query.orderId) {
+        this.activeOrder = this.orders.find(order => Number(order.id) === Number(this.$route.query.orderId))
+      }
     },
     async setActiveMenuItem(name) {
       if (name === 'basket') {

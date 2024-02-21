@@ -96,7 +96,6 @@ export default {
   methods: {
     async initData() {
       this.contacts = (await getCompanyDataByCodeRequest(['footer']))?.[0]?.value || null
-      console.log(this.contacts)
     }
   }
 }

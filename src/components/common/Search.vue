@@ -66,7 +66,6 @@ export default {
           query: this.search
         }
       }))?.content || []
-      console.log(this.results)
     },
     goToProduct(vendorCode) {
       this.$emit('hideSearch')
