@@ -39,6 +39,9 @@
           <div class="row">
             <div class="col-lg-3 col-md-3">
               <div class="basket-list__item-price">
+                {{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.
+              </div>
+              <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="basket-list__item-price --old-price">
                 {{ entry.productDto.price }} руб.
               </div>
               <div class="basket-list__item-price-notion">
@@ -70,7 +73,11 @@
               </div>
             </div>
             <div class="col-lg-3 col-md-3">
-              <div class="basket-list__item-price">{{ entry.totalPrice }} руб.</div>
+              <div class="basket-list__item-price">{{ entry.totalPriceWithDiscount }} руб.</div>
+              <template v-if="entry.totalPriceWithDiscount !== entry.totalPrice">
+                <div class="basket-list__item-price --old-price">{{ entry.totalPrice }} руб.</div>
+                <div class="basket-list__item-price --discount">Экономия {{ entry.totalPrice - entry.totalPriceWithDiscount }} руб.</div>
+              </template>
             </div>
             <div class="col-lg-1 col-md-1">
               <div
@@ -250,6 +257,27 @@ export default {
     font-weight: 700;
     color: #333;
     letter-spacing: -.33px;
+
+    &.--old-price {
+      font-size: 13px;
+      font-weight: 400;
+      color: #999;
+      text-decoration: line-through;
+    }
+
+    &.--discount {
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 12px;
+      color: #333;
+      padding: 2px 4px;
+      background: #fff8db;
+      border: 1px solid #ffd83a;
+      border-radius: 3px;
+      white-space: nowrap;
+      margin: 7px 0 0;
+      width: max-content;
+    }
   }
 
   &__item-price-notion {

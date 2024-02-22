@@ -23,17 +23,23 @@
             <td>
               <div class="row">
                 <div class="col-lg-4 col-md-4">
-                  <img :src="getImage(entry.productDto.smallImageUrl)" class="basket-list__item-image img-fluid"  alt="">
+                  <img :src="getImage(entry.productDto.smallImageUrl)" class="order-product-list__item-image img-fluid"  alt="">
                 </div>
-                <div class="order-product-list__item-title col-lg-8 col-md-8">
+                <div class="order-product-list__item-title d-flex align-items-center col-lg-8 col-md-8">
                   {{ entry.productDto.name }}
                 </div>
               </div>
             </td>
             <td>0%</td>
-            <td class="--price">{{ entry.productDto.price }} руб.</td>
+            <td class="--price">
+              <div>{{ entry.productDto.price }} руб.</div>
+              <div class="--old-price">{{ entry.productDto.price }} руб.</div>
+            </td>
             <td>{{ entry.qty }} шт</td>
-            <td class="--price">{{ entry.totalPrice }} руб.</td>
+            <td class="--price">
+              <div>{{ entry.totalPrice }} руб.</div>
+              <div class="--old-price">{{ entry.totalPrice }} руб.</div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -104,7 +110,7 @@ export default {
           orderId: this.order.id,
           promoCode: this.promoCode
         })
-        // this.$emit('updateOrder')
+        this.$emit('updateOrder')
       }
     },
     getImage(link) {
@@ -177,6 +183,7 @@ export default {
         font-weight: 400;
         line-height: 20px;
         color: #333;
+        vertical-align: middle;
 
         &:first-child {
           padding-left: 30px;
@@ -197,7 +204,19 @@ export default {
           line-height: 16px;
           color: #333;
         }
+
+        & .--old-price {
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 20px;
+          color: #777;
+          text-decoration: line-through;
+        }
       }
+    }
+
+    &__item-image {
+      width: 100px;
     }
 
     &__footer {

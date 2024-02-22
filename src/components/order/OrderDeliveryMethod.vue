@@ -32,6 +32,7 @@
       >
         {{ deliveryMode.option }}
       </label>
+      <div class="form-check-notion --price">{{ deliveryMode.deliveryCost || 0 }} руб.</div>
       <div class="form-check-notion">{{ deliveryMode.description }}</div>
     </div>
   </div>
@@ -129,6 +130,16 @@ export default {
       font-size: 13px;
       line-height: 20px;
       color: #777;
+    }
+
+    & .--price {
+      padding: 5px 7px 5px 9px;
+      background: #f0f0f0;
+      color: #333;
+      border-radius: 2px;
+      display: inline-block;
+      line-height: 10px;
+      margin: 8px 0;
     }
   }
 </style>

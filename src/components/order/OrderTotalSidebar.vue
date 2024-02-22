@@ -26,7 +26,12 @@
       </div>
       <div class="order-total-sidebar__total-line d-flex justify-content-between align-items-center">
         <div class="order-total-sidebar__total-line-text">Доставка:</div>
-        <div class="order-total-sidebar__total-line-value --free">бесплатно</div>
+        <div
+          class="order-total-sidebar__total-line-value"
+          :class="{ '--free': !deliveryPrice }"
+        >
+          {{ deliveryPrice > 0 ? `${deliveryPrice} руб.` : 'бесплатно' }}
+        </div>
       </div>
       <div v-if="discount" class="order-total-sidebar__total-line d-flex justify-content-between align-items-center">
         <div class="order-total-sidebar__total-line-text">Экономия:</div>
@@ -51,6 +56,10 @@ export default {
     order: {
       type: Object,
       default: () => null
+    },
+    deliveryPrice: {
+      type: Number,
+      default: 0
     }
   },
   computed: {

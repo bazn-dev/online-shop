@@ -51,6 +51,7 @@ export default {
       await this.$router.push({
         path: `/personal?tab=orders-history&orderId=${id}`
       })
+      await this.$router.go(0)
     }
   }
 }

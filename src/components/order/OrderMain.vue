@@ -3,6 +3,7 @@
     <OrderProductList
       :order="order"
       :entries="order?.entries"
+      @updateOrder="updateOrder"
     />
 <!--    <OrderCustomerTypeRegion />-->
     <div class="row d-flex align-items-stretch">
@@ -112,6 +113,9 @@ export default {
           path: `/order/success?orderId=${newOrderId}&placedOrderDateTime=${placedOrderDateTime}`
         })
       }
+    },
+    updateOrder() {
+      this.$emit('updateOrder')
     }
   }
 }
