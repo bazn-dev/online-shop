@@ -272,7 +272,7 @@ export default {
 
       &-more-btn {
         padding: 20px 30px 19px;
-        background: #978d7f;
+        background: #d6810b;
         font-size: .7333em;
         font-weight: 400;
         letter-spacing: .8px;

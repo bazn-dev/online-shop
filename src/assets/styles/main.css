@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Raleway:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 html, body {
     margin: 0;
     padding: 0 !important;
     overflow-x: hidden;
-    /*font: 15px/25px Arial, Helvetica, sans-serif;*/
-    font: 15px/25px Mulish, Arial, sans-serif;
+    font: 15px/25px Raleway, Arial, sans-serif;
     color: #777;
 }
 
@@ -100,8 +99,8 @@ input[type=number]:focus,
 }
 
 .form-check-input:checked {
-    background-color: #978d7f !important;
-    border-color: #978d7f !important;
+    background-color: #d6810b !important;
+    border-color: #d6810b !important;
 }
 
 .form-switch .form-check-input {

@@ -106,7 +106,7 @@ export default {
 
   &__check-icon {
     border-radius: 50%;
-    border: 3px solid #978d7f;
+    border: 3px solid #d6810b;
     padding: 15px;
     margin-bottom: 40px;
 

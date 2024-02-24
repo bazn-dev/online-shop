@@ -12,8 +12,8 @@
           <Icon name="menu" class="header__menu" />
         </a>
         <router-link to="/">
-          <div class="header__wrapper-logo">
-            <img src="@/assets/img/logo.png" alt="Roast.by" title="Roast.by">
+          <div class="header__wrapper-logo d-flex align-items-center">
+            <img src="@/assets/img/logo.png" alt="TeaHub" title="TeaHub">
           </div>
         </router-link>
       </div>
@@ -192,7 +192,7 @@ export default {
       height: 18px;
       margin-top: 2px;
       margin-left: 3px;
-      background: #978d7f;
+      background: #d6810b;
       font-size: .8em;
       line-height: 18px;
       color: #ffffff;

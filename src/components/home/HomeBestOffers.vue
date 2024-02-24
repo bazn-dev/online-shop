@@ -163,7 +163,7 @@ export default {
 
         &.active {
           color: #222222 !important;
-          border-bottom: 2px solid #978d7f;
+          border-bottom: 2px solid #d6810b;
         }
       }
     }
@@ -284,7 +284,7 @@ export default {
         top: 100%;
         width: 100%;
         padding: 20px 30px 19px;
-        background: #978d7f;
+        background: #d6810b;
         font-size: .7333em;
         font-weight: 400;
         letter-spacing: .8px;

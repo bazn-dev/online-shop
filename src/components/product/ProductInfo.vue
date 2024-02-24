@@ -158,8 +158,8 @@ export default {
       letter-spacing: .8px;
       border-radius: 3px;
       padding: 16px 26px;
-      background-color: #978d7f;
-      border-color: #978d7f;
+      background-color: #d6810b;
+      border-color: #d6810b;
       color: #ffffff;
       text-transform: uppercase;
 

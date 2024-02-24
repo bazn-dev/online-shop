@@ -187,21 +187,21 @@ export default {
     }
 
     &__auth-btn {
-      background-color: #978d7f;
-      border: 1px solid #978d7f;
+      background-color: #d6810b;
+      border: 1px solid #d6810b;
       color: #ffffff;
     }
 
     &__register-btn {
       border: 1px solid rgba(151, 141, 127, 0.35);
-      color: #978d7f;
+      color: #d6810b;
       background-color: transparent;
       padding: 16px 26px;
       transition: background-color .3s ease;
 
       &:hover {
-        background-color: #978d7f;
-        border-color: #978d7f;
+        background-color: #d6810b;
+        border-color: #d6810b;
         color: #ffffff;
       }
     }

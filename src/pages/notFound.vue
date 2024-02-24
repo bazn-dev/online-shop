@@ -53,8 +53,8 @@ export default {
     padding: 12px 21px 11px;
     margin-top: 33px;
     margin-bottom: 15px;
-    background-color: #978d7f;
-    border-color: #978d7f;
+    background-color: #d6810b;
+    border-color: #d6810b;
     color: #ffffff;
     text-transform: uppercase;
   }

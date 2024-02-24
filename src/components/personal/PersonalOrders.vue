@@ -108,8 +108,8 @@ export default {
       cursor: pointer;
 
       &.--covered {
-        background-color: #978d7f;
-        border: 1px solid #978d7f;
+        background-color: #d6810b;
+        border: 1px solid #d6810b;
         color: #ffffff;
 
         &:hover {
@@ -118,12 +118,12 @@ export default {
       }
 
       &.--outlined {
-        border: 1px solid #978d7f;
-        color: #978d7f;
+        border: 1px solid #d6810b;
+        color: #d6810b;
 
         &:hover {
-          background-color: #978d7f;
-          border-color: #978d7f;
+          background-color: #d6810b;
+          border-color: #d6810b;
           color: #ffffff;
         }
       }
@@ -132,7 +132,7 @@ export default {
     &__link {
       font-size: 13px;
       font-weight: 700;
-      color: #978d7f;
+      color: #d6810b;
       margin-bottom: 18px;
       text-decoration: none;
     }

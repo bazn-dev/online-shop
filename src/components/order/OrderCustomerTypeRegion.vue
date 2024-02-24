@@ -63,8 +63,8 @@ export default {
       }
 
       .form-check-input:checked {
-        background-color: #978d7f;
-        border-color: #978d7f;
+        background-color: #d6810b;
+        border-color: #d6810b;
       }
     }
 

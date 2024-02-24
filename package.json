@@ -9,7 +9,9 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.5.0",
+    "bootstrap": "5.0",
     "connect-history-api-fallback": "^2.0.0",
     "core-js": "^3.6.5",
     "events": "^3.3.0",

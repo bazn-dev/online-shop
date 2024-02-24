@@ -258,8 +258,8 @@ export default {
       text-decoration: none;
       letter-spacing: .8px;
       border-radius: 3px;
-      background-color: #978d7f;
-      border: 1px solid #978d7f;
+      background-color: #d6810b;
+      border: 1px solid #d6810b;
       color: #ffffff;
       padding: 16px 26px;
       margin-top: 30px;

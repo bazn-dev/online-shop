@@ -87,7 +87,7 @@ export default {
   height: 44px;
   justify-content: center;
   align-items: center;
-  background-color: #978d7f;
+  background-color: #d6810b;
   border-radius: 50%;
   opacity: 1;
   transition: opacity .3s;

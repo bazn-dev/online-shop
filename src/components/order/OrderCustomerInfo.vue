@@ -254,7 +254,7 @@ export default {
         height: 30px;
         background-image: url(../../assets/img/checkout_icons_white.png);
         background-position: 0 -30px;
-        background-color: #978d7f;
+        background-color: #d6810b;
       }
     }
 

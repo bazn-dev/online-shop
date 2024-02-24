@@ -142,7 +142,7 @@ export default {
     &__link {
       font-size: 15px;
       font-weight: 700;
-      color: #978d7f;
+      color: #d6810b;
       margin-bottom: 18px;
       text-decoration: none;
       cursor: pointer;
@@ -210,8 +210,8 @@ export default {
       border-radius: 3px;
       padding: 7px 12px 8px;
       cursor: pointer;
-      background-color: #978d7f;
-      border: 1px solid #978d7f;
+      background-color: #d6810b;
+      border: 1px solid #d6810b;
       color: #ffffff;
 
       &:hover {

@@ -525,7 +525,7 @@ export default {
 
       &.active {
         background: #ffffff;
-        border-top: 2px solid #978d7f;
+        border-top: 2px solid #d6810b;
       }
     }
   }
@@ -567,8 +567,8 @@ export default {
     border-radius: 3px;
     padding: 16px 26px;
     margin: 30px 0 0;
-    background-color: #978d7f;
-    border: 1px solid #978d7f;
+    background-color: #d6810b;
+    border: 1px solid #d6810b;
     color: #ffffff;
   }
 }

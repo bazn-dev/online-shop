@@ -102,7 +102,7 @@ export default {
         height: 30px;
         background-image: url(../../assets/img/checkout_icons_white.png);
         background-position: -60px 0;
-        background-color: #978d7f;
+        background-color: #d6810b;
       }
     }
 
@@ -135,8 +135,8 @@ export default {
     }
 
     .form-check-input:checked {
-      background-color: #978d7f;
-      border-color: #978d7f;
+      background-color: #d6810b;
+      border-color: #d6810b;
     }
 
     .form-check-notion {

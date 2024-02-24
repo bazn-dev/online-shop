@@ -8,6 +8,7 @@
           placeholder="Поиск"
           class="search__input"
           @keyup.enter="searchProducts"
+          @input="inputHandler"
         />
         <div class="d-flex align-items-center">
           <button
@@ -60,6 +61,13 @@ export default {
     }
   },
   methods: {
+    async inputHandler() {
+      if (this.search.length > 1) {
+        await this.searchProducts()
+      } else {
+        this.results = []
+      }
+    },
     async searchProducts() {
       this.results = (await searchProductsRequest({
         params: {
@@ -78,8 +86,8 @@ export default {
     },
     getImage(link) {
       return link === 'ссылка'
-          ? require('@/assets/img/catalog/product.webp')
-          : `http://178.172.201.242${link}`
+        ? require('@/assets/img/catalog/product.webp')
+        : `http://178.172.201.242${link}`
     }
   }
 }
@@ -126,9 +134,9 @@ export default {
       letter-spacing: .8px;
       text-transform: uppercase;
       text-decoration: none;
-      border: 1px solid #978d7f;
+      border: 1px solid #d6810b;
       border-radius: 3px;
-      background-color: #978d7f;
+      background-color: #d6810b;
       padding: 16px 26px;
       margin: 0 40px 0 0;
     }

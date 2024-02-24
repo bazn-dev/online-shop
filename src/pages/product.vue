@@ -215,7 +215,7 @@ export default {
 
             &.active {
               background: #ffffff;
-              border-top: 2px solid #978d7f;
+              border-top: 2px solid #d6810b;
             }
           }
         }

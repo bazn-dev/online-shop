@@ -247,8 +247,8 @@ export default {
       line-height: 12px;
       border-radius: 3px;
       padding: 10px 14px 8px;
-      background-color: #978d7f;
-      border-color: #978d7f;
+      background-color: #d6810b;
+      border-color: #d6810b;
       color: #ffffff;
       text-transform: uppercase;
     }
@@ -300,8 +300,8 @@ export default {
       border-radius: 3px;
       padding: 16px 26px;
       margin: 10px 0 0;
-      background-color: #978d7f;
-      border: 1px solid #978d7f;
+      background-color: #d6810b;
+      border: 1px solid #d6810b;
       color: #ffffff;
     }
 
@@ -366,7 +366,7 @@ export default {
       font-size: .8667em;
       line-height: 25px;
       letter-spacing: 0;
-      color: #978d7f;
+      color: #d6810b;
       border-bottom: 1px dotted;
       cursor: pointer;
 

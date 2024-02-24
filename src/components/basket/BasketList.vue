@@ -223,7 +223,7 @@ export default {
       left: 0;
       right: 0;
       height: 2px;
-      background: #978d7f;
+      background: #d6810b;
     }
   }
 
@@ -327,7 +327,7 @@ export default {
 
     &:hover {
       ::v-deep .icon svg path {
-        fill: #978d7f;
+        fill: #d6810b;
       }
     }
   }

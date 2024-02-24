@@ -4,6 +4,7 @@ import index from '../pages/index'
 import registration from '../pages/registration'
 import personal from '../pages/personal'
 import catalog from '../pages/catalog'
+import search from '../pages/search'
 import product from '../pages/product'
 import notFound from '../pages/notFound'
 import about from '../pages/about'
@@ -48,6 +49,11 @@ const routes = [
     name: 'catalog',
     path: '/catalog/:category/:subCategory/:subSubCategory',
     component: catalog
+  },
+  {
+    name: 'search',
+    path: '/search',
+    component: search
   },
   {
     name: 'product',
