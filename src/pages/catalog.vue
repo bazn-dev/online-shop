@@ -30,6 +30,7 @@
           :productsData="productsData"
           :activePage="activePage"
           @sort="sort"
+          @updateOrder="setOrder"
         />
       </div>
     </div>

@@ -32,13 +32,13 @@
             </td>
             <td>0%</td>
             <td class="--price">
-              <div>{{ entry.productDto.price }} руб.</div>
-              <div class="--old-price">{{ entry.productDto.price }} руб.</div>
+              <div>{{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.</div>
+              <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="--old-price">{{ entry.productDto.price }} руб.</div>
             </td>
             <td>{{ entry.qty }} шт</td>
             <td class="--price">
-              <div>{{ entry.totalPrice }} руб.</div>
-              <div class="--old-price">{{ entry.totalPrice }} руб.</div>
+              <div>{{ entry.totalPrice !== entry.totalPriceWithDiscount ? entry.totalPriceWithDiscount : entry.totalPrice }} руб.</div>
+              <div v-if="entry.totalPrice !== entry.totalPriceWithDiscount" class="--old-price">{{ entry.totalPrice }} руб.</div>
             </td>
           </tr>
         </tbody>

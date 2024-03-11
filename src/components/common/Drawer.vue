@@ -57,7 +57,7 @@ export default {
   name: "Drawer",
   computed: {
     isLoggedIn() {
-      return localStorage.getItem('token');
+      return localStorage.getItem('token')
     }
   }
 }

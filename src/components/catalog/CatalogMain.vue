@@ -154,7 +154,7 @@ export default {
         productVendorCode: data.productVendorCode,
         qty: data.count
       })
-      await this.setOrder()
+      this.$emit('updateOrder')
       Events.emit('updateBasket')
     },
     alreadyInBasket(vendorCode) {

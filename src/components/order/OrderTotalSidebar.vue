@@ -43,7 +43,7 @@
     <div class="order-total-sidebar__footer d-flex justify-content-between align-items-center">
       <div class="order-total-sidebar__total-text">Итого:</div>
       <div class="order-total-sidebar__total-value">
-        {{ order?.promoCode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
+        {{ (order?.promoCode ? order?.totalAmountWithDiscount : order?.totalAmount || 0) + deliveryPrice }} руб.
       </div>
     </div>
   </div>

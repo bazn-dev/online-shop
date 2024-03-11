@@ -4,7 +4,7 @@ export default (data) => {
   const url = "/products/search";
 
   return axios
-    .get(url, data)
+    .get(url, { params: data })
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error));
 };

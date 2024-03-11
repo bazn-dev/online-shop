@@ -119,7 +119,7 @@ export default {
           localStorage.setItem('token', token)
           this.closeModal();
         } catch (e) {
-          this.$toasted.show(`Ошибка авторизации: ${e.message}`, { type: 'error', duration: 3000 })
+          this.$toasted.show(`Ошибка авторизации: ${e.response.data.message}`, { type: 'error', duration: 3000 })
         }
       }
     },

@@ -54,8 +54,9 @@ export default {
     }
   },
   computed: {
+    // todo change this
     deliveryPrice() {
-      return 5
+      return 0
     }
   },
   beforeCreate() {

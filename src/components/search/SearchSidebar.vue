@@ -3,25 +3,14 @@
     <div class="search-sidebar__title">Найдено в разделах</div>
 
     <ul class="list-group">
-      <li class="search-sidebar__item list-group-item d-flex justify-content-between">
-        <div class="search-sidebar__item-title">Ароматизированный чай</div>
-        <div class="search-sidebar__item-count">2</div>
-      </li>
-      <li class="search-sidebar__item list-group-item d-flex justify-content-between">
-        <div class="search-sidebar__item-title">Ароматизированный чай</div>
-        <div class="search-sidebar__item-count">2</div>
-      </li>
-      <li class="search-sidebar__item list-group-item d-flex justify-content-between">
-        <div class="search-sidebar__item-title">Ароматизированный чай</div>
-        <div class="search-sidebar__item-count">2</div>
-      </li>
-      <li class="search-sidebar__item list-group-item d-flex justify-content-between">
-        <div class="search-sidebar__item-title">Ароматизированный чай</div>
-        <div class="search-sidebar__item-count">2</div>
-      </li>
-      <li class="search-sidebar__item list-group-item d-flex justify-content-between">
-        <div class="search-sidebar__item-title">Ароматизированный чай</div>
-        <div class="search-sidebar__item-count">2</div>
+      <li
+        v-for="(category, index) in categories"
+        :key="`category.${index}`"
+        class="search-sidebar__item list-group-item d-flex justify-content-between"
+
+      >
+        <div class="search-sidebar__item-title">{{ category.displayName }}</div>
+        <div class="search-sidebar__item-count">{{ category.productsCount }}</div>
       </li>
     </ul>
   </div>
@@ -55,11 +44,6 @@ export default {
 
     &__item {
       padding: 15px;
-      cursor: pointer;
-
-      &:hover {
-        background: #fafafa;
-      }
     }
 
     &__item-title {
@@ -70,6 +54,7 @@ export default {
     &__item-count {
       font-size: 13px;
       color: #999;
+      margin-left: 15px;
     }
   }
 </style>

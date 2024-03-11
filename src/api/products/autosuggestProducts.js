@@ -1,12 +1,10 @@
 import axios from "../axios";
 
-export default (sticker, userId) => {
-  const url = `/products/sticker/${sticker}`;
+export default (data) => {
+  const url = "/products/autosuggest";
 
   return axios
-    .get(url, {
-      params: { userId }
-    })
+    .get(url, data)
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error));
 };

@@ -13,7 +13,7 @@
         <div class="d-flex align-items-center">
           <button
             class="search__btn btn btn-primary btn-lg"
-            @click="searchProducts"
+            @click="goToSearchPage"
           >
             Найти
           </button>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { searchProducts as searchProductsRequest } from '@/api/products'
+import { autosuggestProducts as autosuggestProductsRequest } from '@/api/products'
 import Icon from './Icon'
 
 export default {
@@ -69,11 +69,12 @@ export default {
       }
     },
     async searchProducts() {
-      this.results = (await searchProductsRequest({
+      this.results = (await autosuggestProductsRequest({
         params: {
-          query: this.search
+          query: this.search,
+          userId: localStorage.getItem('userId')
         }
-      }))?.content || []
+      })) || []
     },
     goToProduct(vendorCode) {
       this.$emit('hideSearch')
@@ -83,6 +84,15 @@ export default {
           vendorCode: vendorCode
         },
       })
+    },
+    goToSearchPage() {
+      this.$emit('hideSearch')
+      this.$router.push({
+        name: 'search',
+        query: {
+          query: this.search
+        },
+      }).catch(()=>{})
     },
     getImage(link) {
       return link === 'ссылка'

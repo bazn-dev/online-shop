@@ -94,14 +94,14 @@ export default {
     async initData() {
       this.stickers = await getStickers();
       this.activeSticker = this.stickers[0];
-      await this.getProductsByStickerRequest(this.activeSticker.name)
+      await this.getProductsByStickerRequest(this.activeSticker.name, localStorage.getItem('userId'))
     },
     async setActiveSticker(index) {
       this.activeSticker = this.stickers[index];
-      await this.getProductsByStickerRequest(this.activeSticker.name)
+      await this.getProductsByStickerRequest(this.activeSticker.name, localStorage.getItem('userId'))
     },
-    async getProductsByStickerRequest(sticker) {
-      this.products = await getProductsBySticker(sticker);
+    async getProductsByStickerRequest(sticker, userId) {
+      this.products = await getProductsBySticker(sticker, userId);
     },
     getImage(link) {
       return link === 'ссылка'

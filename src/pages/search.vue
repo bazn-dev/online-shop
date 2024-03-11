@@ -20,6 +20,7 @@
           :productsData="productsData"
           :activePage="activePage"
           @sort="sort"
+          @updateOrder="setOrder"
         />
       </div>
     </div>
@@ -31,8 +32,8 @@ import {
   getOrderById as getOrderByIdRequest,
 } from '@/api/orders'
 import {
-  getProductsByCategory as getProductsByCategoryRequest
-} from '@/api/catalog'
+  searchProducts as searchProductsRequest
+} from '@/api/products'
 import SearchSidebar from '../components/search/SearchSidebar'
 import CatalogMain from '../components/catalog/CatalogMain'
 
@@ -50,8 +51,7 @@ export default {
       inStockFilter: undefined,
       order: null,
       categories: [],
-      productsData: null,
-      products: []
+      productsData: null
     }
   },
   watch:{
@@ -74,18 +74,21 @@ export default {
       this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
     },
     async searchProducts() {
-      //
-      console.log(this.$route.query.q)
-      // TODO change this
-      const data = await getProductsByCategoryRequest(this.$route.fullPath, {
+      if (!this.$route.query?.query) {
+        await this.$router.push({
+          path: '/'
+        })
+      }
+      const data = await searchProductsRequest({
+        query: this.$route.query.query,
         userId: localStorage.getItem("userId"),
         page: this.activePage,
         size: this.maxSize,
         sort: this.activeSort,
         inStock: this.inStockFilter
       })
-      this.products = data.productsDto.content
-      this.productsData = data.productsDto
+      this.categories = data.categories
+      this.productsData = data.products
     },
     async sort(sort, inStockFilter = undefined, page = 0) {
       this.activeSort = sort
