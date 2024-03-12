@@ -5,11 +5,12 @@
     </div>
 
     <div
-      class="modal fade"
+      class="modal"
       id="staticBackdrop"
       tabindex="-1"
       aria-labelledby="staticBackdropLabel"
       aria-hidden="true"
+      data-bs-backdrop="static"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -83,6 +84,7 @@ import Icon from '@/components/common/Icon';
 import { extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 import { login } from '@/api/auth';
+import {Events} from "../../events";
 
 export default {
   name: "ModalAuth",
@@ -117,6 +119,7 @@ export default {
             password: this.password
           })
           localStorage.setItem('token', token)
+          Events.emit('updateProfile')
           this.closeModal();
         } catch (e) {
           this.$toasted.show(`Ошибка авторизации: ${e.response.data.message}`, { type: 'error', duration: 3000 })
@@ -127,15 +130,12 @@ export default {
       this.closeModal();
       this.$router.push({
         path: '/auth/registration'
-      });
+      }).catch(()=>{});
     },
     closeModal() {
-      let modal = document.getElementById('staticBackdrop');
-      modal.style.display = 'none';
-      modal.style.opacity = 0;
-      let modalBackdrop = document.querySelector('.modal-backdrop.fade.show');
-      modalBackdrop.classList.remove("show");
-      modalBackdrop.style.display = 'none';
+      let modal = document.querySelector('#staticBackdrop');
+      modal.style.display = ''
+      document.querySelectorAll('.modal-backdrop.show').forEach(el => el.remove());
     }
   }
 }

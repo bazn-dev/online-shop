@@ -66,6 +66,7 @@ import { logout as logoutRequest} from '@/api/auth'
 import Navigation from './Navigation'
 import ModalAuth from './ModalAuth'
 import Icon from './Icon'
+import {Events} from "../../events";
 
 export default {
   name: "Header",
@@ -82,6 +83,7 @@ export default {
   },
   data() {
     return {
+      isLoggedIn: false,
       accountMenuItems: [
         {
           name: 'my-cabinet',
@@ -105,10 +107,17 @@ export default {
   computed: {
     countProductInBasket() {
       return this.order ? this.order.entries.length : 0;
-    },
-    isLoggedIn() {
-      return localStorage.getItem('token');
     }
+  },
+  created() {
+    if (localStorage.getItem('token')) {
+      this.isLoggedIn = true
+    }
+    Events.on('updateProfile', async () => {
+      if (localStorage.getItem('token')) {
+        this.isLoggedIn = true
+      }
+    })
   },
   methods: {
     async selectMenuItem(name) {
@@ -127,6 +136,7 @@ export default {
     async signOut() {
       await logoutRequest(localStorage.getItem('token'))
       localStorage.removeItem('token');
+      this.isLoggedIn = false
       await this.$router.push({
         path: '/'
       })
