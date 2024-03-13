@@ -91,7 +91,11 @@ export default {
       const isValidCustomerInfo = await this.$refs.customerInfo.$refs.validator.validate()
 
       if (isValidCustomerInfo && activeDeliveryMode && activePaymentMode) {
-        const { newOrderId, placedOrderDateTime } = await orderPlaceRequest({
+        const {
+          newOrderId,
+          placedOrderId,
+          placedOrderDateTime
+        } = await orderPlaceRequest({
           orderId: this.order.id,
           deliveryMode: this.$refs.deliveryInfo.$data.activeDeliveryMode,
           paymentMode: this.$refs.paymentMethodInfo.$data.activePaymentMode,
@@ -109,8 +113,9 @@ export default {
           noApproveCall: this.$refs.customerInfo.$data.model.noApproveCall,
           comment: this.$refs.customerInfo.$data.model.comment
         })
+        localStorage.setItem('orderId', newOrderId)
         await this.$router.push({
-          path: `/order/success?orderId=${newOrderId}&placedOrderDateTime=${placedOrderDateTime}`
+          path: `/order/success?orderId=${placedOrderId}&placedOrderDateTime=${placedOrderDateTime}`
         })
       }
     },

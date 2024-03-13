@@ -44,6 +44,7 @@
               type="email"
               class="form-control"
               id="individualEmail"
+              disabled
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}

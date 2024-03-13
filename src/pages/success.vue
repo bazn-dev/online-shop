@@ -54,7 +54,7 @@ export default {
   },
   beforeMount() {
     this.orderId = this.$route.query.orderId
-    this.placedOrderDateTime = moment(this.$route.query.placedOrderDateTime).format('DD.MM.YYYY HH:mm')
+    this.placedOrderDateTime = moment().format('DD.MM.YYYY HH:mm')
   }
 }
 </script>

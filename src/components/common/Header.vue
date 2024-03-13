@@ -114,9 +114,7 @@ export default {
       this.isLoggedIn = true
     }
     Events.on('updateProfile', async () => {
-      if (localStorage.getItem('token')) {
-        this.isLoggedIn = true
-      }
+      this.isLoggedIn = !!localStorage.getItem('token');
     })
   },
   methods: {

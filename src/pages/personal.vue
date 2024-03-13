@@ -16,13 +16,13 @@
           :menuItems="menuItems"
           @setActive="setActiveMenuItem"
         />
+        <PersonalPrivate
+          v-show="activeMenuItem === 'personal-data'"
+          :user="user"
+        />
         <PersonalMain
           v-if="activeMenuItem === 'my-cabinet'"
           @setActive="setActiveMenuItem"
-        />
-        <PersonalPrivate
-          v-else-if="activeMenuItem === 'personal-data'"
-          :user="user"
         />
         <PersonalOrders
           v-else-if="activeMenuItem === 'orders-history' && !activeOrder"
@@ -49,6 +49,7 @@ import PersonalMain from '../components/personal/PersonalMain'
 import PersonalOrders from '../components/personal/PersonalOrders'
 import PersonalOrder from '../components/personal/PersonalOrder'
 import PersonalPrivate from '../components/personal/PersonalPrivate'
+import {Events} from "../events";
 
 export default {
   name: "personal",
@@ -133,8 +134,9 @@ export default {
     async signOut() {
       await logoutRequest(localStorage.getItem('token'))
       localStorage.removeItem('token');
+      Events.emit('updateProfile')
       await this.$router.push({
-        name: '/'
+        path: '/'
       })
     }
   }
