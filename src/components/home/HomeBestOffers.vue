@@ -48,7 +48,17 @@
           class="home-best-offers__card col-lg-3 col-md-4 col-sm-6 col-xs-6 col-xxs-6"
         >
           <div class="home-best-offers__card-image-wrapper">
-            <div class="home-best-offers__card-label">Хит</div>
+<!--            <div class="home-best-offers__card-label">Хит</div>-->
+            <div class="home-best-offers__card-labels">
+              <div
+                  v-for="(sticker, index) in product.stickers"
+                  :key="`product.sticker.${index}`"
+                  class="home-best-offers__card-label"
+              >
+                {{ sticker.name }}
+              </div>
+            </div>
+
             <img :src="getImage(product.smallImageUrl)" class="home-best-offers__card-image img-fluid"  alt="">
           </div>
           <div class="home-best-offers__card-info">
@@ -67,7 +77,7 @@
                {{ product.price }} руб.
             </div>
           </div>
-          <div class="home-best-offers__card-btn-details">Подробнее</div>
+          <div class="home-best-offers__card-btn-details" @click="goToProductPage(product.vendorCode)">Подробнее</div>
         </div>
       </div>
     </div>
@@ -107,7 +117,15 @@ export default {
       return link === 'ссылка'
         ? require('@/assets/img/catalog/product.webp')
         : `http://178.172.201.242${link}`
-    }
+    },
+    goToProductPage(vendorCode) {
+      this.$router.push({
+        name: 'product',
+        params: {
+          vendorCode
+        },
+      });
+    },
   }
 }
 </script>
@@ -209,9 +227,14 @@ export default {
         padding-right: 25px;
       }
 
-      &-label {
+      &-labels {
         position: absolute;
         left: 25px;
+        display: flex;
+      }
+
+      &-label {
+        position: relative;
         font-size: .8em;
         line-height: 1.692em;
         color: #ffffff;

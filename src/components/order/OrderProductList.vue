@@ -9,7 +9,6 @@
         <thead>
           <tr>
             <th scope="col">Наименование</th>
-            <th scope="col">Скидка</th>
             <th scope="col">Цена</th>
             <th scope="col">Количество</th>
             <th scope="col">Сумма</th>
@@ -30,7 +29,6 @@
                 </div>
               </div>
             </td>
-            <td>0%</td>
             <td class="--price">
               <div>{{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.</div>
               <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="--old-price">{{ entry.productDto.price }} руб.</div>

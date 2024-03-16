@@ -59,11 +59,7 @@
                   {{ errors[0] }}
                 </div>
               </validation-provider>
-              <div class="d-flex justify-content-between mb-5">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                  <label class="form-check-label" for="flexSwitchCheckDefault">Запомнить меня</label>
-                </div>
+              <div class="d-flex justify-content-end mb-5">
                 <div>Забыли пароль?</div>
               </div>
               <div class="d-flex justify-content-between">

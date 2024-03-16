@@ -213,7 +213,7 @@ export default {
           passwordConfirmation: this.model.passwordConfirmation
         }
         try {
-          await updateUserRequest(data)
+          await updateUserRequest(data, localStorage.getItem('token'))
           this.$toasted.show(`Обновление данных прошло успешно!`, { type: 'success', duration: 3000 })
           this.model.password = ''
           this.model.passwordConfirmation = ''

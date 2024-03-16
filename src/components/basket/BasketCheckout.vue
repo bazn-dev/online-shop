@@ -27,7 +27,6 @@
         <div class="d-flex align-items-center">
           <div class="basket-checkout__total">
             <div class="basket-checkout__total-title">Итого:</div>
-            <div class="basket-checkout__total-text">Сумма НДС: 0 руб.</div>
           </div>
           <div class="basket-checkout__total-price-wrapper">
             <div class="--total">
@@ -148,10 +147,6 @@ export default {
       @media (max-width: 991px) {
         margin-top: 20px;
       }
-    }
-
-    &__total {
-      padding-top: 25px;
     }
 
     &__total-title {

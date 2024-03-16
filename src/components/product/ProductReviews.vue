@@ -95,7 +95,14 @@
       </div>
     </div>
 
-    <div class="product-reviews__list">
+    <div v-if="reviews.length === 0" class="product-reviews__empty">
+      Помогите другим пользователям с выбором - будьте первым, кто поделится своим мнением об этом товаре
+    </div>
+
+    <div
+      v-else
+      class="product-reviews__list"
+    >
       <div
         v-for="(review, index) in reviews"
         :key="`review.${index}`"
@@ -303,6 +310,13 @@ export default {
       background-color: #d6810b;
       border: 1px solid #d6810b;
       color: #ffffff;
+    }
+
+    &__empty {
+      border-radius: 3px;
+      border: 1px solid #ececec;
+      padding: 27px 35px 30px;
+      margin-top: 20px;
     }
 
     &__item {

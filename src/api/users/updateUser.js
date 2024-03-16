@@ -1,10 +1,14 @@
 import axios from "../axios";
 
-export default (data) => {
+export default (data, token) => {
   const url = "/users";
 
   return axios
-    .post(url, data)
+    .patch(url, data, {
+      params: {
+        'Authorization': token,
+      }
+    })
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error));
 };

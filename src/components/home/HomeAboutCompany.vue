@@ -6,7 +6,7 @@
           <div class="home-about-company__subtitle">О компании</div>
           <h3 class="home-about-company__title">{{ about?.displayName }}</h3>
           <div v-html="about?.value" class="home-about-company__text"></div>
-          <button class="home-about-company__button btn btn-primary">Перейти в каталог</button>
+          <button class="home-about-company__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
         </div>
         <div class="home-about-company__col-image col-lg-6 col-md-12">
           <div class="home-about-company__image"></div>
@@ -23,6 +23,16 @@ export default {
     about: {
       type: Object,
       default: () => null
+    }
+  },
+  methods: {
+    toCatalog() {
+      this.$router.push({
+        name: "catalog",
+        params: {
+          category: 'tea'
+        },
+      })
     }
   }
 }

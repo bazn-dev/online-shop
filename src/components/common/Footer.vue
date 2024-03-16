@@ -11,9 +11,6 @@
         <div class="footer__nav d-none d-md-flex justify-content-center col-md-3 col-sm-3">
           <router-link to="/info">Информация</router-link>
         </div>
-        <div class="footer__nav d-none d-md-flex justify-content-center col-md-3 col-sm-3">
-          <router-link to="/info">Вопрос-ответ</router-link>
-        </div>
 
         <ul class="footer__mobile-list d-md-none col-md-12 list-group list-group-flush">
           <li class="footer__mobile-item list-group-item">Чай</li>

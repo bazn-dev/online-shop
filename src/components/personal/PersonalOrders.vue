@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <a href="#" class="personal-orders__link">Перейти в каталог</a>
+      <a href="#" class="personal-orders__link" @click="toCatalog">Перейти в каталог</a>
     </div>
   </div>
 </template>
@@ -52,6 +52,14 @@ export default {
         path: `/personal?tab=orders-history&orderId=${id}`
       })
       await this.$router.go(0)
+    },
+    toCatalog() {
+      this.$router.push({
+        name: "catalog",
+        params: {
+          category: 'tea'
+        },
+      })
     }
   }
 }

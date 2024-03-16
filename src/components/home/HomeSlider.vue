@@ -1,13 +1,16 @@
 <template>
-  <div id="carouselExampleIndicators" class="home-slider carousel slide" data-bs-ride="carousel">
+  <div id="carouselIndicators" class="home-slider carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
+      <button
+        v-for="(banner, index) in banners"
+        :key="`indicator.${index}`"
+        type="button"
+        data-bs-target="#carouselIndicators"
+        :data-bs-slide-to="index"
+        :aria-current="index === 0"
+        :class="{ 'active': index === 0 }"
+        :aria-label="`Slide ${index + 1}`"
+      ></button>
     </div>
     <div class="carousel-inner">
       <div
@@ -24,66 +27,12 @@
           </div>
         </div>
       </div>
-<!--      <div class="carousel-item active">-->
-<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/2.webp') + ')'}">-->
-<!--          <div class="home-slider__content">-->
-<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
-<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
-<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="carousel-item">-->
-<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/3.webp') + ')'}">-->
-<!--          <div class="home-slider__content">-->
-<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
-<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
-<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="carousel-item">-->
-<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/4.webp') + ')'}">-->
-<!--          <div class="home-slider__content">-->
-<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
-<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
-<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="carousel-item">-->
-<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/5.webp') + ')'}">-->
-<!--          <div class="home-slider__content">-->
-<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
-<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
-<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="carousel-item">-->
-<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/6.webp') + ')'}">-->
-<!--          <div class="home-slider__content">-->
-<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
-<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
-<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="carousel-item">-->
-<!--        <div class="home-slider__block d-block w-100" :style="{'background-image': 'url(' + require('@/assets/img/slider/7.webp') + ')'}">-->
-<!--          <div class="home-slider__content">-->
-<!--            <div class="home-slider__content-title">Кофе свежей обжарки</div>-->
-<!--            <div class="home-slider__content-description">Самый большой выбор в Беларуси</div>-->
-<!--            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators"  data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Предыдущий</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators"  data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Следующий</span>
     </button>
