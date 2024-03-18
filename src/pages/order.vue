@@ -39,6 +39,7 @@ import {
 } from '@/api/orders'
 import OrderMain from '../components/order/OrderMain'
 import OrderTotalSidebar from '../components/order/OrderTotalSidebar'
+import { Events } from "../events";
 
 export default {
   name: "order",
@@ -50,17 +51,17 @@ export default {
     return {
       order: null,
       deliveryModes: [],
-      paymentModes: []
-    }
-  },
-  computed: {
-    // todo change this
-    deliveryPrice() {
-      return 0
+      paymentModes: [],
+      deliveryPrice: 0
     }
   },
   beforeCreate() {
     document.title = 'Оформление заказа';
+  },
+  created() {
+    Events.on('updateDeliveryPrice', (price) => {
+      this.deliveryPrice = price
+    })
   },
   async beforeMount() {
     await this.getOrderById()

@@ -1,10 +1,10 @@
 import axios from "../axios";
 
 export default (data, token) => {
-  const url = "/users";
+  const url = "/users/update";
 
   return axios
-    .patch(url, data, {
+    .post(url, data, {
       params: {
         'Authorization': token,
       }

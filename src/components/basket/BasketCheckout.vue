@@ -10,17 +10,24 @@
             id="promoInput"
             class="basket-checkout__promo-input form-control"
             aria-describedby="promo-button"
-            :disabled="order?.promoCode"
+            :disabled="order?.promotionInfo?.promocode"
           />
           <button
             type="button"
             id="promo-button"
             class="basket-checkout__promo-btn btn"
-            :disabled="order?.promoCode"
+            :disabled="order?.promotionInfo?.promocode"
             @click="addPromo"
           >
             <Icon name="arrow-left" class="basket-checkout__promo-icon" />
           </button>
+        </div>
+        <div
+          v-if="order?.promotionInfo?.promocode"
+          class="basket-checkout__promo-remove"
+          @click="deletePromo"
+        >
+          Удалить промокод
         </div>
       </div>
       <div class="basket-checkout__total-wrapper d-md-flex align-items-center">
@@ -30,12 +37,12 @@
           </div>
           <div class="basket-checkout__total-price-wrapper">
             <div class="--total">
-              {{ order?.promoCode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
+              {{ order?.promotionInfo?.promocode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
             </div>
-            <div v-if="order?.promoCode" class="--old-price">
+            <div v-if="order?.promotionInfo?.promocode" class="--old-price">
               {{ order?.totalAmount || 0 }} руб.
             </div>
-            <div v-if="order?.promoCode" class="--discount">
+            <div v-if="order?.promotionInfo?.promocode" class="--discount">
               Экономия {{ (order.totalAmount - order.totalAmountWithDiscount) || 0 }} руб.
             </div>
           </div>
@@ -53,7 +60,8 @@
 
 <script>
 import {
-  addPromo as addPromoRequest
+  addPromo as addPromoRequest,
+  deletePromo as deletePromoRequest,
 } from '@/api/orders'
 import Icon from '../common/Icon.vue'
 
@@ -75,11 +83,11 @@ export default {
   },
   watch: {
     order(val) {
-      this.promoCode = val.promoCode ?? ''
+      this.promoCode = val?.promotionInfo?.promocode ?? ''
     }
   },
   beforeMount() {
-    this.promoCode = this.order.promoCode ?? ''
+    this.promoCode = this.order?.promotionInfo?.promocode ?? ''
   },
   methods: {
     async addPromo() {
@@ -90,6 +98,14 @@ export default {
         })
         this.$emit('updateOrder')
       }
+    },
+    async deletePromo() {
+      await deletePromoRequest({
+        orderId: this.order.id,
+        promoCode: this.promoCode
+      })
+      this.promoCode = ''
+      this.$emit('updateOrder')
     },
     goToOrder() {
       this.$router.push({
@@ -141,6 +157,14 @@ export default {
           fill: #333;
         }
       }
+    }
+
+    &__promo-remove {
+      font-size: 12px;
+      color: #cb0000;
+      margin-top: 5px;
+      text-decoration: underline;
+      cursor: pointer;
     }
 
     &__total-wrapper {

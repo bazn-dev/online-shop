@@ -14,10 +14,10 @@
         <div class="order-total-sidebar__total-line-text">Товаров на:</div>
         <div class="order-total-sidebar__total-line-value">
           <div>
-            {{ order?.promoCode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
+            {{ order?.promotionInfo?.promocode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
           </div>
           <div
-            v-if="order?.promoCode"
+            v-if="order?.promotionInfo?.promocode"
             class="--old-price"
           >
             {{ order?.totalAmount || 0 }} руб.
@@ -43,7 +43,7 @@
     <div class="order-total-sidebar__footer d-flex justify-content-between align-items-center">
       <div class="order-total-sidebar__total-text">Итого:</div>
       <div class="order-total-sidebar__total-value">
-        {{ (order?.promoCode ? order?.totalAmountWithDiscount : order?.totalAmount || 0) + deliveryPrice }} руб.
+        {{ (order?.promotionInfo?.promocode ? order?.totalAmountWithDiscount : order?.totalAmount || 0) + deliveryPrice }} руб.
       </div>
     </div>
   </div>

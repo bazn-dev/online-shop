@@ -129,6 +129,146 @@
             </div>
           </validation-provider>
         </div>
+        <div v-if="!user?.individual">
+          <div class="d-flex mb-3">
+            <validation-provider
+              rules="required"
+              v-slot="{ errors }"
+              name="companyName"
+              class="w-50"
+              tag="div"
+            >
+              <label for="companyName" class="form-label">Наименование компании</label>
+              <input
+                v-model="model.companyName"
+                type="text"
+                class="form-control"
+                id="companyName"
+              />
+              <div v-if="errorValidation?.companyName" class="invalid-feedback">
+                {{ errorValidation.companyName }}
+              </div>
+              <div v-if="errors.length > 0" class="invalid-feedback">
+                {{ errors[0] }}
+              </div>
+            </validation-provider>
+          </div>
+          <div class="d-flex mb-3">
+            <validation-provider
+              rules="required"
+              v-slot="{ errors }"
+              name="legalAddress"
+              class="w-50"
+              tag="div"
+            >
+              <label for="name" class="form-label">Юридический адрес</label>
+              <input
+                v-model="model.legalAddress"
+                type="text"
+                class="form-control"
+                id="legalAddress"
+              />
+              <div v-if="errorValidation?.legalAddress" class="invalid-feedback">
+                {{ errorValidation.legalAddress }}
+              </div>
+              <div v-if="errors.length > 0" class="invalid-feedback">
+                {{ errors[0] }}
+              </div>
+            </validation-provider>
+          </div>
+          <div class="d-flex mb-3">
+            <validation-provider
+              rules="required"
+              v-slot="{ errors }"
+              name="unp"
+              class="w-50"
+              tag="div"
+            >
+              <label for="name" class="form-label">УНП</label>
+              <input
+                v-model="model.unp"
+                type="text"
+                class="form-control"
+                id="unp"
+              />
+              <div v-if="errorValidation?.unp" class="invalid-feedback">
+                {{ errorValidation.unp }}
+              </div>
+              <div v-if="errors.length > 0" class="invalid-feedback">
+                {{ errors[0] }}
+              </div>
+            </validation-provider>
+          </div>
+          <div class="d-flex mb-3">
+            <validation-provider
+              rules="required"
+              v-slot="{ errors }"
+              name="requisites"
+              class="w-50"
+              tag="div"
+            >
+              <label for="requisites" class="form-label">Реквизиты</label>
+              <input
+                v-model="model.requisites"
+                type="text"
+                class="form-control"
+                id="requisites"
+              />
+              <div v-if="errorValidation?.requisites" class="invalid-feedback">
+                {{ errorValidation.requisites }}
+              </div>
+              <div v-if="errors.length > 0" class="invalid-feedback">
+                {{ errors[0] }}
+              </div>
+            </validation-provider>
+          </div>
+          <div class="d-flex mb-3">
+            <validation-provider
+              rules="required"
+              v-slot="{ errors }"
+              name="postcode"
+              class="w-50"
+              tag="div"
+            >
+              <label for="postcode" class="form-label">Индекс</label>
+              <input
+                v-model="model.postcode"
+                type="text"
+                class="form-control"
+                id="postcode"
+              />
+              <div v-if="errorValidation?.postcode" class="invalid-feedback">
+                {{ errorValidation.postcode }}
+              </div>
+              <div v-if="errors.length > 0" class="invalid-feedback">
+                {{ errors[0] }}
+              </div>
+            </validation-provider>
+          </div>
+          <div class="d-flex mb-3">
+            <validation-provider
+              rules="required"
+              v-slot="{ errors }"
+              name="city"
+              class="w-50"
+              tag="div"
+            >
+              <label for="city" class="form-label">Город</label>
+              <input
+                v-model="model.city"
+                type="text"
+                class="form-control"
+                id="city"
+              />
+              <div v-if="errorValidation?.city" class="invalid-feedback">
+                {{ errorValidation.city }}
+              </div>
+              <div v-if="errors.length > 0" class="invalid-feedback">
+                {{ errors[0] }}
+              </div>
+            </validation-provider>
+          </div>
+        </div>
         <div class="d-flex justify-content-start">
           <button
             type="submit"
@@ -169,6 +309,12 @@ export default {
         phone: '',
         password: '',
         passwordConfirmation: '',
+        companyName: '',
+        legalAddress: '',
+        unp: '',
+        requisites: '',
+        postcode: '',
+        city: '',
       },
       errorValidation: null
     }
@@ -179,6 +325,15 @@ export default {
         this.model.name = val.name
         this.model.email = val.email
         this.model.phone = val.phone
+
+        if (!val.individual) {
+          this.model.companyName = val.companyName
+          this.model.legalAddress = val.legalAddress
+          this.model.unp = val.unp
+          this.model.requisites = val.requisites
+          this.model.postcode = val.postcode
+          this.model.city = val.city
+        }
       }
     }
   },
@@ -204,13 +359,26 @@ export default {
       const isValid = await this.$refs.validator.validate()
 
       if (isValid) {
-        const data = {
+        const data = this.user?.individual ? {
           userId: Number(localStorage.getItem('userId')),
           name: this.model.name,
           phone: this.model.phone,
           email: this.model.email,
           password: this.model.password,
           passwordConfirmation: this.model.passwordConfirmation
+        } : {
+          userId: Number(localStorage.getItem('userId')),
+          name: this.model.name,
+          phone: this.model.phone,
+          email: this.model.email,
+          password: this.model.password,
+          passwordConfirmation: this.model.passwordConfirmation,
+          companyName: this.model.companyName,
+          legalAddress: this.model.legalAddress,
+          unp: this.model.unp,
+          requisites: this.model.requisites,
+          postcode: this.model.postcode,
+          city: this.model.city,
         }
         try {
           await updateUserRequest(data, localStorage.getItem('token'))

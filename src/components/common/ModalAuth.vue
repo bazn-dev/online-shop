@@ -110,11 +110,13 @@ export default {
 
       if (isValid) {
         try {
-          const { token } = await login({
+          const { token, userId, orderId } = await login({
             email: this.email,
             password: this.password
           })
           localStorage.setItem('token', token)
+          localStorage.setItem('orderId', orderId)
+          localStorage.setItem('userId', userId)
           Events.emit('updateProfile')
           this.closeModal();
         } catch (e) {

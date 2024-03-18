@@ -46,22 +46,29 @@
       <label for="promoInput" class="form-label">Применить купон:</label>
       <div class="input-group">
         <input
-            v-model="promoCode"
-            type="text"
-            id="promoInput"
-            class="order-product-list__promo-input form-control"
-            aria-describedby="promo-button"
-            :disabled="order?.promoCode"
+          v-model="promoCode"
+          type="text"
+          id="promoInput"
+          class="order-product-list__promo-input form-control"
+          aria-describedby="promo-button"
+          :disabled="order?.promotionInfo?.promocode"
         />
         <button
-            type="button"
-            id="promo-button"
-            class="order-product-list__promo-btn btn"
-            :disabled="order?.promoCode"
-            @click="addPromo"
+          type="button"
+          id="promo-button"
+          class="order-product-list__promo-btn btn"
+          :disabled="order?.promotionInfo?.promocode"
+          @click="addPromo"
         >
           <Icon name="arrow-left" class="order-product-list__promo-icon" />
         </button>
+      </div>
+      <div
+        v-if="order?.promotionInfo?.promocode"
+        class="order-product-list__promo-remove"
+        @click="deletePromo"
+      >
+        Удалить промокод
       </div>
     </div>
   </div>
@@ -69,7 +76,8 @@
 
 <script>
 import {
-  addPromo as addPromoRequest
+  addPromo as addPromoRequest,
+  deletePromo as deletePromoRequest,
 } from '@/api/orders'
 import Icon from '../common/Icon.vue'
 
@@ -95,11 +103,11 @@ export default {
   },
   watch: {
     order(val) {
-      this.promoCode = val.promoCode ?? ''
+      this.promoCode = val?.promotionInfo?.promocode ?? ''
     }
   },
   beforeMount() {
-    this.promoCode = this.order?.promoCode ?? ''
+    this.promoCode = this.order?.promotionInfo?.promocode ?? ''
   },
   methods: {
     async addPromo() {
@@ -110,6 +118,14 @@ export default {
         })
         this.$emit('updateOrder')
       }
+    },
+    async deletePromo() {
+      await deletePromoRequest({
+        orderId: this.order.id,
+        promoCode: this.promoCode
+      })
+      this.promoCode = ''
+      this.$emit('updateOrder')
     },
     getImage(link) {
       return link === 'ссылка'
@@ -257,6 +273,14 @@ export default {
           fill: #333;
         }
       }
+    }
+
+    &__promo-remove {
+      font-size: 12px;
+      color: #cb0000;
+      margin-top: 5px;
+      text-decoration: underline;
+      cursor: pointer;
     }
   }
 </style>

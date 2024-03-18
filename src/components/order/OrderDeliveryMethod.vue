@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { Events } from "../../events";
+
 export default {
   name: "OrderDeliveryMethod",
   props: {
@@ -55,6 +57,7 @@ export default {
   methods: {
     setActiveDeliveryMode(code) {
       this.activeDeliveryMode = code
+      Events.emit('updateDeliveryPrice', this.deliveryModes.find(mode => mode.code === code)?.deliveryCost || 0)
     }
   }
 }
@@ -139,7 +142,7 @@ export default {
       border-radius: 2px;
       display: inline-block;
       line-height: 10px;
-      margin: 8px 0;
+      margin: 0 8px;
     }
   }
 </style>
