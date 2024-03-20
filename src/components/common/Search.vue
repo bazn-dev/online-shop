@@ -7,7 +7,7 @@
           type="text"
           placeholder="Поиск"
           class="search__input"
-          @keyup.enter="searchProducts"
+          @keyup.enter="goToSearchPage"
           @input="inputHandler"
         />
         <div class="d-flex align-items-center">
@@ -17,7 +17,7 @@
           >
             Найти
           </button>
-          <div class="search__btn-close" @click="$emit('hideSearch')">
+          <div class="search__btn-close d-none d-lg-block" @click="$emit('hideSearch')">
             <Icon name="close"/>
           </div>
         </div>
@@ -149,6 +149,15 @@ export default {
       background-color: #d6810b;
       padding: 16px 26px;
       margin: 0 40px 0 0;
+
+      @media (max-width: 991px) {
+        margin: 0 20px 0 0;
+      }
+
+      @media (max-width: 576px) {
+        margin: 0 10px 0 0;
+        padding: 10px 15px;
+      }
     }
 
     &__btn-close {

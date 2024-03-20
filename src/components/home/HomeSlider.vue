@@ -110,6 +110,10 @@ export default {
       color: #fff;
       margin-top: 23px;
       margin-bottom: 30px;
+
+      @media (max-width: 767px) {
+        text-align: center;
+      }
     }
 
     &__button {
@@ -122,6 +126,11 @@ export default {
       border-color: #d6810b;
       color: #ffffff;
       text-transform: uppercase;
+
+      @media (max-width: 576px) {
+        font-size: .6333em;
+        padding: 10px;
+      }
     }
   }
 

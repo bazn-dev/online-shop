@@ -20,7 +20,7 @@
               <ProductInfo
                 :product="product"
                 :alreadyInBasket="alreadyInBasket"
-                @addToCart="addProductToOrder"
+                @addToBasket="addProductToOrder"
               />
             </div>
           </div>

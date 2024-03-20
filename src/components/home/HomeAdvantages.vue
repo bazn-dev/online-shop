@@ -72,6 +72,11 @@ export default {
     &__item-wrapper {
       padding-left: 16px !important;
       padding-right: 16px !important;
+      margin-bottom: 15px;
+
+      @media (max-width: 600px) {
+        margin-bottom: 30px;
+      }
     }
 
     &__item {

@@ -13,12 +13,24 @@
         </div>
 
         <ul class="footer__mobile-list d-md-none col-md-12 list-group list-group-flush">
-          <li class="footer__mobile-item list-group-item">Чай</li>
-          <li class="footer__mobile-item list-group-item">Аксессуары</li>
-          <li class="footer__mobile-item list-group-item">Скидки, оплата, доставка</li>
-          <li class="footer__mobile-item list-group-item">Компания</li>
-          <li class="footer__mobile-item list-group-item">Личный кабинет</li>
-          <li class="footer__mobile-item list-group-item">Корзина</li>
+          <router-link to="/catalog/tea">
+            <li class="footer__mobile-item list-group-item">Чай</li>
+          </router-link>
+          <router-link to="/catalog">
+            <li class="footer__mobile-item list-group-item">Аксессуары</li>
+          </router-link>
+          <router-link to="/info">
+            <li class="footer__mobile-item list-group-item">Скидки, оплата, доставка</li>
+          </router-link>
+          <router-link to="/about">
+            <li class="footer__mobile-item list-group-item">Компания</li>
+          </router-link>
+          <router-link to="/personal">
+            <li class="footer__mobile-item list-group-item">Личный кабинет</li>
+          </router-link>
+          <router-link to="/basket">
+            <li class="footer__mobile-item list-group-item">Корзина</li>
+          </router-link>
         </ul>
 
         <div
@@ -156,6 +168,10 @@ export default {
 
     &__mobile-list {
       margin-bottom: 40px !important;
+
+      a {
+        text-decoration: none;
+      }
     }
 
     &__mobile-item {
@@ -167,6 +183,7 @@ export default {
       color: #fff;
       background-color: #333333;
       padding: 15px 16px;
+      border: none;
       border-bottom: 1px solid #434343;
     }
 

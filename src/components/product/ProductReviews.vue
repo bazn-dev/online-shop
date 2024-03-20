@@ -265,6 +265,24 @@ export default {
       margin-bottom: 50px;
       border: 1px solid #ececec;
       border-radius: 3px;
+
+      .pr-3 {
+        @media (max-width: 575px) {
+          padding-right: 0 !important;
+        }
+      }
+
+      .pl-3 {
+        @media (max-width: 575px) {
+          padding-left: 0 !important;
+        }
+      }
+
+      .d-flex {
+        @media (max-width: 575px) {
+          justify-content: center;
+        }
+      }
     }
 
     &__review-form-label {

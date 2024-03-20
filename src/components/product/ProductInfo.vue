@@ -15,18 +15,18 @@
         <Icon name="check" /> В корзине
       </button>
       <template v-else>
-        <div class="product-info__change-count col-sm-6 row">
+        <div class="product-info__change-count col-6 row">
           <div
-            class="col-sm-4 d-flex justify-content-center align-items-center"
+            class="col-4 d-flex justify-content-center align-items-center"
             @click="decrementCount"
           >
             <Icon name="minus" />
           </div>
-          <div class="col-sm-4 d-flex justify-content-center align-items-center">
+          <div class="col-4 d-flex justify-content-center align-items-center">
             {{ count }}
           </div>
           <div
-            class="col-sm-4 d-flex justify-content-center align-items-center"
+            class="col-4 d-flex justify-content-center align-items-center"
             @click="incrementCount"
           >
             <Icon name="plus" />

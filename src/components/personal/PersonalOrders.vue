@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <a href="#" class="personal-orders__link" @click="toCatalog">Перейти в каталог</a>
+      <div class="personal-orders__link" @click="toCatalog">Перейти в каталог</div>
     </div>
   </div>
 </template>

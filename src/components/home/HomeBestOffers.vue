@@ -43,9 +43,10 @@
       </div>
       <div class="home-best-offers__catalog row">
         <div
-            v-for="(product, index) in products"
-            :key="`sticker-product.${index}`"
+          v-for="(product, index) in products"
+          :key="`sticker-product.${index}`"
           class="home-best-offers__card col-lg-3 col-md-4 col-sm-6 col-xs-6 col-xxs-6"
+          @click="goToProductPage(product.vendorCode)"
         >
           <div class="home-best-offers__card-image-wrapper">
 <!--            <div class="home-best-offers__card-label">Хит</div>-->
@@ -77,7 +78,7 @@
                {{ product.price }} руб.
             </div>
           </div>
-          <div class="home-best-offers__card-btn-details" @click="goToProductPage(product.vendorCode)">Подробнее</div>
+          <div class="home-best-offers__card-btn-details">Подробнее</div>
         </div>
       </div>
     </div>
@@ -210,11 +211,14 @@ export default {
       margin-right: -1px;
       cursor: pointer;
 
-      &:hover {
-        box-shadow: 0 0 20px 0 rgba(0,0,0,.15);
+      @media (min-width: 992px) {
+        &:hover {
+          box-shadow: 0 0 20px 0 rgba(0,0,0,.15);
+          z-index: 2;
 
-        .home-best-offers__card-btn-details {
-          display: block;
+          .home-best-offers__card-btn-details {
+            display: block;
+          }
         }
       }
 
