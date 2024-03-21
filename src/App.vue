@@ -11,7 +11,11 @@
     <Drawer />
     <main>
       <router-view />
-      <div class="up-button d-none d-lg-flex">
+      <div
+        v-if="scY > 300"
+        class="up-button d-none d-lg-flex"
+        @click="toTop"
+      >
         <Icon name="arrow-left" />
       </div>
       <Footer />
@@ -43,7 +47,9 @@ export default {
   data() {
     return {
       order: null,
-      displaySearch: false
+      displaySearch: false,
+      scTimer: 0,
+      scY: 0,
     }
   },
   created() {
@@ -56,6 +62,7 @@ export default {
       await this.createEmptyOrder()
     }
     await this.getOrderById()
+    window.addEventListener('scroll', this.handleScroll)
   },
   methods: {
     async createEmptyOrder() {
@@ -73,6 +80,17 @@ export default {
     },
     hideSearch() {
       this.displaySearch = false
+    },
+    handleScroll() {
+      if (this.scTimer) return
+      this.scTimer = setTimeout(() => {
+        this.scY = window.scrollY
+        clearTimeout(this.scTimer)
+        this.scTimer = 0
+      }, 100)
+    },
+    toTop() {
+      window.scrollTo(0, 0)
     }
   }
 }
@@ -92,6 +110,7 @@ export default {
   opacity: 1;
   transition: opacity .3s;
   z-index: 10;
+  cursor: pointer;
 
   ::v-deep(.icon) {
     margin-bottom: 2px;

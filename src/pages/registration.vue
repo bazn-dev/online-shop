@@ -377,7 +377,7 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
 import { required, email } from 'vee-validate/dist/rules';
-import { updateUser } from '@/api/users';
+import { registerUser } from '@/api/users';
 
 export default {
   name: "registration",
@@ -433,7 +433,7 @@ export default {
 
       if (isValid && this.model.agree) {
         const data = this.type === 'individual' ? {
-          userId: localStorage.getItem('userId'),
+          userId: Number(localStorage.getItem('userId')),
           name: this.model.name,
           phone: this.model.phone,
           email: this.model.email,
@@ -445,13 +445,13 @@ export default {
           ...this.model,
           individual: false
         };
-        await this.registerRequest(data);
+        await this.registerRequest(data)
       }
     },
     async registerRequest(data) {
       try {
-        await updateUser(data);
-        this.$router.push({
+        await registerUser(data)
+        await this.$router.push({
           path: '/'
         })
         this.$toasted.show(`Регистрация прошла успешно!`, { type: 'success', duration: 3000 })
@@ -499,6 +499,10 @@ export default {
   &__body {
     width: 560px;
     margin: 0 auto 25px;
+
+    @media (max-width: 575px) {
+      width: 100%;
+    }
   }
 
   &__tabs {

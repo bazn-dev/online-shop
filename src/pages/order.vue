@@ -11,7 +11,7 @@
       </nav>
 
       <div class="order__block row">
-        <div class="order__main-block col-lg-9 col-md-12 order-lg-1 order-md-2 order-sm-2 order-xs-2">
+        <div class="order__main-block col-lg-9 col-md-12 order-lg-1 order-md-2 order-sm-2 order-2">
           <OrderMain
             ref="orderMain"
             :order="order"
@@ -20,7 +20,7 @@
             @updateOrder="getOrderById"
           />
         </div>
-        <div class="order__sidebar-block col-lg-3 col-md-12 order-lg-2 order-md-1 order-sm-1 order-xs-1">
+        <div class="order__sidebar-block col-lg-3 col-md-12 order-lg-2 order-md-1 order-sm-1 order-1">
           <OrderTotalSidebar
             :order="order"
             :deliveryPrice="deliveryPrice"

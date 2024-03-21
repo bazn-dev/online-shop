@@ -121,7 +121,7 @@ export default {
   },
   computed: {
     displayedEntries() {
-      return this.entries.filter(entry => entry.productDto.name.includes(this.search))
+      return this.entries.filter(entry => entry.productDto.name.toLowerCase().includes(this.search.toLowerCase()))
     }
   },
   methods: {

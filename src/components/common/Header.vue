@@ -186,6 +186,10 @@ export default {
     &__icon-wrapper {
       cursor: pointer;
 
+      ::v-deep .icon svg path {
+        fill: #999;
+      }
+
       a {
         text-decoration: none;
       }
