@@ -1,26 +1,48 @@
 <template>
-  <div class="info-sidebar d-none d-lg-block">
+  <div class="info-sidebar">
     <ul class="list-group">
-      <li class="list-group-item">FAQ</li>
-      <li class="list-group-item">Система скидок</li>
-      <li class="list-group-item">Условия оплаты</li>
-      <li class="list-group-item">Условия доставки</li>
-      <li class="list-group-item">Гарантия на товар</li>
-      <li class="list-group-item">Как оформить заказ</li>
-      <li class="list-group-item">Политика</li>
+      <li
+        v-for="(item, index) in items"
+        :key="`info.${index}`"
+        class="list-group-item"
+        :class="{'--active': active === index}"
+        @click="setActiveTab(index)"
+      >
+        {{ item.groupItemName }}
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: "InfoSidebar"
+  name: "InfoSidebar",
+  props: {
+    items: {
+      type: Array,
+      default: () => []
+    },
+    active: {
+      type: Number,
+      default: 0
+    }
+  },
+  methods: {
+    setActiveTab(index) {
+      this.$emit('setActive', index)
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
   .info-sidebar {
     width: 244px;
+
+    @media (max-width: 767px) {
+      width: 100%;
+      margin-bottom: 40px;
+    }
 
     .list-group {
       border-radius: 3px !important;
@@ -33,6 +55,10 @@ export default {
       padding: 15px 30px 17px 15px !important;
       cursor: pointer;
       transition: padding .2s ease;
+
+      &.--active {
+        font-weight: bold;
+      }
 
       &:hover {
         background: #fafafa;

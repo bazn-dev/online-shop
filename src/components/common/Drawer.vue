@@ -7,7 +7,7 @@
         </router-link>
       </li>
       <li class="drawer__item list-group-item" data-bs-dismiss="offcanvas">
-        <router-link to="/catalog">
+        <router-link to="/catalog/accessories">
           Аксессуары
         </router-link>
       </li>

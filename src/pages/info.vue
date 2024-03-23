@@ -1,7 +1,7 @@
 <template>
   <div class="info">
     <div class="info__wrapper maxwidth-theme">
-      <h1 class="info__title">Вопрос-ответ</h1>
+      <h1 class="info__title">{{ title }}</h1>
 
       <nav class="info__breadcrumbs" style="--bs-breadcrumb-divider: '—';" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -11,14 +11,19 @@
       </nav>
 
       <div class="info__block d-flex justify-content-between">
-        <InfoSidebar />
-        <InfoFaq />
-<!--        <InfoDiscountSystem />-->
-<!--        <InfoPayment />-->
-<!--        <InfoDelivery />-->
-<!--        <InfoWarranty />-->
-<!--        <InfoHelp />-->
-<!--        <InfoLicensesDetail />-->
+        <InfoSidebar
+          :items="info"
+          :active="activeTab"
+          @setActive="setActiveTab"
+        />
+        <InfoFaq
+          v-if="title === 'FAQ'"
+          :content="info[activeTab]"
+        />
+        <InfoHelp
+          v-else
+          :content="info[activeTab]"
+        />
       </div>
     </div>
 
@@ -26,30 +31,47 @@
 </template>
 
 <script>
+import { getCompanyFaq as getCompanyFaqRequest} from '@/api/company'
 import InfoSidebar from '../components/info/InfoSidebar'
 import InfoFaq from '../components/info/InfoFaq'
-// import InfoDiscountSystem from '../components/info/InfoDiscountSystem'
-// import InfoPayment from '../components/info/InfoPayment'
-// import InfoDelivery from '../components/info/InfoDelivery'
-// import InfoWarranty from '../components/info/InfoWarranty'
-// import InfoHelp from '../components/info/InfoHelp'
-// import InfoLicensesDetail from '../components/info/InfoLicensesDetail'
+import InfoHelp from '../components/info/InfoHelp'
 
 export default {
   name: "info",
   components: {
     InfoSidebar,
     InfoFaq,
-    // InfoDiscountSystem,
-    // InfoPayment,
-    // InfoDelivery,
-    // InfoWarranty,
-    // InfoHelp,
-    // InfoLicensesDetail
+    InfoHelp
+  },
+  data() {
+    return {
+      info: [],
+      activeTab: 0
+    }
+  },
+  computed: {
+    title() {
+      if (this.info.length > 0) {
+        return this.info[this.activeTab]?.groupItemName ?? ''
+      }
+      return ''
+    }
   },
   beforeCreate() {
     document.title = 'Вопросы и ответы';
   },
+  async beforeMount() {
+    await this.initData()
+  },
+  methods: {
+    async initData() {
+      this.info = await getCompanyFaqRequest()
+      console.log(this.info)
+    },
+    setActiveTab(index) {
+      this.activeTab = index
+    }
+  }
 }
 </script>
 
@@ -84,6 +106,9 @@ export default {
   }
 
   &__block {
+    @media (max-width: 767px) {
+      flex-direction: column;
+    }
   }
 }
 </style>

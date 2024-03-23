@@ -408,6 +408,14 @@ export default {
       padding: 38px 43px;
     }
 
+    &__form {
+      .w-50 {
+        @media (max-width: 767px) {
+          width: 100% !important;
+        }
+      }
+    }
+
     &__input-note {
       padding: 31px 0 0 25px;
       font-size: 12px;
@@ -417,6 +425,10 @@ export default {
 
       p {
         margin-bottom: 0 !important;
+      }
+
+      @media (max-width: 767px) {
+        display: none;
       }
     }
 

@@ -2,7 +2,7 @@
   <div class="personal-main">
     <div class="personal-main__menu row">
       <div
-        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12"
+        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-6"
         @click="setActive('basket')"
       >
         <div class="personal-main__menu-item d-flex justify-content-center">
@@ -10,7 +10,7 @@
         </div>
       </div>
       <div
-        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12"
+        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-6"
         @click="setActive('personal-data')"
       >
         <div class="personal-main__menu-item d-flex justify-content-center">
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div
-        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-12 col-xs-12"
+        class="personal-main__menu-item-wrapper col-lg-4 col-md-6 col-sm-6"
         @click="setActive('orders-history')"
       >
         <div class="personal-main__menu-item d-flex justify-content-center">
@@ -43,6 +43,10 @@ export default {
 <style scoped lang="scss">
   .personal-main {
     width: calc(100% - 284px);
+
+    @media (max-width: 991px) {
+      width: 100%;
+    }
 
     &__menu-item-wrapper {
       padding: 0 10px !important;

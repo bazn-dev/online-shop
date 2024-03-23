@@ -130,6 +130,7 @@ export default {
           tab: name
         }
       })
+      await this.$router.go(0)
     },
     async signOut() {
       await logoutRequest(localStorage.getItem('token'))
@@ -163,16 +164,22 @@ export default {
     }
 
     &__menu {
+      display: flex;
+      align-items: center;
       margin-right: 20px;
       cursor: pointer;
+
+      ::v-deep svg path {
+        fill: #999;
+      }
     }
 
     &__wrapper-logo {
-      width: 83px;
+      width: 100px;
       height: 83px;
 
       @media (max-width: 991px) {
-        width: 63px;
+        width: 90px;
         height: 63px;
       }
 

@@ -1,7 +1,14 @@
 <template>
   <div class="personal-orders">
     <div class="personal-orders__wrapper d-flex flex-column">
-      <h3 class="personal-orders__title">Заказы в статусе «{{ orders?.[0]?.orderStatus }}»</h3>
+      <h3 v-if="orders.length > 0" class="personal-orders__title">Заказы в статусе «{{ orders?.[0]?.orderStatus }}»</h3>
+
+      <div
+        v-if="orders.length === 0"
+        class="personal-orders__not-found"
+      >
+        Заказы не найдены
+      </div>
 
       <div
           v-for="order in orders"
@@ -69,11 +76,20 @@ export default {
   .personal-orders {
     width: calc(100% - 284px);
 
+    @media (max-width: 991px) {
+      width: 100%;
+    }
+
     &__title {
       font-size: 1.6em;
       font-weight: 400;
       line-height: 1.126em;
       margin-bottom: 25px;
+    }
+
+    &__not-found {
+      font-size: 1.2em;
+      margin-bottom: 30px;
     }
 
     &__order {

@@ -1,76 +1,79 @@
 <template>
   <div class="catalog-main">
-    <div class="catalog-main__sort-wrapper d-flex justify-content-between">
-      <div v-if="activeSortItem" class="dropdown">
-        <button class="catalog-main__dropdown-sort btn btn-link btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          {{ activeSortItem.title }}
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <template v-if="productsData">
+      <div class="catalog-main__sort-wrapper d-flex justify-content-between">
+        <div v-if="activeSortItem" class="dropdown">
+          <button class="catalog-main__dropdown-sort btn btn-link btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ activeSortItem.title }}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li
+              v-for="(sortItem, index) in sortItems"
+              :key="`sortItem.${index}`"
+              @click="setActiveSortItem(sortItem)"
+            >
+              <div class="dropdown-item">{{ sortItem.title }}</div>
+            </li>
+          </ul>
+        </div>
+        <div class="form-check form-switch">
+          <input
+            v-model="inStockFilter"
+            type="checkbox"
+            id="inStockCheckbox"
+            class="form-check-input"
+            role="switch"
+            @change="toggleInStockFilter"
+          />
+          <label class="form-check-label" for="inStockCheckbox">В наличии</label>
+        </div>
+      </div>
+      <div class="catalog-main__products row">
+        <CatalogCard
+          v-for="product in products"
+          :key="`product.${product.vendorCode}`"
+          :product="product"
+          :alreadyInBasket="alreadyInBasket(product.vendorCode)"
+          @addToOrder="addToOrderRequest"
+        />
+      </div>
+      <nav v-if="productsData?.totalPages > 1" aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
           <li
-            v-for="(sortItem, index) in sortItems"
-            :key="`sortItem.${index}`"
-            @click="setActiveSortItem(sortItem)"
+            v-if="!productsData.first"
+            class="page-item"
+            @click="setActivePage(activePage)"
           >
-            <div class="dropdown-item">{{ sortItem.title }}</div>
+            <div class="page-link" aria-label="Previous">
+              <span aria-hidden="true">
+                <Icon name="arrow-up" class="pagination__prev-icon" />
+              </span>
+            </div>
+          </li>
+          <li
+            v-for="page in productsData?.totalPages"
+            :key="`page.${page}`"
+            class="page-item"
+            :class="{ 'active': page === activePage + 1 }"
+            @click="setActivePage(page)"
+          >
+            <div class="page-link">{{ page }}</div>
+          </li>
+          <li
+            v-if="!productsData.last"
+            class="page-item"
+            @click="setActivePage(activePage + 2)"
+          >
+            <div class="page-link" aria-label="Next">
+              <span aria-hidden="true">
+                <Icon name="arrow-up" class="pagination__next-icon" />
+              </span>
+            </div>
           </li>
         </ul>
-      </div>
-      <div class="form-check form-switch">
-        <input
-          v-model="inStockFilter"
-          type="checkbox"
-          id="inStockCheckbox"
-          class="form-check-input"
-          role="switch"
-          @change="toggleInStockFilter"
-        />
-        <label class="form-check-label" for="inStockCheckbox">В наличии</label>
-      </div>
-    </div>
-    <div class="catalog-main__products row">
-      <CatalogCard
-        v-for="product in products"
-        :key="`product.${product.vendorCode}`"
-        :product="product"
-        :alreadyInBasket="alreadyInBasket(product.vendorCode)"
-        @addToOrder="addToOrderRequest"
-      />
-    </div>
-    <nav v-if="productsData?.totalPages > 1" aria-label="Page navigation example">
-      <ul class="pagination justify-content-center">
-        <li
-          v-if="!productsData.first"
-          class="page-item"
-          @click="setActivePage(activePage)"
-        >
-          <div class="page-link" aria-label="Previous">
-            <span aria-hidden="true">
-              <Icon name="arrow-up" class="pagination__prev-icon" />
-            </span>
-          </div>
-        </li>
-        <li
-          v-for="page in productsData?.totalPages"
-          :key="`page.${page}`"
-          class="page-item"
-          :class="{ 'active': page === activePage + 1 }"
-          @click="setActivePage(page)"
-        >
-          <div class="page-link">{{ page }}</div>
-        </li>
-        <li
-          v-if="!productsData.last"
-          class="page-item"
-          @click="setActivePage(activePage + 2)"
-        >
-          <div class="page-link" aria-label="Next">
-            <span aria-hidden="true">
-              <Icon name="arrow-up" class="pagination__next-icon" />
-            </span>
-          </div>
-        </li>
-      </ul>
-    </nav>
+      </nav>
+    </template>
+    <div v-else class="catalog-main__not-found">На данный момент товары для данной категории не найдены</div>
   </div>
 </template>
 
@@ -219,6 +222,14 @@ export default {
 
     &__products {
       margin-bottom: 30px;
+    }
+
+    &__not-found {
+      margin-top: 60px;
+
+      @media (max-width: 991px) {
+        margin-top: 0;
+      }
     }
   }
 

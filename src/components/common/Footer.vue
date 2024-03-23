@@ -16,7 +16,7 @@
           <router-link to="/catalog/tea">
             <li class="footer__mobile-item list-group-item">Чай</li>
           </router-link>
-          <router-link to="/catalog">
+          <router-link to="/catalog/accessories">
             <li class="footer__mobile-item list-group-item">Аксессуары</li>
           </router-link>
           <router-link to="/info">

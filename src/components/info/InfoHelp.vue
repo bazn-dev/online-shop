@@ -1,12 +1,21 @@
 <template>
   <div class="info-help">
-
+    <div
+      v-if="content"
+      v-html="content.value[0]"
+    ></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "InfoHelp"
+  name: "InfoHelp",
+  props: {
+    content: {
+      type: Object,
+      default: () => null
+    }
+  }
 }
 </script>
 
@@ -14,16 +23,8 @@ export default {
   .info-help {
     width: calc(100% - 284px);
 
-    @media (max-width: 991px) {
+    @media (max-width: 767px) {
       width: 100%;
-    }
-
-    ul {
-      margin: 26px 0 36px !important;
-    }
-
-    ul > li {
-      margin: 8px 0 0 21px;
     }
   }
 </style>

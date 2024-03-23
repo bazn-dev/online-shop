@@ -24,8 +24,12 @@
       <CatalogCategories :categories="currentCategoryData?.childCategories || []" />
 
       <div class="catalog__block d-flex justify-content-between">
-        <CatalogSidebar :categories="categories" />
+        <CatalogSidebar
+          v-if="categories.length > 0"
+          :categories="categories"
+        />
         <CatalogMain
+          v-if="!isLoading"
           :order="order"
           :productsData="productsData"
           :activePage="activePage"
@@ -58,6 +62,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       maxSize: 20,
       activePage: 0,
       activeSort: 'totalRating,asc',
@@ -86,10 +91,16 @@ export default {
       return null;
     },
     title() {
-      return this.categories.length > 0 ? this.currentCategoryData.displayName : '';
+      if (this.categories.length > 0 && this.currentCategoryData?.displayName) {
+        return this.currentCategoryData?.displayName
+      }
+      return 'Аксессуары'
     },
     productsCount() {
-      return this.categories.length > 0 ? this.currentCategoryData.productsCount : '';
+      if (this.categories.length > 0 && this.currentCategoryData?.productsCount) {
+        return this.currentCategoryData?.productsCount
+      }
+      return 0
     },
     breadcrumbs() {
       const breadcrumbs = [{
@@ -102,12 +113,19 @@ export default {
         let categories = this.categories;
         for (let name of categoryNames) {
           let data = categories?.find(item => item.name === name)
-          lastLink += `/${data.name}`
-          breadcrumbs.push({
-            link: lastLink,
-            title: data.displayName
-          })
-          categories = data.childCategories
+          if (name === 'accessories') {
+            breadcrumbs.push({
+              link: lastLink,
+              title: 'Аксессуары'
+            })
+          } else {
+            lastLink += `/${data?.name}`
+            breadcrumbs.push({
+              link: lastLink,
+              title: data?.displayName
+            })
+          }
+          categories = data?.childCategories
         }
       }
       return breadcrumbs;
@@ -126,9 +144,11 @@ export default {
   },
   methods: {
     async initData() {
+      this.isLoading = true
       await this.getCategories()
       await this.setOrder()
       await this.getProductsByCategory()
+      this.isLoading = false
     },
     async setOrder() {
       this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
@@ -144,7 +164,7 @@ export default {
         sort: this.activeSort,
         inStock: this.inStockFilter
       })
-      this.products = data.productsDto.content
+      this.products = data.productsDto?.content || []
       this.productsData = data.productsDto
     },
     async sort(sort, inStockFilter = undefined, page = 0) {

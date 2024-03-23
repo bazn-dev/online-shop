@@ -139,6 +139,10 @@ export default {
   .personal-order {
     width: calc(100% - 284px);
 
+    @media (max-width: 991px) {
+      width: 100%;
+    }
+
     &__link {
       font-size: 15px;
       font-weight: 700;

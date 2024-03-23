@@ -8,7 +8,7 @@
           </router-link>
         </li>
         <li class="navigation__item">
-          <router-link to="/catalog">
+          <router-link to="/catalog/accessories">
             Аксессуары
           </router-link>
         </li>
