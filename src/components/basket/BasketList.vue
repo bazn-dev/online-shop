@@ -76,7 +76,7 @@
               <div class="basket-list__item-price">{{ entry.totalPriceWithDiscount }} руб.</div>
               <template v-if="entry.totalPriceWithDiscount !== entry.totalPrice">
                 <div class="basket-list__item-price --old-price">{{ entry.totalPrice }} руб.</div>
-                <div class="basket-list__item-price --discount">Экономия {{ entry.totalPrice - entry.totalPriceWithDiscount }} руб.</div>
+                <div class="basket-list__item-price --discount">Экономия {{ (entry.totalPrice - entry.totalPriceWithDiscount).toFixed(1) }} руб.</div>
               </template>
             </div>
             <div class="col-lg-1 col-md-1">

@@ -65,7 +65,7 @@ export default {
   computed: {
     discount() {
       if (this.order?.promoCode) {
-        return `${this.order.totalAmount - this.order.totalAmountWithDiscount} руб.`
+        return `${(this.order.totalAmount - this.order.totalAmountWithDiscount).toFixed(1)} руб.`
       }
       return 0
     }

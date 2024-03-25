@@ -84,7 +84,7 @@
         </div>
         <div class="mb-3">
           <validation-provider
-            rules=""
+            rules="min:6"
             v-slot="{ errors }"
             name="individualPassword"
             class="w-50"
@@ -108,7 +108,7 @@
         <div class="mb-3">
           <validation-provider
             v-model="model.passwordConfirmation"
-            rules="password:@individualPassword"
+            rules="min:6|password:@individualPassword"
             v-slot="{ errors }"
             name="individualConfirmPassword"
             class="w-50"
@@ -286,7 +286,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
+import { required, email, min } from 'vee-validate/dist/rules';
 import { updateUser as updateUserRequest } from '@/api/users';
 
 export default {
@@ -346,6 +346,10 @@ export default {
       ...email,
       message: 'Введите корректный E-mail'
     });
+    extend('min', {
+      ...min,
+      message: 'Длина пароля не менее 6 символов'
+    });
     extend('password', {
       params: ['target'],
       validate(value, { target }) {
@@ -387,7 +391,7 @@ export default {
           this.model.passwordConfirmation = ''
         } catch (e) {
           this.errorValidation = e.response.data
-          this.$toasted.show(`Ошибка обновления данных: ${e.message}`, { type: 'error', duration: 3000 })
+          this.$toasted.show(`Ошибка обновления данных: ${e.response.data.message}`, { type: 'error', duration: 3000 })
         }
       }
     }

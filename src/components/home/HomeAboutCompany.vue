@@ -74,6 +74,10 @@ export default {
     &__text {
       margin: 1.666rem 0;
       padding-right: 30px;
+
+      &::v-deep ul li {
+        margin: 0 0 10px 21px;
+      }
     }
 
     &__button-wrapper {

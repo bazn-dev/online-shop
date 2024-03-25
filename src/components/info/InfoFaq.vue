@@ -102,6 +102,11 @@ export default {
       }
     }
 
+    &::v-deep ul li,
+    &::v-deep ol li {
+      margin: 0 0 10px 21px;
+    }
+
     ul {
       margin: 26px 0 36px !important;
     }

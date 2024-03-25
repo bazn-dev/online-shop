@@ -43,7 +43,7 @@
               {{ order?.totalAmount || 0 }} руб.
             </div>
             <div v-if="order?.promotionInfo?.promocode" class="--discount">
-              Экономия {{ (order.totalAmount - order.totalAmountWithDiscount) || 0 }} руб.
+              Экономия {{ (order.totalAmount - order.totalAmountWithDiscount).toFixed(1) || 0 }} руб.
             </div>
           </div>
         </div>

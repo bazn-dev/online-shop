@@ -91,7 +91,7 @@
             </div>
           </validation-provider>
           <validation-provider
-            rules="required"
+            rules="required|min:6"
             v-slot="{ errors }"
             name="individualPassword"
             class="mb-3"
@@ -111,7 +111,7 @@
           </validation-provider>
           <validation-provider
             v-model="model.passwordConfirmation"
-            rules="required|password:@individualPassword"
+            rules="required|min:6|password:@individualPassword"
             v-slot="{ errors }"
             name="individualConfirmPassword"
             class="mb-4"
@@ -313,7 +313,7 @@
             </div>
           </validation-provider>
           <validation-provider
-            rules="required"
+            rules="required|min:6"
             v-slot="{ errors }"
             name="entityPassword"
             class="mb-3"
@@ -333,7 +333,7 @@
           </validation-provider>
           <validation-provider
             v-model="model.passwordConfirmation"
-            rules="required|password:@entityPassword"
+            rules="required|min:6|password:@entityPassword"
             v-slot="{ errors }"
             name="entityConfirmPassword"
             class="mb-4"
@@ -374,9 +374,12 @@
 </template>
 
 <script>
-import { ValidationObserver, ValidationProvider } from 'vee-validate';
-import { extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
+import {
+  ValidationObserver,
+  ValidationProvider,
+  extend
+} from 'vee-validate';
+import { required, email, min } from 'vee-validate/dist/rules';
 import { registerUser } from '@/api/users';
 
 export default {
@@ -415,6 +418,10 @@ export default {
     extend('email', {
       ...email,
       message: 'Введите корректный E-mail'
+    });
+    extend('min', {
+      ...min,
+      message: 'Длина пароля не менее 6 символов'
     });
     extend('password', {
       params: ['target'],
@@ -456,8 +463,7 @@ export default {
         })
         this.$toasted.show(`Регистрация прошла успешно!`, { type: 'success', duration: 3000 })
       } catch (e) {
-        this.$toasted.show(`Ошибка регистрации: ${e.message}`, { type: 'error', duration: 3000 })
-        throw new Error(e);
+        this.$toasted.show(`Ошибка регистрации: ${e.response.data.message}`, { type: 'error', duration: 3000 })
       }
     }
   }

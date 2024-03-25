@@ -61,7 +61,7 @@
       </div>
       <div class="footer__info row">
         <div class="footer__description col-lg-6 col-md-12 col-sm-12 order-lg-1 order-md-2 order-sm-2 order-xs-2">
-          {{ currentYear }} © Roast.by — магазин свежего кофе! Общество с ограниченной ответственностью «РоастБай» 220113, г. Минск, ул. Белинского д. 23, пом. 339 УНП 193647200, зарегистрирован 19.09.2022 Минским городским исполнительным комитетом Торговый реестр № 541971 от 28.09.2022
+          {{ currentYear }} © {{ legalInfo ?? 'TeaHub' }}
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12 order-lg-2 order-md-1 order-sm-1 order-xs-1">
           <div class="footer__payment d-flex justify-content-end align-items-center">
@@ -91,7 +91,8 @@ export default {
   },
   data() {
     return {
-      contacts: null
+      contacts: null,
+      legalInfo: null
     }
   },
   computed: {
@@ -105,6 +106,7 @@ export default {
   methods: {
     async initData() {
       this.contacts = (await getCompanyDataByCodeRequest(['footer']))?.[0]?.value || null
+      this.legalInfo = (await getCompanyDataByCodeRequest(['footer-legal-info']))?.[0]?.value || null
     }
   }
 }

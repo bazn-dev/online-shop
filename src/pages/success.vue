@@ -114,6 +114,10 @@ export default {
       width: 40px;
       height: 40px;
     }
+
+    ::v-deep svg path {
+      fill: #d6810b;
+    }
   }
 
   &__order-details {

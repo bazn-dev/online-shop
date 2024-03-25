@@ -96,10 +96,21 @@ const routes = [
   }
 ]
 
-export default new VueRouter({
+const router = new VueRouter({
   scrollBehavior() {
-    return { x: 0, y: 0 };
+    return { x: 0, y: 0 }
   },
   mode: 'history',
   routes
 })
+
+router.beforeEach(async (to, from, next) => {
+  let token = localStorage.getItem('token')
+  if (!token && to.name === 'personal') {
+    next('/')
+  } else {
+    next()
+  }
+})
+
+export default router

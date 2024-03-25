@@ -26,5 +26,10 @@ export default {
     @media (max-width: 767px) {
       width: 100%;
     }
+
+    &::v-deep ul li,
+    &::v-deep ol li {
+      margin: 0 0 10px 21px;
+    }
   }
 </style>
