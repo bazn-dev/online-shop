@@ -25,19 +25,15 @@
         :key="`entry.${entry.productDto.vendorCode}`"
         class="basket-list__item row"
       >
-        <div class="col-lg-6">
+        <div class="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center">
+          <img :src="getImage(entry.productDto.smallImageUrl)" class="basket-list__item-image img-fluid"  alt="">
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-12">
           <div class="row">
-            <div class="col-lg-4 col-md-4">
-              <img :src="getImage(entry.productDto.smallImageUrl)" class="basket-list__item-image img-fluid"  alt="">
-            </div>
-            <div class="basket-list__item-title col-lg-8 col-md-8">
+            <div class="basket-list__item-title col-lg-5 col-md-12">
               {{ entry.productDto.name }}
             </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="row">
-            <div class="col-lg-3 col-md-3">
+            <div class="d-none d-lg-block col-lg-2">
               <div class="basket-list__item-price">
                 {{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.
               </div>
@@ -48,22 +44,22 @@
                 цена за 1 шт
               </div>
             </div>
-            <div class="col-lg-5 col-md-5">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-6 basket-list__center-block">
               <div class="basket-list__item-change-count-wrapper">
-                <div class="basket-list__item-change-count col-sm-6 row">
+                <div class="basket-list__item-change-count row">
                   <div
-                    class="col-sm-4 d-flex justify-content-center align-items-center"
+                    class="col-4 d-flex justify-content-center align-items-center"
                     @click="decrementCount(entry.productDto.vendorCode)"
                   >
                     -
                   </div>
                   <div
-                    class="col-sm-4 d-flex justify-content-center align-items-center"
+                    class="col-4 d-flex justify-content-center align-items-center"
                   >
                     {{ entry.qty }}
                   </div>
                   <div
-                    class="col-sm-4 d-flex justify-content-center align-items-center"
+                    class="col-4 d-flex justify-content-center align-items-center"
                     @click="incrementCount(entry.productDto.vendorCode)"
                   >
                     +
@@ -72,22 +68,20 @@
                 <div class="basket-list__item-change-count-notion">шт</div>
               </div>
             </div>
-            <div class="col-lg-3 col-md-3">
+            <div class="col-lg-2 col-md-6 col-sm-6 col-6 basket-list__center-block">
               <div class="basket-list__item-price">{{ entry.totalPriceWithDiscount }} руб.</div>
               <template v-if="entry.totalPriceWithDiscount !== entry.totalPrice">
                 <div class="basket-list__item-price --old-price">{{ entry.totalPrice }} руб.</div>
                 <div class="basket-list__item-price --discount">Экономия {{ (entry.totalPrice - entry.totalPriceWithDiscount).toFixed(1) }} руб.</div>
               </template>
             </div>
-            <div class="col-lg-1 col-md-1">
-              <div
-                class="basket-list__item-clear"
-                @click="deleteProductFromOrder(entry.productDto.vendorCode)"
-              >
-                <Icon name="close" />
-              </div>
-            </div>
           </div>
+        </div>
+        <div
+          class="basket-list__item-clear"
+          @click="deleteProductFromOrder(entry.productDto.vendorCode)"
+        >
+          <Icon name="close" />
         </div>
       </li>
     </ul>
@@ -240,6 +234,7 @@ export default {
   }
 
   &__item {
+    position: relative;
     padding: 24px 29px !important;
 
     &:not(:last-child) {
@@ -250,6 +245,21 @@ export default {
   &__item-title {
     font-size: 1em;
     color: #2f3435;
+
+    @media (max-width: 991px) {
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 767px) {
+      text-align: center;
+    }
+  }
+
+  &__center-block {
+    @media (max-width: 767px) {
+      display: flex;
+      justify-content: center;
+    }
   }
 
   &__item-price {
@@ -312,9 +322,22 @@ export default {
   }
 
   &__item-clear {
-    position: relative;
-    top: -15px;
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    top: 15px;
+    right: 15px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
+
+    ::v-deep .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 25px;
+      height: 25px;
+    }
 
     ::v-deep .icon svg {
       width: 8px;

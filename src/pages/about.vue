@@ -5,7 +5,7 @@
 
       <nav class="about__breadcrumbs" style="--bs-breadcrumb-divider: '—';" aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Главная</a></li>
+          <li class="breadcrumb-item"><router-link to="/">Главная</router-link></li>
           <li class="breadcrumb-item active" aria-current="page">О компании</li>
         </ol>
       </nav>

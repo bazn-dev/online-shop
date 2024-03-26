@@ -4,7 +4,7 @@
       <div class="order-product-list__title">Товары в заказе</div>
 <!--      <button class="btn btn-link">Подробнее</button>-->
     </div>
-    <div class="order-product-list__body">
+    <div class="order-product-list__body d-none d-sm-block">
       <table class="table">
         <thead>
           <tr>
@@ -41,6 +41,36 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="order-product-list__body d-sm-none">
+      <div
+        v-for="entry in entries"
+        :key="`entry.${entry.productDto.vendorCode}`"
+        class="row"
+      >
+        <div class="col-sm-12">
+          <div class="col-lg-4 col-md-4">
+            <img :src="getImage(entry.productDto.smallImageUrl)" class="order-product-list__item-image img-fluid"  alt="">
+          </div>
+        </div>
+        <div class="col-sm-12">
+          {{ entry.productDto.name }}
+        </div>
+        <div class="col-sm-12 --price">
+          <div class="--note">Цена:</div>
+          <div>{{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.</div>
+          <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="--old-price">{{ entry.productDto.price }} руб.</div>
+        </div>
+        <div class="col-sm-12 --count">
+          <div class="--note">Количество:</div>
+          <div>{{ entry.qty }} шт</div>
+        </div>
+        <div class="col-sm-12 --price">
+          <div class="--note">Сумма:</div>
+          <div>{{ entry.totalPrice !== entry.totalPriceWithDiscount ? entry.totalPriceWithDiscount : entry.totalPrice }} руб.</div>
+          <div v-if="entry.totalPrice !== entry.totalPriceWithDiscount" class="--old-price">{{ entry.totalPrice }} руб.</div>
+        </div>
+      </div>
     </div>
     <div class="order-product-list__footer">
       <label for="promoInput" class="form-label">Применить купон:</label>
@@ -172,6 +202,18 @@ export default {
         margin-bottom: 0;
       }
 
+      &.d-sm-none .row {
+        padding: 20px 30px 25px;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid #ececec;
+        }
+      }
+
+      .col-sm-12 {
+        margin-bottom: 15px;
+      }
+
       .table thead tr th {
         font-size: 13px;
         font-weight: 400;
@@ -227,6 +269,33 @@ export default {
           text-decoration: line-through;
         }
       }
+    }
+
+    & .--note {
+      font-size: 12px;
+      line-height: 12px;
+      color: #999;
+      font-weight: normal;
+    }
+
+    & .--count {
+      font-size: 18px;
+      line-height: 16px;
+    }
+
+    & .--price {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 16px;
+      color: #333;
+    }
+
+    & .--old-price {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 20px;
+      color: #777;
+      text-decoration: line-through;
     }
 
     &__item-image {

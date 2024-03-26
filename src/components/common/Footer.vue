@@ -14,22 +14,13 @@
 
         <ul class="footer__mobile-list d-md-none col-md-12 list-group list-group-flush">
           <router-link to="/catalog/tea">
-            <li class="footer__mobile-item list-group-item">Чай</li>
-          </router-link>
-          <router-link to="/catalog/accessories">
-            <li class="footer__mobile-item list-group-item">Аксессуары</li>
-          </router-link>
-          <router-link to="/info">
-            <li class="footer__mobile-item list-group-item">Скидки, оплата, доставка</li>
+            <li class="footer__mobile-item list-group-item">Каталог</li>
           </router-link>
           <router-link to="/about">
             <li class="footer__mobile-item list-group-item">Компания</li>
           </router-link>
-          <router-link to="/personal">
-            <li class="footer__mobile-item list-group-item">Личный кабинет</li>
-          </router-link>
-          <router-link to="/basket">
-            <li class="footer__mobile-item list-group-item">Корзина</li>
+          <router-link to="/info">
+            <li class="footer__mobile-item list-group-item">Информация</li>
           </router-link>
         </ul>
 
@@ -38,17 +29,6 @@
           v-html="contacts"
           class="footer__nav col-md-12 col-sm-12"
         >
-<!--          <div class="footer__nav-content">-->
-<!--            +375 33 300-33-34-->
-<!--          </div>-->
-<!--          <div class="footer__nav-content">-->
-<!--            info@roast.by-->
-<!--          </div>-->
-<!--          <div class="footer__nav-content">-->
-<!--            г. Минск, ул. Белинского 23 (вход в кофейню BlackMill)-->
-<!--            Заказы через сайт — круглосуточно.-->
-<!--            Кофейня (+375 29 344 33 34): пн-пт с 8:00 до 20:00, сб-вск с 9:00 до 21:00 (самовывоз)-->
-<!--          </div>-->
         </div>
       </div>
       <div class="footer__networks d-flex justify-content-center">

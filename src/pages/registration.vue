@@ -381,6 +381,8 @@ import {
 } from 'vee-validate';
 import { required, email, min } from 'vee-validate/dist/rules';
 import { registerUser } from '@/api/users';
+import { login } from '@/api/auth';
+import { Events } from "../events";
 
 export default {
   name: "registration",
@@ -453,6 +455,9 @@ export default {
           individual: false
         };
         await this.registerRequest(data)
+        if (this.type === 'individual') {
+          await this.authRequest(this.model.email, this.model.password)
+        }
       }
     },
     async registerRequest(data) {
@@ -465,7 +470,17 @@ export default {
       } catch (e) {
         this.$toasted.show(`Ошибка регистрации: ${e.response.data.message}`, { type: 'error', duration: 3000 })
       }
-    }
+    },
+    async authRequest(email, password) {
+      const { token, userId, orderId } = await login({
+        email,
+        password
+      })
+      localStorage.setItem('token', token)
+      localStorage.setItem('orderId', orderId)
+      localStorage.setItem('userId', userId)
+      Events.emit('updateProfile')
+    },
   }
 }
 </script>

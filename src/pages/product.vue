@@ -5,8 +5,8 @@
 
       <nav class="product__breadcrumbs" style="--bs-breadcrumb-divider: '—';" aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Главная</a></li>
-          <li class="breadcrumb-item"><a href="#">Чай</a></li>
+          <li class="breadcrumb-item"><router-link to="/">Главная</router-link></li>
+          <li class="breadcrumb-item"><router-link to="/catalog/tea">Чай</router-link></li>
           <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
         </ol>
       </nav>

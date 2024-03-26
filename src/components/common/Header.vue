@@ -138,7 +138,7 @@ export default {
       this.isLoggedIn = false
       await this.$router.push({
         path: '/'
-      })
+      }).catch(()=>{})
     }
   }
 }
