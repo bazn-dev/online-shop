@@ -56,19 +56,25 @@
         <div class="col-sm-12">
           {{ entry.productDto.name }}
         </div>
-        <div class="col-sm-12 --price">
-          <div class="--note">Цена:</div>
-          <div>{{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.</div>
-          <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="--old-price">{{ entry.productDto.price }} руб.</div>
+        <div class="col-6 --price">
+          <div>
+            <div class="--note">Цена:</div>
+            <div>{{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.</div>
+            <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="--old-price">{{ entry.productDto.price }} руб.</div>
+          </div>
         </div>
-        <div class="col-sm-12 --count">
-          <div class="--note">Количество:</div>
-          <div>{{ entry.qty }} шт</div>
+        <div class="col-6 --count">
+          <div>
+            <div class="--note">Количество:</div>
+            <div>{{ entry.qty }} шт</div>
+          </div>
         </div>
         <div class="col-sm-12 --price">
-          <div class="--note">Сумма:</div>
-          <div>{{ entry.totalPrice !== entry.totalPriceWithDiscount ? entry.totalPriceWithDiscount : entry.totalPrice }} руб.</div>
-          <div v-if="entry.totalPrice !== entry.totalPriceWithDiscount" class="--old-price">{{ entry.totalPrice }} руб.</div>
+          <div>
+            <div class="--note">Сумма:</div>
+            <div>{{ entry.totalPrice !== entry.totalPriceWithDiscount ? entry.totalPriceWithDiscount : entry.totalPrice }} руб.</div>
+            <div v-if="entry.totalPrice !== entry.totalPriceWithDiscount" class="--old-price">{{ entry.totalPrice }} руб.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -93,12 +99,14 @@
           <Icon name="arrow-left" class="order-product-list__promo-icon" />
         </button>
       </div>
-      <div
-        v-if="order?.promotionInfo?.promocode"
-        class="order-product-list__promo-remove"
-        @click="deletePromo"
-      >
-        Удалить промокод
+      <div v-if="order?.promotionInfo?.discountPercentage" class="d-flex justify-content-between align-items-center">
+        <div>Скидка: <b>{{ order?.promotionInfo?.discountPercentage }}</b></div>
+        <div
+          class="order-product-list__promo-remove"
+          @click="deletePromo"
+        >
+          Удалить промокод
+        </div>
       </div>
     </div>
   </div>
@@ -210,7 +218,10 @@ export default {
         }
       }
 
-      .col-sm-12 {
+      .col-sm-12,
+      .col-6 {
+        display: flex;
+        justify-content: center;
         margin-bottom: 15px;
       }
 

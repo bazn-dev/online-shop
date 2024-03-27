@@ -52,9 +52,9 @@
 <!--            <div class="home-best-offers__card-label">Хит</div>-->
             <div class="home-best-offers__card-labels">
               <div
-                  v-for="(sticker, index) in product.stickers"
-                  :key="`product.sticker.${index}`"
-                  class="home-best-offers__card-label"
+                v-for="(sticker, index) in product.stickers"
+                :key="`product.sticker.${index}`"
+                class="home-best-offers__card-label"
               >
                 {{ sticker.name }}
               </div>
@@ -235,6 +235,8 @@ export default {
         position: absolute;
         left: 25px;
         display: flex;
+        flex-wrap: wrap;
+        width: calc(100% - 50px);
       }
 
       &-label {
@@ -242,10 +244,11 @@ export default {
         font-size: .8em;
         line-height: 1.692em;
         color: #ffffff;
-        margin: 0 2px 4px;
+        margin: 0 2px 10px;
         padding: 2px 7px;
         background: #716f6e;
         border-radius: 2px;
+        white-space: nowrap;
 
         &:after {
           position: absolute;

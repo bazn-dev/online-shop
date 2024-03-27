@@ -174,6 +174,8 @@ export default {
         position: absolute;
         left: 25px;
         display: flex;
+        flex-wrap: wrap;
+        width: calc(100% - 30px);
       }
 
       &-label {
@@ -181,10 +183,11 @@ export default {
         font-size: .8em;
         line-height: 1.692em;
         color: #ffffff;
-        margin: 0 5px 4px 2px;
+        margin: 0 5px 10px 2px;
         padding: 2px 7px;
         background: #716f6e;
         border-radius: 2px;
+        white-space: nowrap;
 
         &:after {
           position: absolute;

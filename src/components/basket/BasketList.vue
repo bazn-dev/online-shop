@@ -68,7 +68,7 @@
                 <div class="basket-list__item-change-count-notion">шт</div>
               </div>
             </div>
-            <div class="col-lg-2 col-md-6 col-sm-6 col-6 basket-list__center-block">
+            <div class="col-lg-2 col-md-6 col-sm-6 col-6 basket-list__center-block --price">
               <div class="basket-list__item-price">{{ entry.totalPriceWithDiscount }} руб.</div>
               <template v-if="entry.totalPriceWithDiscount !== entry.totalPrice">
                 <div class="basket-list__item-price --old-price">{{ entry.totalPrice }} руб.</div>
@@ -259,6 +259,13 @@ export default {
     @media (max-width: 767px) {
       display: flex;
       justify-content: center;
+    }
+
+    &.--price {
+      @media (max-width: 767px) {
+        display: flex;
+        flex-direction: column;
+      }
     }
   }
 

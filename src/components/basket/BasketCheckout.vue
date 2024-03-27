@@ -22,12 +22,14 @@
             <Icon name="arrow-left" class="basket-checkout__promo-icon" />
           </button>
         </div>
-        <div
-          v-if="order?.promotionInfo?.promocode"
-          class="basket-checkout__promo-remove"
-          @click="deletePromo"
-        >
-          Удалить промокод
+        <div v-if="order?.promotionInfo?.discountPercentage" class="d-flex justify-content-between align-items-center">
+          <div>Скидка: <b>{{ order?.promotionInfo?.discountPercentage }}</b></div>
+          <div
+            class="basket-checkout__promo-remove"
+            @click="deletePromo"
+          >
+            Удалить промокод
+          </div>
         </div>
       </div>
       <div class="basket-checkout__total-wrapper d-md-flex align-items-center">
