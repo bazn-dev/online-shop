@@ -7,7 +7,7 @@
       class="catalog-categories__item col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12"
     >
       <div class="catalog-categories__item-image-wrapper">
-        <img src="@/assets/img/catalog/categories/flavored-tea.webp" class="catalog-categories__item-image img-fluid"  alt="">
+        <img :src="getImage(category.imageUrl)" class="catalog-categories__item-image img-fluid"  alt="">
       </div>
       <div class="catalog-categories__item-content">
         <div class="catalog-categories__item-title">{{ category.displayName }}</div>
@@ -24,6 +24,13 @@ export default {
     categories: {
       type: Array,
       default: () => []
+    }
+  },
+  methods: {
+    getImage(url) {
+      return url === 'ссылка'
+          ? require('@/assets/img/catalog/product.webp')
+          : `http://178.172.201.242${url}`
     }
   }
 }

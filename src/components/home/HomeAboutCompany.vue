@@ -105,8 +105,9 @@ export default {
     }
 
     &__image {
-      min-height: 440px;
-      background-image: url(../../assets/img/about/1.webp);
+      height: 100%;
+      background-image: url(../../assets/img/about/about-us.jpg);
+      background-position: 50% 50%;
       background-size: auto;
     }
   }

@@ -112,6 +112,8 @@ export default {
 
 <style scoped lang="scss">
   .catalog-sidebar {
+    position: sticky;
+    top: 100px;
     width: 244px;
 
     &__title {

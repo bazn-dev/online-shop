@@ -21,7 +21,7 @@
         </ol>
       </nav>
 
-      <CatalogCategories :categories="currentCategoryData?.childCategories || []" />
+      <CatalogCategories :categories="childCategories || []" />
 
       <div class="catalog__block d-flex justify-content-between">
         <CatalogSidebar
@@ -69,6 +69,7 @@ export default {
       inStockFilter: undefined,
       order: null,
       categories: [],
+      childCategories: [],
       productsData: null,
       products: []
     }
@@ -166,6 +167,7 @@ export default {
       })
       this.products = data.productsDto?.content || []
       this.productsData = data.productsDto
+      this.childCategories = data.childCategories
     },
     async sort(sort, inStockFilter = undefined, page = 0) {
       this.activeSort = sort
@@ -231,7 +233,7 @@ export default {
   }
 
   &__block {
-
+    position: relative;
   }
 }
 </style>
