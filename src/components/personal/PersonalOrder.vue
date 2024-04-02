@@ -14,30 +14,30 @@
         <div class="personal-order__content-body">
           <div class="personal-order__content-title">Информация о заказе</div>
           <div class="row">
-            <div class="col-md-4 col-sm-6">
-              <div class="personal-order__content-subtitle">Ф.И.О.:</div>
-              <div class="personal-order__content-text">Evgeniy Bazhin</div>
-            </div>
-            <div class="col-md-4 col-sm-6">
+<!--            <div class="col-md-4 col-sm-6">-->
+<!--              <div class="personal-order__content-subtitle">Ф.И.О.:</div>-->
+<!--              <div class="personal-order__content-text">Evgeniy Bazhin</div>-->
+<!--            </div>-->
+            <div class="col-md-6 col-sm-6">
               <div class="personal-order__content-subtitle">Текущий статус:</div>
               <div class="personal-order__content-text">Заказ доставлен в пункт самовывоза</div>
             </div>
-            <div class="col-md-2 col-sm-6">
+            <div class="col-md-6 col-sm-6">
               <div class="personal-order__content-subtitle">Сумма:</div>
               <div class="personal-order__content-text">
                 <strong>{{ order.totalAmountWithDiscount }} руб.</strong>
               </div>
             </div>
-            <div class="col-md-2 col-sm-6">
+<!--            <div class="col-md-2 col-sm-6">
               <button class="personal-order__content-btn btn btn-lg">Повторить заказ</button>
-            </div>
+            </div>-->
           </div>
         </div>
         <div class="personal-order__content-header">Параметры оплаты</div>
         <div class="personal-order__content-body">
           <div class="d-flex">
             <div class="personal-order__content-subtitle">Способ оплаты:</div>
-            <div class="personal-order__content-text --ml-5">{{ order.paymentMode }}</div>
+            <div class="personal-order__content-text --ml-5">{{ order?.paymentMode?.option }}</div>
           </div>
           <div class="d-flex">
             <div class="personal-order__content-subtitle">Сумма заказа:</div>
@@ -48,11 +48,11 @@
         <div class="personal-order__content-body">
           <div class="d-flex">
             <div class="personal-order__content-subtitle">Способ доставки:</div>
-            <div class="personal-order__content-text --ml-5">{{ order.deliveryMode }}</div>
+            <div class="personal-order__content-text --ml-5">{{ order?.deliveryMode?.option }}</div>
           </div>
           <div class="d-flex">
             <div class="personal-order__content-subtitle">Адрес доставки/самовывоза:</div>
-            <div class="personal-order__content-text --ml-5">15.40 руб.</div>
+            <div class="personal-order__content-text --ml-5">{{ deliveryAddress }}</div>
           </div>
         </div>
         <div class="personal-order__content-header">Содержимое заказа</div>
@@ -93,7 +93,7 @@
         <div class="personal-order__content-body d-flex flex-column align-items-end">
           <div class="personal-order__total-row d-flex">
             <div>Стоимость доставки:</div>
-            <div>0 руб.</div>
+            <div>{{ order?.deliveryMode?.deliveryCost }} руб.</div>
           </div>
           <div class="personal-order__total-row d-flex">
             <div><b>Итого:</b></div>
@@ -116,14 +116,27 @@ export default {
       default: () => null
     }
   },
+  computed: {
+    deliveryAddress() {
+      if (!this.order) {
+        return ''
+      }
+      if (this.order.deliveryMode.code === 'Самовывоз') {
+        return this.order.deliveryMode.description
+      } else {
+        const { city, street, buildingNumber, apartmentNumber } = this.order.deliveryAddress
+        return `${city}, ул. ${street}, д. ${buildingNumber} / ${apartmentNumber}`
+      }
+    }
+  },
   methods: {
     formatDate(date) {
       return moment(date).format('DD.MM.YYYY')
     },
     getImage(link) {
       return link === 'ссылка'
-          ? require('@/assets/img/catalog/product.webp')
-          : `http://178.172.201.242${link}`
+        ? require('@/assets/img/catalog/product.webp')
+        : `http://178.172.201.242${link}`
     },
     async toOrders() {
       await this.$router.push({

@@ -119,6 +119,9 @@ export default {
         params: {
           vendorCode: this.product.vendorCode
         },
+        query: {
+          from: this.$route.path
+        }
       });
     },
     addProductToOrder() {

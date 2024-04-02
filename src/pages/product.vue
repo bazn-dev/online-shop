@@ -5,8 +5,13 @@
 
       <nav class="product__breadcrumbs" style="--bs-breadcrumb-divider: '—';" aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><router-link to="/">Главная</router-link></li>
-          <li class="breadcrumb-item"><router-link to="/catalog/tea">Чай</router-link></li>
+          <li
+              v-for="breadcrumb in breadcrumbs"
+              :key="`breadcrumb.${breadcrumb.link}`"
+              class="breadcrumb-item"
+          >
+            <router-link :to="breadcrumb.link">{{ breadcrumb.title }}</router-link>
+          </li>
           <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
         </ol>
       </nav>
@@ -73,6 +78,9 @@ import {
   addProductToOrder as addProductToOrderRequest,
   getOrderById as getOrderByIdRequest,
 } from '@/api/orders'
+import {
+  getCategories as getCategoriesRequest
+} from '@/api/catalog'
 import ProductCardSlider from '../components/product/ProductCardSlider'
 import ProductDescription from '../components/product/ProductDescription'
 import ProductReviews from '../components/product/ProductReviews'
@@ -90,6 +98,7 @@ export default {
     return {
       order: null,
       product: null,
+      categories: [],
       tabs: [
         {
           name: 'description',
@@ -108,6 +117,36 @@ export default {
       return this.order?.entries
         .map(product => product.productDto.vendorCode)
         .find(item => item === this.$route.params.vendorCode) !== undefined;
+    },
+    breadcrumbs() {
+      console.log(this.$route.query.from)
+      const breadcrumbs = [{
+        link: '/',
+        title: 'Главная'
+      }]
+      if (this.categories.length > 0 && this.$route?.query?.from) {
+        const categoryNames = this.$route?.query?.from.split(`/catalog/`)[1].split('/');
+        let lastLink = '/catalog';
+        let categories = this.categories;
+        for (let name of categoryNames) {
+          let data = categories?.find(item => item.name === name)
+          if (name === 'accessories') {
+            breadcrumbs.push({
+              link: lastLink,
+              title: 'Аксессуары'
+            })
+          } else {
+            lastLink += `/${data?.name}`
+            breadcrumbs.push({
+              link: lastLink,
+              title: data?.displayName
+            })
+          }
+          categories = data?.childCategories
+        }
+      }
+      console.log()
+      return breadcrumbs;
     }
   },
   async beforeMount() {
@@ -118,9 +157,13 @@ export default {
       await this.setOrder()
       this.product = await getProductByVendorCodeRequest(this.$route.params.vendorCode, localStorage.getItem('userId'))
       document.title = this.product.name;
+      await this.getCategories()
     },
     async setOrder() {
       this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))
+    },
+    async getCategories() {
+      this.categories = await getCategoriesRequest()
     },
     async addProductToOrder(count) {
       await addProductToOrderRequest({

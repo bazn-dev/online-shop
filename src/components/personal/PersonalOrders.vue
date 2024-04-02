@@ -1,8 +1,6 @@
 <template>
   <div class="personal-orders">
     <div class="personal-orders__wrapper d-flex flex-column">
-      <h3 v-if="orders.length > 0" class="personal-orders__title">Заказы в статусе «{{ orders?.[0]?.orderStatus }}»</h3>
-
       <div
         v-if="orders.length === 0"
         class="personal-orders__not-found"
@@ -10,29 +8,37 @@
         Заказы не найдены
       </div>
 
-      <div
-          v-for="order in orders"
-          :key="`order.${order.id}`"
-          class="personal-orders__order"
-      >
-        <div class="personal-orders__order-header d-flex justify-content-between">
-          <div class="personal-orders__order-title">Заказ № {{ order.id }} от {{ formatDateTime(order.creationDate) }}, {{ order.entries.length }} товар на сумму
-            {{ order.totalAmountWithDiscount }} руб.</div>
-<!--          <div class="personal-orders__order-status">-->
-<!--            <span>Заказ выполнен</span>-->
-<!--            <span>23.01.2024</span>-->
-<!--          </div>-->
-        </div>
-        <div class="personal-orders__order-footer d-flex justify-content-between">
-          <button
-            class="personal-orders__order-footer-btn --covered btn btn-lg"
-            @click="toOrder(order.id)"
+      <template v-if="groupedOrders">
+        <div
+          v-for="group in Object.keys(groupedOrders)"
+          :key="`order-group.${group}`"
+        >
+          <h3 v-if="orders.length > 0" class="personal-orders__title">Заказы в статусе «{{ group }}»</h3>
+          <div
+              v-for="order in groupedOrders[group]"
+              :key="`order.${order.id}`"
+              class="personal-orders__order"
           >
-            Подробнее о заказе
-          </button>
-          <button class="personal-orders__order-footer-btn --outlined btn btn-lg">Повторить заказ</button>
+            <div class="personal-orders__order-header d-flex justify-content-between">
+              <div class="personal-orders__order-title">Заказ № {{ order.id }} от {{ formatDateTime(order.creationDate) }}, {{ order.entries.length }} товар на сумму
+                {{ order.totalAmountWithDiscount }} руб.</div>
+    <!--          <div class="personal-orders__order-status">-->
+    <!--            <span>Заказ выполнен</span>-->
+    <!--            <span>23.01.2024</span>-->
+    <!--          </div>-->
+            </div>
+            <div class="personal-orders__order-footer d-flex justify-content-between">
+              <button
+                class="personal-orders__order-footer-btn --covered btn btn-lg"
+                @click="toOrder(order.id)"
+              >
+                Подробнее о заказе
+              </button>
+    <!--          <button class="personal-orders__order-footer-btn &#45;&#45;outlined btn btn-lg">Повторить заказ</button>-->
+            </div>
+          </div>
         </div>
-      </div>
+      </template>
 
       <div class="personal-orders__link" @click="toCatalog">Перейти в каталог</div>
     </div>
@@ -41,6 +47,7 @@
 
 <script>
 import moment from 'moment'
+import { groupBy } from 'lodash'
 
 export default {
   name: "PersonalOrders",
@@ -48,6 +55,14 @@ export default {
     orders: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    groupedOrders() {
+      if (this.orders.length === 0) {
+        return null
+      }
+      return groupBy(this.orders, 'orderStatus')
     }
   },
   methods: {
@@ -138,6 +153,7 @@ export default {
 
         &:hover {
           background: #a59c90;
+          border: 1px solid #a59c90;
         }
       }
 
