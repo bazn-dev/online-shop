@@ -141,7 +141,7 @@ export default {
     async toOrders() {
       await this.$router.push({
         path: `/personal?tab=orders-history`
-      })
+      }).catch(()=>{})
       await this.$router.go(0)
     }
   }
