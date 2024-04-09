@@ -150,11 +150,15 @@ export default {
   methods: {
     async addPromo() {
       if (this.promoCode) {
-        await addPromoRequest({
-          orderId: this.order.id,
-          promoCode: this.promoCode
-        })
-        this.$emit('updateOrder')
+        try {
+          await addPromoRequest({
+            orderId: this.order.id,
+            promoCode: this.promoCode
+          })
+          this.$emit('updateOrder')
+        } catch (e) {
+          this.$toasted.show(e.response.data.promoCode, { type: 'error', duration: 3000 })
+        }
       }
     },
     async deletePromo() {
@@ -287,6 +291,7 @@ export default {
       line-height: 12px;
       color: #999;
       font-weight: normal;
+      margin-bottom: 3px;
     }
 
     & .--count {

@@ -175,6 +175,7 @@ export default {
       color: #d6810b;
       margin-bottom: 18px;
       text-decoration: none;
+      cursor: pointer;
     }
   }
 </style>

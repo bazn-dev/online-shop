@@ -94,10 +94,14 @@ export default {
   methods: {
     async addPromo() {
       if (this.promoCode) {
-        await addPromoRequest({
-          orderId: this.order.id,
-          promoCode: this.promoCode
-        })
+        try {
+          await addPromoRequest({
+            orderId: this.order.id,
+            promoCode: this.promoCode
+          })
+        } catch (e) {
+          this.$toasted.show(e.response.data.promoCode, { type: 'error', duration: 3000 })
+        }
         this.$emit('updateOrder')
       }
     },
