@@ -42,7 +42,10 @@
           </div>
         </div>
         <div class="catalog-card__card-info-price">
-          {{ product.price }} руб.
+          {{ product.priceWithDiscount > 0 ? product.priceWithDiscount : product.price }} руб.
+        </div>
+        <div class="catalog-card__card-info-price --old-price">
+          {{ product.priceWithDiscount > 0 ? product.price + ' руб.' : '' }}
         </div>
       </div>
     </div>
@@ -156,7 +159,7 @@ export default {
 
     &__content {
       padding-top: 25px;
-      padding-bottom: 25px;
+      padding-bottom: 10px;
       margin: 0 0 -1px -1px;
       border-radius: 0;
       border: 1px solid #ececec;
@@ -266,6 +269,15 @@ export default {
         font-weight: 700;
         color: #333333;
         margin-top: 7px;
+
+        &.--old-price {
+          height: 20px;
+          font-size: 12px;
+          line-height: 20px;
+          color: #777;
+          text-decoration: line-through;
+          margin-top: 0;
+        }
       }
 
       &-more {
@@ -294,7 +306,7 @@ export default {
         }
 
         ::v-deep .icon path {
-          fill: #ffffff;
+          fill: #ffffff !important;
         }
       }
 

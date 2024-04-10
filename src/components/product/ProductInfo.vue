@@ -1,6 +1,12 @@
 <template>
   <div class="product-info">
-    <div class="product-info__price">{{ product.price }} руб.</div>
+    <div class="product-info__price">{{ product.priceWithDiscount > 0 ? product.priceWithDiscount : product.price }} руб.</div>
+    <div
+      v-if="product.priceWithDiscount > 0"
+      class="product-info__price --old-price"
+    >
+      {{ product.price }} руб.
+    </div>
     <div v-if="product.inStock" class="product-info__availability">
       <div class="product-info__availability-indicator"></div>
       <div class="product-info__availability-text">Много</div>
@@ -109,6 +115,13 @@ export default {
       line-height: 1.454em;
       font-weight: 700;
       color: #333333;
+
+      &.--old-price {
+        font-size: 14px;
+        line-height: 20px;
+        color: #777;
+        text-decoration: line-through;
+      }
     }
 
     &__availability {
@@ -172,7 +185,7 @@ export default {
       }
 
       ::v-deep .icon path {
-        fill: #ffffff;
+        fill: #ffffff !important;
       }
     }
 

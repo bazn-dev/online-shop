@@ -59,10 +59,7 @@
                   {{ errors[0] }}
                 </div>
               </validation-provider>
-              <div class="d-flex justify-content-end mb-5">
-                <div>Забыли пароль?</div>
-              </div>
-              <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-between mt-5">
                 <button class="modal-auth__auth-btn btn btn-lg" @click="auth">Войти</button>
                 <button class="modal-auth__register-btn btn btn-lg" @click="toRegister">Регистрация</button>
               </div>
