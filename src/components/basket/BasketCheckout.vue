@@ -39,12 +39,12 @@
           </div>
           <div class="basket-checkout__total-price-wrapper">
             <div class="--total">
-              {{ order?.promotionInfo?.promocode ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
+              {{ order?.promotionInfo?.promocode || order?.totalAmount !== order?.totalAmountWithDiscount ? order?.totalAmountWithDiscount : order?.totalAmount || 0 }} руб.
             </div>
-            <div v-if="order?.promotionInfo?.promocode" class="--old-price">
+            <div v-if="order?.promotionInfo?.promocode || order?.totalAmount !== order?.totalAmountWithDiscount" class="--old-price">
               {{ order?.totalAmount || 0 }} руб.
             </div>
-            <div v-if="order?.promotionInfo?.promocode" class="--discount">
+            <div v-if="order?.promotionInfo?.promocode || order?.totalAmount !== order?.totalAmountWithDiscount" class="--discount">
               Экономия {{ (order.totalAmount - order.totalAmountWithDiscount).toFixed(1) || 0 }} руб.
             </div>
           </div>

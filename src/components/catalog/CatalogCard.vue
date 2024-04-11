@@ -33,7 +33,10 @@
         <div class="catalog-card__card-info-title">{{ product.name }}</div>
         <div class="catalog-card__card-info-additional">
           <div class="catalog-card__card-info-count">
-            <div class="catalog-card__card-info-count-indicator"></div>
+            <div
+              class="catalog-card__card-info-count-indicator"
+              :class="{'--danger': !product.inStock}"
+            ></div>
             <div v-if="product.inStock">Много</div>
             <div v-else>Нет в наличии</div>
           </div>
@@ -56,7 +59,10 @@
         </div>
       </div>
       <div v-else class="row">
-        <div class="catalog-card__card-more-count col-sm-6 row">
+        <div
+          class="catalog-card__card-more-count col-sm-6 row"
+          :class="{'--disabled': !product.inStock}"
+        >
           <div
             class="col-sm-4 d-flex justify-content-center align-items-center"
             @click="decrementCount"
@@ -71,7 +77,13 @@
             <Icon name="plus" />
           </div>
         </div>
-        <div class="catalog-card__card-more-btn col-sm-6" @click="addProductToOrder">В корзину</div>
+        <div
+          class="catalog-card__card-more-btn col-sm-6"
+          :class="{'--disabled': !product.inStock}"
+          @click="addProductToOrder"
+        >
+          В корзину
+        </div>
       </div>
     </div>
   </div>
@@ -109,9 +121,15 @@ export default {
   },
   methods: {
     incrementCount() {
+      if (!this.product.inStock) {
+        return
+      }
       this.count++;
     },
     decrementCount() {
+      if (!this.product.inStock) {
+        return
+      }
       if (this.count > 1) {
         this.count--;
       }
@@ -128,6 +146,9 @@ export default {
       });
     },
     addProductToOrder() {
+      if (!this.product.inStock) {
+        return
+      }
       this.$emit("addToOrder", {
         productVendorCode: this.product.vendorCode,
         count: this.count
@@ -257,6 +278,10 @@ export default {
         background-color: #5fa800;
         border-radius: 100%;
         margin-right: 8px;
+
+        &.--danger {
+          background-color: #e10000;
+        }
       }
 
       &-info-additional-text {
@@ -299,6 +324,11 @@ export default {
         text-transform: uppercase;
         cursor: pointer;
 
+        &.--disabled {
+          opacity: 0.8;
+          cursor: default;
+        }
+
         ::v-deep .icon {
           position: relative;
           bottom: 1px;
@@ -314,6 +344,14 @@ export default {
         font-size: 13px;
         color: #333333;
         background: #ffffff;
+
+        &.--disabled {
+          div:nth-child(1),
+          div:nth-child(3) {
+            opacity: 0.8;
+            cursor: default;
+          }
+        }
 
         div:nth-child(1),
         div:nth-child(3) {

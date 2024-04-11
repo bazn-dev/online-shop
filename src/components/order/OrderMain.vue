@@ -39,6 +39,7 @@
       <button
         class="order-main__submit-button btn btn-primary btn-lg"
         @click="orderPlace"
+        :disabled="!agree"
       >
         Оформить заказ
       </button>

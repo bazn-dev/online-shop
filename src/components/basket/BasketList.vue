@@ -265,6 +265,9 @@ export default {
       @media (max-width: 767px) {
         display: flex;
         flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 3px;
+        padding-left: 15px !important;
       }
     }
   }

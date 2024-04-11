@@ -366,7 +366,14 @@
           </div>
         </validation-observer>
         <div class="d-flex justify-content-center">
-          <button type="submit" class="registration__btn btn btn-lg" @click="register">Зарегистрироваться</button>
+          <button
+            type="submit"
+            class="registration__btn btn btn-lg"
+            :disabled="!model.agree"
+            @click="register"
+          >
+            Зарегистрироваться
+          </button>
         </div>
       </div>
     </div>

@@ -34,30 +34,46 @@
     </ul>
     <div class="drawer__footer">
       <div class="drawer__footer-title">Контактная информация</div>
-      <div class="drawer__footer-list">
-        <div class="drawer__footer-item">
-          <div>
-            г. Минск, ул. Белинского 23 (вход в кофейню BlackMill)
-            Заказы через сайт — круглосуточно.
-            Кофейня (+375 29 344 33 34): пн-пт с 8:00 до 20:00, сб-вск с 9:00 до 21:00 (самовывоз)
-          </div>
-        </div>
-        <div class="drawer__footer-item">
-          <div>
-            info@roast.by
-          </div>
-        </div>
+      <div v-html="contacts" class="drawer__footer-list">
+<!--        <div class="drawer__footer-item">-->
+<!--          <div>-->
+<!--            г. Минск, ул. Белинского 23 (вход в кофейню BlackMill)-->
+<!--            Заказы через сайт — круглосуточно.-->
+<!--            Кофейня (+375 29 344 33 34): пн-пт с 8:00 до 20:00, сб-вск с 9:00 до 21:00 (самовывоз)-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="drawer__footer-item">-->
+<!--          <div>-->
+<!--            info@roast.by-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getCompanyDataByCode as getCompanyDataByCodeRequest } from '@/api/company'
+
 export default {
   name: "Drawer",
+  data() {
+    return {
+      contacts: null,
+      legalInfo: null
+    }
+  },
   computed: {
     isLoggedIn() {
       return localStorage.getItem('token')
+    }
+  },
+  async beforeMount() {
+    await this.initData()
+  },
+  methods: {
+    async initData() {
+      this.contacts = (await getCompanyDataByCodeRequest(['footer']))?.[0]?.value || null
     }
   }
 }
@@ -96,15 +112,15 @@ export default {
 
     &__footer-list {
       margin-top: 20px;
-    }
 
-    &__footer-item {
-      font-size: 13px;
-      line-height: 18px;
-      color: #333;
+      &::v-deep p {
+        font-size: 13px;
+        line-height: 18px;
+        color: #333;
 
-      &:not(:last-child) {
-        margin-bottom: 12px;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
   }

@@ -7,9 +7,13 @@
     >
       {{ product.price }} руб.
     </div>
-    <div v-if="product.inStock" class="product-info__availability">
-      <div class="product-info__availability-indicator"></div>
-      <div class="product-info__availability-text">Много</div>
+    <div class="product-info__availability">
+      <div
+        class="product-info__availability-indicator"
+        :class="{'--danger': !product.inStock}"
+      ></div>
+      <div v-if="product.inStock" class="product-info__availability-text">Много</div>
+      <div v-else class="product-info__availability-text --danger">Нет в наличии</div>
     </div>
     <div class="d-flex align-items-center">
       <button
@@ -21,7 +25,10 @@
         <Icon name="check" /> В корзине
       </button>
       <template v-else>
-        <div class="product-info__change-count col-6 row">
+        <div
+          class="product-info__change-count col-6 row"
+          :class="{'--disabled': !product.inStock}"
+        >
           <div
             class="col-4 d-flex justify-content-center align-items-center"
             @click="decrementCount"
@@ -41,6 +48,7 @@
         <button
           type="button"
           class="product-info__basket-btn btn btn-lg"
+          :disabled="!product.inStock"
           @click="addToBasket"
         >
           В корзину
@@ -89,9 +97,15 @@ export default {
   },
   methods: {
     incrementCount() {
+      if (!this.product.inStock) {
+        return
+      }
       this.count++;
     },
     decrementCount() {
+      if (!this.product.inStock) {
+        return
+      }
       if (this.count > 1) {
         this.count--;
       }
@@ -137,6 +151,10 @@ export default {
       background-color: #5fa800;
       border-radius: 100%;
       margin-right: 8px;
+
+      &.--danger {
+        background-color: #e10000;
+      }
     }
 
     &__availability-text {
@@ -144,6 +162,11 @@ export default {
       line-height: 14px;
       color: #5fa800;
       border-bottom: 1px dotted #5fa800;
+
+      &.--danger {
+        color: #e10000;
+        border-bottom: 1px dotted #e10000;
+      }
     }
 
     &__change-count {
@@ -157,6 +180,15 @@ export default {
 
       div:nth-child(2) {
         pointer-events: none;
+      }
+
+      &.--disabled {
+        opacity: 0.8;
+
+        div:nth-child(1),
+        div:nth-child(3) {
+          cursor: default;
+        }
       }
 
       div:nth-child(1),
