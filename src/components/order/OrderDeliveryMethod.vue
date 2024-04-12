@@ -24,6 +24,7 @@
         type="radio"
         :id="`${deliveryMode.code}Radio`"
         class="form-check-input"
+        @change="setActiveDeliveryMode(deliveryMode.code)"
       />
       <label
         class="form-check-label"

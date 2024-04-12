@@ -108,7 +108,7 @@ export default {
             postalCode: this.$refs.customerInfo.$data.model.postalCode,
           },
           name: this.$refs.customerInfo.$data.model.name,
-          phone: this.$refs.customerInfo.$data.model.phone,
+          phone: '+375' + this.$refs.customerInfo.$data.model.phone,
           email: this.$refs.customerInfo.$data.model.email,
           contactlessDelivery: this.$refs.customerInfo.$data.model.contactlessDelivery,
           noApproveCall: this.$refs.customerInfo.$data.model.noApproveCall,

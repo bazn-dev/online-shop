@@ -45,18 +45,22 @@
       </validation-provider>
 
       <validation-provider
-        rules="required"
+        rules="required|numeric"
         v-slot="{ errors }"
         name="phone"
         tag="div"
         class="mb-3"
       >
         <label for="customerPhone" class="form-label">Телефон <span>*</span></label>
-        <input
-          v-model="model.phone"
-          id="customerPhone"
-          class="form-control"
-        />
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="phone-addon">+375</span>
+          <input
+            v-model="model.phone"
+            id="customerPhone"
+            class="form-control"
+            aria-describedby="phone-addon"
+          />
+        </div>
         <div v-if="errors.length > 0" class="invalid-feedback">
           {{ errors[0] }}
         </div>
@@ -118,7 +122,7 @@
         </validation-provider>
 
         <validation-provider
-          rules="required"
+          rules="required|numeric"
           v-slot="{ errors }"
           name="apartmentNumber"
           tag="div"
@@ -136,7 +140,7 @@
         </validation-provider>
 
         <validation-provider
-          rules="required"
+          rules="required|numeric"
           v-slot="{ errors }"
           name="postalCode"
           tag="div"
@@ -192,7 +196,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
+import { required, email, numeric } from 'vee-validate/dist/rules';
 
 export default {
   name: "OrderCustomerInfo",
@@ -225,6 +229,10 @@ export default {
     extend('email', {
       ...email,
       message: 'Введите корректный E-mail'
+    })
+    extend('numeric', {
+      ...numeric,
+      message: 'Поле может содержать только цифры'
     })
   },
 }

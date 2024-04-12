@@ -60,19 +60,23 @@
         </div>
         <div class="d-flex mb-3">
           <validation-provider
-            rules="required"
+            rules="required|numeric"
             v-slot="{ errors }"
             name="individualPhone"
             class="w-50"
             tag="div"
           >
             <label for="individualPhone" class="form-label">Телефон</label>
-            <input
-              v-model="model.phone"
-              type="text"
-              class="form-control"
-              id="individualPhone"
-            />
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="phone-addon">+375</span>
+              <input
+                v-model="model.phone"
+                type="text"
+                class="form-control"
+                id="individualPhone"
+                aria-describedby="phone-addon"
+              />
+            </div>
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
             </div>
@@ -178,7 +182,7 @@
           </div>
           <div class="d-flex mb-3">
             <validation-provider
-              rules="required"
+              rules="required|numeric"
               v-slot="{ errors }"
               name="unp"
               class="w-50"
@@ -224,7 +228,7 @@
           </div>
           <div class="d-flex mb-3">
             <validation-provider
-              rules="required"
+              rules="required|numeric"
               v-slot="{ errors }"
               name="postcode"
               class="w-50"
@@ -286,7 +290,7 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
-import { required, email, min } from 'vee-validate/dist/rules';
+import { required, email, min, numeric } from 'vee-validate/dist/rules';
 import { updateUser as updateUserRequest } from '@/api/users';
 
 export default {
@@ -324,7 +328,7 @@ export default {
       if (val) {
         this.model.name = val.name
         this.model.email = val.email
-        this.model.phone = val.phone
+        this.model.phone = val.phone.replace('+375', '')
 
         if (!val.individual) {
           this.model.companyName = val.companyName
@@ -350,6 +354,10 @@ export default {
       ...min,
       message: 'Длина пароля не менее 6 символов'
     });
+    extend('numeric', {
+      ...numeric,
+      message: 'Поле может содержать только цифры'
+    });
     extend('password', {
       params: ['target'],
       validate(value, { target }) {
@@ -366,14 +374,14 @@ export default {
         const data = this.user?.individual ? {
           userId: Number(localStorage.getItem('userId')),
           name: this.model.name,
-          phone: this.model.phone,
+          phone: '+375' + this.model.phone,
           email: this.model.email,
           password: this.model.password,
           passwordConfirmation: this.model.passwordConfirmation
         } : {
           userId: Number(localStorage.getItem('userId')),
           name: this.model.name,
-          phone: this.model.phone,
+          phone: '+375' + this.model.phone,
           email: this.model.email,
           password: this.model.password,
           passwordConfirmation: this.model.passwordConfirmation,

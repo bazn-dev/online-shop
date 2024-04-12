@@ -37,7 +37,7 @@ export default {
         {
           iconName: 'discount-system',
           title: 'Накопительная система',
-          description: 'постоянная скидка за покупки <b>до 20%</b>'
+          description: 'Постоянная скидка за покупки <b>до 20%</b>'
         },
         {
           iconName: 'quality-guarantee',

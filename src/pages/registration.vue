@@ -73,19 +73,23 @@
             </div>
           </validation-provider>
           <validation-provider
-            rules="required"
+            rules="required|numeric"
             v-slot="{ errors }"
             name="individualPhone"
             class="mb-3"
             tag="div"
           >
             <label for="individualPhone" class="registration__form-label form-label">Телефон <span class="--required">*</span></label>
-            <input
-              v-model="model.phone"
-              type="text"
-              class="form-control"
-              id="individualPhone"
-            />
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="phone-addon">+375</span>
+              <input
+                v-model="model.phone"
+                type="text"
+                class="form-control"
+                id="individualPhone"
+                aria-describedby="phone-addon"
+              />
+            </div>
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
             </div>
@@ -187,7 +191,7 @@
             </div>
           </validation-provider>
           <validation-provider
-            rules="required"
+            rules="required|numeric"
             v-slot="{ errors }"
             name="unp"
             class="mb-3"
@@ -277,7 +281,7 @@
             </div>
           </validation-provider>
           <validation-provider
-            rules="required"
+            rules="required|numeric"
             v-slot="{ errors }"
             name="postcode"
             class="mb-3"
@@ -386,7 +390,7 @@ import {
   ValidationProvider,
   extend
 } from 'vee-validate';
-import { required, email, min } from 'vee-validate/dist/rules';
+import { required, email, min, numeric } from 'vee-validate/dist/rules';
 import { registerUser } from '@/api/users';
 import { login } from '@/api/auth';
 import { Events } from "../events";
@@ -432,6 +436,10 @@ export default {
       ...min,
       message: 'Длина пароля не менее 6 символов'
     });
+    extend('numeric', {
+      ...numeric,
+      message: 'Поле может содержать только цифры'
+    });
     extend('password', {
       params: ['target'],
       validate(value, { target }) {
@@ -451,7 +459,7 @@ export default {
         const data = this.type === 'individual' ? {
           userId: Number(localStorage.getItem('userId')),
           name: this.model.name,
-          phone: this.model.phone,
+          phone: '+375' + this.model.phone,
           email: this.model.email,
           password: this.model.password,
           passwordConfirmation: this.model.passwordConfirmation,

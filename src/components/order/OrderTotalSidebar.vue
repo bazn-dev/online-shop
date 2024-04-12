@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     discount() {
-      if (this.order?.promoCode || this.order.totalAmount !== this.order.totalAmountWithDiscount) {
+      if (this.order?.promoCode || (this.order?.totalAmount !== this.order?.totalAmountWithDiscount)) {
         return `${(this.order.totalAmount - this.order.totalAmountWithDiscount).toFixed(1)} руб.`
       }
       return 0

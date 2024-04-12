@@ -168,13 +168,15 @@ export default {
     position: relative;
     transition: box-shadow ease-out .2s;
 
-    &:hover {
-      box-shadow: 0 0 20px 0 rgba(0,0,0,.15);
-      z-index: 2;
+    @media (min-width: 992px) {
+      &:hover {
+        box-shadow: 0 0 20px 0 rgba(0,0,0,.15);
+        z-index: 2;
 
-      .catalog-card__card-more {
-        visibility: visible;
-        box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.1);
+        .catalog-card__card-more {
+          visibility: visible;
+          box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.1);
+        }
       }
     }
 
@@ -325,7 +327,7 @@ export default {
         cursor: pointer;
 
         &.--disabled {
-          opacity: 0.8;
+          background: #e8c7a1;
           cursor: default;
         }
 
