@@ -66,6 +66,9 @@
                   </div>
                 </div>
                 <div class="basket-list__item-change-count-notion">шт</div>
+                <div class="basket-list__item-change-count-notion mt-2">
+                  <b>{{ entry.grammAmount ? entry.grammAmount + ' г' : '' }}</b>
+                </div>
               </div>
             </div>
             <div class="col-lg-2 col-md-6 col-sm-6 col-6 basket-list__center-block --price">
@@ -95,6 +98,7 @@ import {
   deleteAllProductsFromOrder as deleteAllProductsFromOrderRequest,
 } from '@/api/orders'
 import Icon from '@/components/common/Icon'
+import { Events } from "../../events";
 
 export default {
   name: "BasketList",
@@ -125,12 +129,18 @@ export default {
       }
       this.isLoadingChangeCount = true
       const currentCount = this.entries.find(entry => entry.productDto.vendorCode === vendorCode).qty
-      await addProductToOrderRequest({
-        orderId: Number(localStorage.getItem('orderId')),
-        productVendorCode: vendorCode,
-        qty: currentCount + 1
-      })
-      this.$emit('updateOrder')
+      if (currentCount < 10) {
+        try {
+          await addProductToOrderRequest({
+            orderId: Number(localStorage.getItem('orderId')),
+            productVendorCode: vendorCode,
+            qty: currentCount + 1
+          })
+          this.$emit('updateOrder')
+        } catch (e) {
+          this.$toasted.show(e.response.data.message, { type: 'error', duration: 3000 })
+        }
+      }
       this.isLoadingChangeCount = false
     },
     async decrementCount(vendorCode) {
@@ -140,12 +150,16 @@ export default {
       const currentCount = this.entries.find(entry => entry.productDto.vendorCode === vendorCode).qty
       if (currentCount > 1) {
         this.isLoadingChangeCount = true
-        await addProductToOrderRequest({
-          orderId: Number(localStorage.getItem('orderId')),
-          productVendorCode: vendorCode,
-          qty: currentCount - 1
-        })
-        this.$emit('updateOrder')
+        try {
+          await addProductToOrderRequest({
+            orderId: Number(localStorage.getItem('orderId')),
+            productVendorCode: vendorCode,
+            qty: currentCount - 1
+          })
+          this.$emit('updateOrder')
+        } catch (e) {
+          this.$toasted.show(e.response.data.message, { type: 'error', duration: 3000 })
+        }
       }
       this.isLoadingChangeCount = false
     },
@@ -159,6 +173,7 @@ export default {
         productVendorCode: vendorCode
       })
       this.$emit('updateOrder')
+      Events.emit('updateBasket')
       this.isLoadingChangeCount = false
     },
     async deleteAllProductsFromOrder() {
@@ -170,6 +185,7 @@ export default {
         orderId: Number(localStorage.getItem('orderId'))
       })
       this.$emit('updateOrder')
+      Events.emit('updateBasket')
       this.isLoadingChangeCount = false
     },
     getImage(link) {

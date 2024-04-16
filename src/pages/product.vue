@@ -119,7 +119,6 @@ export default {
         .find(item => item === this.$route.params.vendorCode) !== undefined;
     },
     breadcrumbs() {
-      console.log(this.$route.query.from)
       const breadcrumbs = [{
         link: '/',
         title: 'Главная'
@@ -145,7 +144,6 @@ export default {
           categories = data?.childCategories
         }
       }
-      console.log()
       return breadcrumbs;
     }
   },
@@ -166,13 +164,17 @@ export default {
       this.categories = await getCategoriesRequest()
     },
     async addProductToOrder(count) {
-      await addProductToOrderRequest({
-        orderId: Number(localStorage.getItem('orderId')),
-        productVendorCode: this.$route.params.vendorCode,
-        qty: count
-      })
-      await this.setOrder()
-      Events.emit('updateBasket')
+      try {
+        await addProductToOrderRequest({
+          orderId: Number(localStorage.getItem('orderId')),
+          productVendorCode: this.$route.params.vendorCode,
+          qty: count
+        })
+        await this.setOrder()
+        Events.emit('updateBasket')
+      } catch (e) {
+        this.$toasted.show(e.response.data.message, { type: 'error', duration: 3000 })
+      }
     },
     async addReview(data) {
       await addReviewRequest({

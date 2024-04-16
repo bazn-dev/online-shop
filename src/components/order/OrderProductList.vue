@@ -11,6 +11,7 @@
             <th scope="col">Наименование</th>
             <th scope="col">Цена</th>
             <th scope="col">Количество</th>
+            <th scope="col">Масса</th>
             <th scope="col">Сумма</th>
           </tr>
         </thead>
@@ -34,6 +35,7 @@
               <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="--old-price">{{ entry.productDto.price }} руб.</div>
             </td>
             <td>{{ entry.qty }} шт</td>
+            <td>{{ entry.grammAmount }} г</td>
             <td class="--price">
               <div>{{ entry.totalPrice !== entry.totalPriceWithDiscount ? entry.totalPriceWithDiscount : entry.totalPrice }} руб.</div>
               <div v-if="entry.totalPrice !== entry.totalPriceWithDiscount" class="--old-price">{{ entry.totalPrice }} руб.</div>
@@ -56,17 +58,23 @@
         <div class="col-sm-12">
           {{ entry.productDto.name }}
         </div>
-        <div class="col-6 --price">
+        <div class="col-4 --price">
           <div>
             <div class="--note">Цена:</div>
             <div>{{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.</div>
             <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="--old-price">{{ entry.productDto.price }} руб.</div>
           </div>
         </div>
-        <div class="col-6 --count">
+        <div class="col-4 --price">
           <div>
             <div class="--note">Количество:</div>
             <div>{{ entry.qty }} шт</div>
+          </div>
+        </div>
+        <div class="col-4 --price">
+          <div>
+            <div class="--note">Масса:</div>
+            <div>{{ entry.grammAmount }} г</div>
           </div>
         </div>
         <div class="col-sm-12 --price">
@@ -223,7 +231,7 @@ export default {
       }
 
       .col-sm-12,
-      .col-6 {
+      .col-4 {
         display: flex;
         justify-content: center;
         margin-bottom: 15px;
@@ -265,7 +273,7 @@ export default {
         }
 
         &:nth-child(3),
-        &:nth-child(5) {
+        &:nth-child(6) {
           min-width: 120px;
         }
 

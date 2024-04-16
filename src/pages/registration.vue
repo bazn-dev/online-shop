@@ -263,19 +263,23 @@
             </div>
           </validation-provider>
           <validation-provider
-            rules="required"
+            rules="required|numeric"
             v-slot="{ errors }"
             name="entityPhone"
             class="mb-3"
             tag="div"
           >
             <label for="entityPhone" class="registration__form-label form-label">Телефон <span class="--required">*</span></label>
-            <input
-              v-model="model.phone"
-              type="text"
-              class="form-control"
-              id="entityPhone"
-            />
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="entity-phone-addon">+375</span>
+              <input
+                v-model="model.phone"
+                type="text"
+                class="form-control"
+                id="entityPhone"
+                aria-describedby="phone-addon"
+              />
+            </div>
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
             </div>
@@ -450,6 +454,7 @@ export default {
   },
   methods: {
     setType(value) {
+      this.$refs.validator.reset()
       this.type = value;
     },
     async register() {

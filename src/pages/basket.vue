@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { Events } from '../events'
 import { getOrderById as getOrderByIdRequest} from '@/api/orders'
 import BasketCheckout from '../components/basket/BasketCheckout'
 import BasketList from '../components/basket/BasketList'
@@ -61,7 +60,6 @@ export default {
   methods: {
     async initData() {
       await this.getOrderById()
-      Events.emit('updateBasket')
     },
     async getOrderById() {
       this.order = await getOrderByIdRequest(localStorage.getItem('orderId'))

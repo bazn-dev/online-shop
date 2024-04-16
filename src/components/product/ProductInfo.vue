@@ -61,10 +61,21 @@
       <ul class="product-info__characteristics-list">
         <li v-for="charKey in Object.keys(product.characteristics)" :key="charKey" class="product-info__characteristics-item">
           <div class="product-info__characteristics-item-text">
-            {{ charKey }} —
+            {{ charKey }}&nbsp;&nbsp;—&nbsp;
           </div>
           <div class="product-info__characteristics-item-value">
             {{ product.characteristics[charKey] }}
+          </div>
+        </li>
+        <li
+          v-if="product.weightPerItem"
+          class="product-info__characteristics-item"
+        >
+          <div class="product-info__characteristics-item-text">
+            Вес, г&nbsp;&nbsp;—&nbsp;
+          </div>
+          <div class="product-info__characteristics-item-value">
+            {{ product.weightPerItem }}
           </div>
         </li>
       </ul>
@@ -100,7 +111,9 @@ export default {
       if (!this.product.inStock) {
         return
       }
-      this.count++;
+      if (this.count < 10) {
+        this.count++;
+      }
     },
     decrementCount() {
       if (!this.product.inStock) {

@@ -74,8 +74,18 @@
                 Арт.: {{ product.vendorCode }}
               </div>
             </div>
-            <div class="home-best-offers__card-info-price">
-               {{ product.price }} руб.
+            <div class="d-flex justify-content-between">
+              <div>
+                <div class="home-best-offers__card-info-price">
+                  {{ product.priceWithDiscount > 0 ? product.priceWithDiscount : product.price }} руб.
+                </div>
+                <div class="home-best-offers__card-info-price --old-price">
+                  {{ product.priceWithDiscount > 0 ? product.price + ' руб.' : '' }}
+                </div>
+              </div>
+              <div class="home-best-offers__card-info-weight">
+                {{ product.weightPerItem ? product.weightPerItem + ' г' : '' }}
+              </div>
             </div>
           </div>
           <div class="home-best-offers__card-btn-details">Подробнее</div>
@@ -305,6 +315,20 @@ export default {
         line-height: 1.454em;
         font-weight: 700;
         color: #333333;
+        margin-top: 7px;
+
+        &.--old-price {
+          height: 20px;
+          font-size: 12px;
+          line-height: 20px;
+          color: #777;
+          text-decoration: line-through;
+          margin-top: 0;
+        }
+      }
+
+      &-info-weight {
+        color: #777;
         margin-top: 7px;
       }
 

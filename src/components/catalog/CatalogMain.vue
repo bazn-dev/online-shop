@@ -152,13 +152,17 @@ export default {
       this.$emit('sort', this.activeSortItem.name, this.inStockFilter, page - 1)
     },
     async addToOrderRequest(data) {
-      await addProductToOrderRequest({
-        orderId: Number(localStorage.getItem('orderId')),
-        productVendorCode: data.productVendorCode,
-        qty: data.count
-      })
-      this.$emit('updateOrder')
-      Events.emit('updateBasket')
+      try {
+        await addProductToOrderRequest({
+          orderId: Number(localStorage.getItem('orderId')),
+          productVendorCode: data.productVendorCode,
+          qty: data.count
+        })
+        this.$emit('updateOrder')
+        Events.emit('updateBasket')
+      } catch (e) {
+        this.$toasted.show(e.response.data.message, { type: 'error', duration: 3000 })
+      }
     },
     alreadyInBasket(vendorCode) {
       return this.order?.entries
