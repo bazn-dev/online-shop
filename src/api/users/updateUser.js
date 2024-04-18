@@ -5,7 +5,7 @@ export default (data, token) => {
 
   return axios
     .post(url, data, {
-      params: {
+      headers: {
         'Authorization': token,
       }
     })

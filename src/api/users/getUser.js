@@ -5,9 +5,9 @@ export default (token) => {
 
   return axios
     .get(url, {
-        params: {
-          'Authorization': token,
-        }
+      headers: {
+        'Authorization': token,
+      }
     })
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error));
