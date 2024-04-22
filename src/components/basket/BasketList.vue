@@ -35,9 +35,9 @@
             </div>
             <div class="d-none d-lg-block col-lg-2">
               <div class="basket-list__item-price">
-                {{ entry.productDto.price !== entry.priceWithDiscount ? entry.priceWithDiscount : entry.productDto.price }} руб.
+                {{ entry.productDto.price !== entry.productDto.priceWithDiscount && entry.productDto.priceWithDiscount > 0 ? entry.productDto.priceWithDiscount : entry.productDto.price }} руб.
               </div>
-              <div v-if="entry.productDto.price !== entry.priceWithDiscount" class="basket-list__item-price --old-price">
+              <div v-if="entry.productDto.price !== entry.productDto.priceWithDiscount && entry.productDto.priceWithDiscount > 0" class="basket-list__item-price --old-price">
                 {{ entry.productDto.price }} руб.
               </div>
               <div class="basket-list__item-price-notion">

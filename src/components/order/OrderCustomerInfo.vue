@@ -18,6 +18,7 @@
           v-model="model.name"
           id="customerName"
           class="form-control"
+          @keydown.enter="order"
         />
         <div v-if="errors.length > 0" class="invalid-feedback">
           {{ errors[0] }}
@@ -38,6 +39,7 @@
           class="form-control"
           id="customerEmail"
           aria-describedby="emailHelp"
+          @keydown.enter="order"
         />
         <div v-if="errors.length > 0" class="invalid-feedback">
           {{ errors[0] }}
@@ -59,6 +61,7 @@
             id="customerPhone"
             class="form-control"
             aria-describedby="phone-addon"
+            @keydown.enter="order"
           />
         </div>
         <div v-if="errors.length > 0" class="invalid-feedback">
@@ -79,6 +82,7 @@
             v-model="model.city"
             id="customerCity"
             class="form-control"
+            @keydown.enter="order"
           />
           <div v-if="errors.length > 0" class="invalid-feedback">
             {{ errors[0] }}
@@ -97,6 +101,7 @@
             v-model="model.street"
             id="customerStreet"
             class="form-control"
+            @keydown.enter="order"
           />
           <div v-if="errors.length > 0" class="invalid-feedback">
             {{ errors[0] }}
@@ -115,6 +120,7 @@
             v-model="model.buildingNumber"
             id="customerBuildingNumber"
             class="form-control"
+            @keydown.enter="order"
           />
           <div v-if="errors.length > 0" class="invalid-feedback">
             {{ errors[0] }}
@@ -133,6 +139,7 @@
             v-model="model.apartmentNumber"
             id="customerApartmentNumber"
             class="form-control"
+            @keydown.enter="order"
           />
           <div v-if="errors.length > 0" class="invalid-feedback">
             {{ errors[0] }}
@@ -151,6 +158,7 @@
             v-model="model.postalCode"
             id="customerPostalCode"
             class="form-control"
+            @keydown.enter="order"
           />
           <div v-if="errors.length > 0" class="invalid-feedback">
             {{ errors[0] }}
@@ -188,6 +196,7 @@
         id="customerComment"
         class="form-control"
         style="height: 100px"
+        @keydown.enter="order"
       ></textarea>
     </validation-observer>
   </div>
@@ -235,6 +244,11 @@ export default {
       message: 'Поле может содержать только цифры'
     })
   },
+  methods: {
+    order() {
+      this.$emit('order')
+    }
+  }
 }
 </script>
 

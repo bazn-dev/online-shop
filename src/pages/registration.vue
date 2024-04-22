@@ -49,6 +49,7 @@
               type="text"
               class="form-control"
               id="name"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -67,6 +68,7 @@
               type="email"
               class="form-control"
               id="individualEmail"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -88,6 +90,7 @@
                 class="form-control"
                 id="individualPhone"
                 aria-describedby="phone-addon"
+                @keydown.enter="register"
               />
             </div>
             <div v-if="errors.length > 0" class="invalid-feedback">
@@ -107,6 +110,7 @@
               type="password"
               class="form-control"
               id="individualPassword"
+              @keydown.enter="register"
             />
             <small class="form-text text-muted">Длина пароля не менее 6 символов.</small>
             <div v-if="errors.length > 0" class="invalid-feedback">
@@ -127,6 +131,7 @@
               type="password"
               class="form-control"
               id="individualConfirmPassword"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -139,6 +144,7 @@
                   class="form-check-input"
                   type="checkbox"
                   id="fizEntityAgreeCheckbox"
+                  @keydown.enter="register"
               />
               <label class="form-check-label" for="fizEntityAgreeCheckbox">Я согласен на <router-link to="/license" target="_blank">обработку персональных данных</router-link></label>
             </div>
@@ -167,6 +173,7 @@
               type="text"
               class="form-control"
               id="companyName"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -185,6 +192,7 @@
               type="text"
               class="form-control"
               id="legalAddress"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -203,6 +211,7 @@
               type="text"
               class="form-control"
               id="unp"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -221,6 +230,7 @@
               class="form-control"
               id="requisites"
               rows="5"
+              @keydown.enter="register"
             ></textarea>
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -239,6 +249,7 @@
               type="text"
               class="form-control"
               id="contact-person"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -257,6 +268,7 @@
               type="email"
               class="form-control"
               id="entityEmail"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -278,6 +290,7 @@
                 class="form-control"
                 id="entityPhone"
                 aria-describedby="phone-addon"
+                @keydown.enter="register"
               />
             </div>
             <div v-if="errors.length > 0" class="invalid-feedback">
@@ -297,6 +310,7 @@
               type="text"
               class="form-control"
               id="postcode"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -315,6 +329,7 @@
               type="text"
               class="form-control"
               id="city"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -333,6 +348,7 @@
               type="password"
               class="form-control"
               id="entityPassword"
+              @keydown.enter="register"
             />
             <small class="form-text text-muted">Длина пароля не менее 6 символов.</small>
             <div v-if="errors.length > 0" class="invalid-feedback">
@@ -353,6 +369,7 @@
               type="password"
               class="form-control"
               id="entityConfirmPassword"
+              @keydown.enter="register"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -365,6 +382,7 @@
                 class="form-check-input"
                 type="checkbox"
                 id="entityAgreeCheckbox"
+                @keydown.enter="register"
               />
               <label class="form-check-label" for="entityAgreeCheckbox">Я согласен на <router-link to="/license" target="_blank">обработку персональных данных</router-link></label>
             </div>
@@ -458,6 +476,10 @@ export default {
       this.type = value;
     },
     async register() {
+      if (!this.model.agree) {
+        return
+      }
+
       const isValid = await this.$refs.validator.validate();
 
       if (isValid && this.model.agree) {

@@ -20,6 +20,7 @@
               type="text"
               class="form-control"
               id="name"
+              @keydown.enter="update"
             />
             <div v-if="errorValidation?.name" class="invalid-feedback">
               {{ errorValidation.name }}
@@ -75,6 +76,7 @@
                 class="form-control"
                 id="individualPhone"
                 aria-describedby="phone-addon"
+                @keydown.enter="update"
               />
             </div>
             <div v-if="errors.length > 0" class="invalid-feedback">
@@ -100,6 +102,7 @@
               type="password"
               class="form-control"
               id="individualPassword"
+              @keydown.enter="update"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors[0] }}
@@ -124,6 +127,7 @@
               type="password"
               class="form-control"
               id="individualConfirmPassword"
+              @keydown.enter="update"
             />
             <div v-if="errors.length > 0" class="invalid-feedback">
               {{ errors }}
@@ -148,6 +152,7 @@
                 type="text"
                 class="form-control"
                 id="companyName"
+                @keydown.enter="update"
               />
               <div v-if="errorValidation?.companyName" class="invalid-feedback">
                 {{ errorValidation.companyName }}
@@ -171,6 +176,7 @@
                 type="text"
                 class="form-control"
                 id="legalAddress"
+                @keydown.enter="update"
               />
               <div v-if="errorValidation?.legalAddress" class="invalid-feedback">
                 {{ errorValidation.legalAddress }}
@@ -194,6 +200,7 @@
                 type="text"
                 class="form-control"
                 id="unp"
+                @keydown.enter="update"
               />
               <div v-if="errorValidation?.unp" class="invalid-feedback">
                 {{ errorValidation.unp }}
@@ -217,6 +224,7 @@
                 type="text"
                 class="form-control"
                 id="requisites"
+                @keydown.enter="update"
               />
               <div v-if="errorValidation?.requisites" class="invalid-feedback">
                 {{ errorValidation.requisites }}
@@ -240,6 +248,7 @@
                 type="text"
                 class="form-control"
                 id="postcode"
+                @keydown.enter="update"
               />
               <div v-if="errorValidation?.postcode" class="invalid-feedback">
                 {{ errorValidation.postcode }}
@@ -263,6 +272,7 @@
                 type="text"
                 class="form-control"
                 id="city"
+                @keydown.enter="update"
               />
               <div v-if="errorValidation?.city" class="invalid-feedback">
                 {{ errorValidation.city }}

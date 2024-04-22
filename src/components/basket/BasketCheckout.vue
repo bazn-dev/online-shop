@@ -11,6 +11,7 @@
             class="basket-checkout__promo-input form-control"
             aria-describedby="promo-button"
             :disabled="order?.promotionInfo?.promocode"
+            @keydown.enter="addPromo"
           />
           <button
             type="button"
@@ -93,6 +94,10 @@ export default {
   },
   methods: {
     async addPromo() {
+      if (this.order?.promotionInfo?.promocode) {
+        return
+      }
+
       if (this.promoCode) {
         try {
           await addPromoRequest({

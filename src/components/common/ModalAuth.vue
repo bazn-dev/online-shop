@@ -36,6 +36,7 @@
                   type="text"
                   id="email"
                   class="form-control"
+                  @keydown.enter="auth"
                 >
                 <div v-if="errors.length > 0" class="invalid-feedback">
                   {{ errors[0] }}
@@ -54,13 +55,19 @@
                   type="password"
                   id="password"
                   class="form-control"
+                  @keydown.enter="auth"
                 >
                 <div v-if="errors.length > 0" class="invalid-feedback">
                   {{ errors[0] }}
                 </div>
               </validation-provider>
               <div class="d-flex justify-content-between mt-5">
-                <button class="modal-auth__auth-btn btn btn-lg" @click="auth">Войти</button>
+                <button
+                  class="modal-auth__auth-btn btn btn-lg"
+                  @click="auth"
+                >
+                  Войти
+                </button>
                 <button class="modal-auth__register-btn btn btn-lg" @click="toRegister">Регистрация</button>
               </div>
             </validation-observer>
@@ -131,6 +138,7 @@ export default {
       let modal = document.querySelector('#staticBackdrop');
       modal.style.display = ''
       document.querySelectorAll('.modal-backdrop.show').forEach(el => el.remove());
+      this.$refs.validator.reset()
     }
   }
 }

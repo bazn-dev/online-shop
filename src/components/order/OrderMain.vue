@@ -20,7 +20,10 @@
         />
       </div>
     </div>
-    <OrderCustomerInfo ref="customerInfo"/>
+    <OrderCustomerInfo
+      ref="customerInfo"
+      @order="orderPlace"
+    />
 
     <div class="order-main__footer">
       <div class="form-check form-switch">
@@ -56,6 +59,7 @@ import OrderProductList from "@/components/order/OrderProductList"
 import OrderDeliveryMethod from "@/components/order/OrderDeliveryMethod";
 import OrderPaymentMethod from "@/components/order/OrderPaymentMethod";
 import OrderCustomerInfo from "@/components/order/OrderCustomerInfo";
+import { Events } from "../../events";
 
 export default {
   name: "OrderMain",
@@ -87,6 +91,10 @@ export default {
   },
   methods: {
     async orderPlace() {
+      if (!this.agree) {
+        return
+      }
+
       const activeDeliveryMode = this.$refs.deliveryInfo.$data.activeDeliveryMode
       const activePaymentMode = this.$refs.paymentMethodInfo.$data.activePaymentMode
       const isValidCustomerInfo = await this.$refs.customerInfo.$refs.validator.validate()
@@ -115,6 +123,7 @@ export default {
           comment: this.$refs.customerInfo.$data.model.comment
         })
         localStorage.setItem('orderId', newOrderId)
+        Events.emit('updateBasket')
         await this.$router.push({
           path: `/order/success?orderId=${placedOrderId}&placedOrderDateTime=${placedOrderDateTime}`
         })
