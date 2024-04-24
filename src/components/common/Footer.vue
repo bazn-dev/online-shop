@@ -46,12 +46,8 @@
         <div class="col-lg-6 col-md-12 col-sm-12 order-lg-2 order-md-1 order-sm-1 order-xs-1">
           <div class="footer__payment d-flex justify-content-end align-items-center">
             <img src="@/assets/img/payment/BK_i.png.webp" />
-            <img src="@/assets/img/payment/MC_SC.png.webp" />
             <img src="@/assets/img/payment/MC_Visa.png.webp" />
             <img src="@/assets/img/payment/VbV.png.webp" />
-            <img src="@/assets/img/payment/bepaid.png.webp" />
-            <img src="@/assets/img/payment/oplati.png.webp" />
-            <img src="@/assets/img/payment/union_pay.png.webp" />
           </div>
         </div>
       </div>
