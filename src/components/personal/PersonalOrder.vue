@@ -136,7 +136,7 @@ export default {
     getImage(link) {
       return link === 'ссылка'
         ? require('@/assets/img/catalog/product.webp')
-        : `http://178.172.201.242${link}`
+        : `http://93.177.124.115${link}`
     },
     async toOrders() {
       await this.$router.push({

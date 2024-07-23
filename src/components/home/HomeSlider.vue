@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     getBackgroundLink(link) {
-      return `http://178.172.201.242${link}`
+      return `http://93.177.124.115${link}`
     },
     toCatalog() {
       this.$router.push({

@@ -56,7 +56,7 @@ export default {
     image() {
       return this.product.bigImageUrl === 'ссылка'
         ? require('@/assets/img/catalog/product.webp')
-        : `http://178.172.201.242${this.product.bigImageUrl}`
+        : `http://93.177.124.115${this.product.bigImageUrl}`
     }
   },
 }

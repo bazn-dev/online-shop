@@ -30,7 +30,7 @@ export default {
     getImage(url) {
       return url === 'ссылка'
           ? require('@/assets/img/catalog/product.webp')
-          : `http://178.172.201.242${url}`
+          : `http://93.177.124.115${url}`
     }
   }
 }
