@@ -9,6 +9,7 @@
         >
           <div class="home-advantages__item">
             <Icon :name="advantage.iconName" />
+<!--            <img :src="`/assets/img/icons/${advantage.iconName}.svg`" />-->
             <div class="home-advantages__item-title">{{ advantage.title }}</div>
             <div v-html="advantage.description" class="home-advantages__item-text"></div>
           </div>

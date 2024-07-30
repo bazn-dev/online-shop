@@ -17,7 +17,7 @@
           @setActive="setActiveTab"
         />
         <InfoFaq
-          v-if="title === 'FAQ'"
+          v-if="title === 'Вопрос-ответ'"
           :content="info[activeTab]"
         />
         <InfoHelp
