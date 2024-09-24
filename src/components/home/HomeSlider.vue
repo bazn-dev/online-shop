@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     getBackgroundLink(link) {
-      return `http://93.177.124.115${link}`
+      return `https://api.teahub.by${link}`
     },
     toCatalog() {
       this.$router.push({

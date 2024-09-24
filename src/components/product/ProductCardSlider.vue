@@ -56,7 +56,7 @@ export default {
     image() {
       return this.product.bigImageUrl === 'ссылка'
         ? require('@/assets/img/catalog/product.webp')
-        : `http://93.177.124.115${this.product.bigImageUrl}`
+        : `https://api.teahub.by${this.product.bigImageUrl}`
     }
   },
 }

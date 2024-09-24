@@ -136,7 +136,7 @@ export default {
     getImage(link) {
       return link === 'ссылка'
         ? require('@/assets/img/catalog/product.webp')
-        : `http://93.177.124.115${link}`
+        : `https://api.teahub.by${link}`
     },
     async toOrders() {
       await this.$router.push({

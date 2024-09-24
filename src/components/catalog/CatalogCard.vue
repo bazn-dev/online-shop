@@ -123,7 +123,7 @@ export default {
     image() {
       return this.product.smallImageUrl === 'ссылка'
           ? require('@/assets/img/catalog/product.webp')
-          : `http://93.177.124.115${this.product.smallImageUrl}`
+          : `https://api.teahub.by${this.product.smallImageUrl}`
     }
   },
   methods: {
