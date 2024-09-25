@@ -382,14 +382,14 @@ export default {
 
       if (isValid) {
         const data = this.user?.individual ? {
-          userId: Number(localStorage.getItem('userId')),
+          userId: localStorage.getItem('userId'),
           name: this.model.name,
           phone: '+375' + this.model.phone,
           email: this.model.email,
           password: this.model.password,
           passwordConfirmation: this.model.passwordConfirmation
         } : {
-          userId: Number(localStorage.getItem('userId')),
+          userId: localStorage.getItem('userId'),
           name: this.model.name,
           phone: '+375' + this.model.phone,
           email: this.model.email,

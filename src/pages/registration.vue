@@ -484,7 +484,7 @@ export default {
 
       if (isValid && this.model.agree) {
         const data = this.type === 'individual' ? {
-          userId: Number(localStorage.getItem('userId')),
+          userId: localStorage.getItem('userId'),
           name: this.model.name,
           phone: '+375' + this.model.phone,
           email: this.model.email,
