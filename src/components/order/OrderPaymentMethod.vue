@@ -1,5 +1,5 @@
 <template>
-  <div class="order-payment-method">
+  <div v-if="paymentModes.length > 0" class="order-payment-method">
     <div
       class="order-payment-method__title"
       :class="{ '--error': !activePaymentMode }"
@@ -56,6 +56,11 @@ export default {
       return this.activePaymentMode
         ? this.paymentModes.find(mode => mode.code === this.activePaymentMode)?.description
         : ''
+    }
+  },
+  watch: {
+    paymentModes(val) {
+      this.activePaymentMode = val[0].code
     }
   },
   methods: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="order-delivery-method">
+  <div v-if="deliveryModes.length > 0" class="order-delivery-method">
     <div
       class="order-delivery-method__title"
       :class="{ '--error': !activeDeliveryMode }"
@@ -23,6 +23,7 @@
         :value="deliveryMode.code"
         type="radio"
         :id="`${deliveryMode.code}Radio`"
+        checked
         class="form-check-input"
         @change="setActiveDeliveryMode(deliveryMode.code)"
       />
@@ -53,6 +54,11 @@ export default {
   data() {
     return {
       activeDeliveryMode: ''
+    }
+  },
+  watch: {
+    deliveryModes(val) {
+      this.activeDeliveryMode = val[0].code
     }
   },
   methods: {

@@ -54,6 +54,10 @@
             <div class="personal-order__content-subtitle">Адрес доставки/самовывоза:</div>
             <div class="personal-order__content-text --ml-5">{{ deliveryAddress }}</div>
           </div>
+          <div class="d-flex">
+            <div class="personal-order__content-subtitle">Номер отслеживания:</div>
+            <div class="personal-order__content-text --ml-5">{{ order.trackNumber ?? '' }}</div>
+          </div>
         </div>
         <div class="personal-order__content-header">Содержимое заказа</div>
         <div class="personal-order__content-body --pa-0">

@@ -1,11 +1,11 @@
 <template>
   <div class="home-advantages container-fluid">
     <div class="home-advantages__wrapper maxwidth-theme">
-      <div class="home-advantages__list row flexbox justify-center">
+      <div class="home-advantages__list row">
         <div
           v-for="(advantage, index) in advantages"
           :key="`advantage.${index}`"
-          class="home-advantages__item-wrapper col-md-3 col-sm-4 col-xs-6 clearfix"
+          class="home-advantages__item-wrapper col-md-6 col-sm-6 col-xs-6 clearfix"
         >
           <div class="home-advantages__item">
             <Icon :name="advantage.iconName" />
@@ -33,23 +33,23 @@ export default {
         {
           iconName: 'delivery',
           title: 'Бесплатная доставка',
-          description: 'Курьером по Минску, транспортной компанией и почтой по РБ'
+          description: 'Почтой по всей территории РБ'
         },
-        {
-          iconName: 'discount-system',
-          title: 'Накопительная система',
-          description: 'Постоянная скидка за покупки <b>до 20%</b>'
-        },
+        // {
+        //   iconName: 'discount-system',
+        //   title: 'Накопительная система',
+        //   description: 'Постоянная скидка за покупки <b>до 20%</b>'
+        // },
         {
           iconName: 'quality-guarantee',
           title: 'Гарантия качества',
-          description: 'Вернем деньги или заменим кофе, если вам не понравится'
+          description: 'Вернем деньги или заменим чай, если вам не понравится'
         },
-        {
-          iconName: 'bonuses',
-          title: 'Бонусы за покупки',
-          description: 'При покупке 5 пачек — <b>подарок!</b>'
-        }
+        // {
+        //   iconName: 'bonuses',
+        //   title: 'Бонусы за покупки',
+        //   description: 'При покупке 5 пачек — <b>подарок!</b>'
+        // }
       ]
     }
   }
