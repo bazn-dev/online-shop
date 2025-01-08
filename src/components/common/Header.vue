@@ -139,6 +139,7 @@ export default {
       await this.$router.push({
         path: '/'
       }).catch(()=>{})
+      window.location.reload();
     }
   }
 }

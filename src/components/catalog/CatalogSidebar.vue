@@ -61,17 +61,54 @@
                   :data-bs-parent="`#accordionSubCategory-${category.name}`"
                 >
                   <div class="accordion-body">
-                    <ul class="list-group">
-                      <li
-                        v-for="subsubcategory in subcategory.childCategories"
-                        :key="`subsubcategory.${subsubcategory.name}`"
-                        class="list-group-item"
-                        :class="{ '--active': isIncludeActiveCategories(subsubcategory.name)}"
-                        @click="goToCategory(`${category.name}/${subcategory.name}/${subsubcategory.name}`)"
+
+
+                    <div
+                        class="accordion accordion-flush"
+                        :id="`accordionSubSubCategory-${subcategory.name}`"
+                    >
+                      <div
+                          v-for="subSubcategory in subcategory.childCategories"
+                          :key="`subSubcategory.${subSubcategory.name}`"
+                          class="accordion-item"
                       >
-                        {{ subsubcategory.displayName }}
-                      </li>
-                    </ul>
+                        <h2 class="accordion-header" :id="`heading-${subSubcategory.name}`">
+                          <button
+                              class="accordion-button"
+                              :class="{ 'collapsed': !isIncludeActiveCategories(subSubcategory.name)}"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              :data-bs-target="`#collapse-${subSubcategory.name}`"
+                              aria-expanded="true"
+                              :aria-controls="`#collapse-${subSubcategory.name}`"
+                              @click="goToCategory(`${category.name}/${subcategory.name}/${subSubcategory.name}`)"
+                          >
+                            {{ subSubcategory.displayName }}
+                          </button>
+                        </h2>
+                        <div
+                            :id="`collapse-${subSubcategory.name}`"
+                            class="accordion-collapse collapse"
+                            :class="{ 'show': isIncludeActiveCategories(subSubcategory.name) }"
+                            :aria-labelledby="`#heading-${subSubcategory.name}`"
+                            :data-bs-parent="`#accordionSubSubCategory-${subSubcategory.name}`"
+                        >
+                          <div class="accordion-body">
+                            <ul class="list-group">
+                              <li
+                                  v-for="subsubsubcategory in subSubcategory.childCategories"
+                                  :key="`subsubsubcategory.${subsubsubcategory.name}`"
+                                  class="list-group-item"
+                                  :class="{ '--active': isIncludeActiveCategories(subsubsubcategory.name)}"
+                                  @click="goToCategory(`${category.name}/${subcategory.name}/${subSubcategory.name}/${subsubsubcategory.name}`)"
+                              >
+                                {{ subsubsubcategory.displayName }}
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

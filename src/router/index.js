@@ -51,6 +51,11 @@ const routes = [
     component: catalog
   },
   {
+    name: 'catalog',
+    path: '/catalog/:category/:subCategory/:subSubCategory/:subSubCategory',
+    component: catalog
+  },
+  {
     name: 'search',
     path: '/search',
     component: search

@@ -22,6 +22,7 @@ instance.interceptors.response.use(async (config) => {
     localStorage.removeItem('userId');
     localStorage.removeItem('orderId');
   }
+  return Promise.reject(error);
 });
 
 new Vue({

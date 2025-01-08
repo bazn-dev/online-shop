@@ -15,7 +15,13 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="clearForm"
+            ></button>
           </div>
           <div class="modal-auth__body modal-body">
             <h2 class="modal-auth__title">Личный кабинет</h2>
@@ -138,6 +144,12 @@ export default {
       let modal = document.querySelector('#staticBackdrop');
       modal.style.display = ''
       document.querySelectorAll('.modal-backdrop.show').forEach(el => el.remove());
+      this.$refs.validator.reset()
+      this.clearForm();
+    },
+    clearForm() {
+      this.email = '';
+      this.password = '';
       this.$refs.validator.reset()
     }
   }
