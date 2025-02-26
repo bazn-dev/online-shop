@@ -6,6 +6,7 @@ import router from './router';
 import instance from '@/api/axios';
 import App from './App.vue';
 
+import './assets/styles/bootstrap.min.css'
 import './assets/styles/icons.css'
 import './assets/styles/main.css'
 
