@@ -243,6 +243,7 @@ export default {
           margin-bottom: 39px !important;
 
           .nav-item {
+            color: #333333 !important;
             cursor: pointer;
           }
 
@@ -251,7 +252,7 @@ export default {
             line-height: 1.3em;
             text-transform: uppercase;
             letter-spacing: .8px;
-            color: #333333;
+            color: #333333 !important;
             padding: 16px 24px 15px;
             border-radius: 3px !important;
             background: #fafafa;

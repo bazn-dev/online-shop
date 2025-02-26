@@ -583,7 +583,7 @@ export default {
       text-transform: uppercase;
       letter-spacing: .8px;
       text-align: center;
-      color: #333333;
+      color: #333333 !important;
       padding: 16px 24px 15px;
       border-radius: 3px !important;
       background: #fafafa;
