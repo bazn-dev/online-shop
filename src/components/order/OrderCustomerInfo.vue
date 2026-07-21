@@ -146,24 +146,15 @@
           </div>
         </validation-provider>
 
-        <validation-provider
-          rules="required|numeric"
-          v-slot="{ errors }"
-          name="postalCode"
-          tag="div"
-          class="mb-3"
-        >
-          <label for="customerPostalCode" class="form-label">Индекс <span>*</span></label>
+        <div class="mb-3">
+          <label for="customerPostalCode" class="form-label">Индекс</label>
           <input
             v-model="model.postalCode"
             id="customerPostalCode"
             class="form-control"
             @keydown.enter="order"
           />
-          <div v-if="errors.length > 0" class="invalid-feedback">
-            {{ errors[0] }}
-          </div>
-        </validation-provider>
+        </div>
       </div>
 
       <div class="form-check mb-3">

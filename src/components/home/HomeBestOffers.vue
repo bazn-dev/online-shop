@@ -113,9 +113,14 @@ export default {
   },
   methods: {
     async initData() {
-      this.stickers = await getStickers();
-      this.activeSticker = this.stickers[0];
-      await this.getProductsByStickerRequest(this.activeSticker.name, localStorage.getItem('userId'))
+      try {
+        this.stickers = await getStickers() || [];
+        if (!this.stickers.length) return
+        this.activeSticker = this.stickers[0];
+        await this.getProductsByStickerRequest(this.activeSticker.name, localStorage.getItem('userId'))
+      } catch (e) {
+        console.error('HomeBestOffers initData error:', e)
+      }
     },
     async setActiveSticker(index) {
       this.activeSticker = this.stickers[index];

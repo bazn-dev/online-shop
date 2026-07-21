@@ -109,23 +109,16 @@ export default {
         title: 'Главная'
       }]
       if (this.categories.length > 0) {
-        const categoryNames = this.$route.fullPath.split(`/${this.$route.name}/`)[1].split('/');
+        const categoryNames = this.$route.fullPath.split(`/${this.$route.name}/`)[1]?.split('/') || []
         let lastLink = '/catalog';
         let categories = this.categories;
         for (let name of categoryNames) {
           let data = categories?.find(item => item.name === name)
-          if (name === 'accessories') {
-            breadcrumbs.push({
-              link: lastLink,
-              title: 'Аксессуары'
-            })
-          } else {
-            lastLink += `/${data?.name}`
-            breadcrumbs.push({
-              link: lastLink,
-              title: data?.displayName
-            })
-          }
+          lastLink += `/${name}`
+          breadcrumbs.push({
+            link: lastLink,
+            title: data?.displayName || name
+          })
           categories = data?.childCategories
         }
       }

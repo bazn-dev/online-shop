@@ -52,6 +52,13 @@ export default {
       scY: 0,
     }
   },
+  watch: {
+    $route() {
+      this.$nextTick(() => {
+        this.initBootstrapComponents()
+      })
+    }
+  },
   created() {
     Events.on('updateBasket', async () => {
       await this.getOrderById()
@@ -64,7 +71,18 @@ export default {
     await this.getOrderById()
     window.addEventListener('scroll', this.handleScroll)
   },
+  mounted() {
+    this.initBootstrapComponents()
+  },
   methods: {
+    initBootstrapComponents() {
+      this.$nextTick(() => {
+        if (!window.bootstrap) return
+        document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(el => {
+          window.bootstrap.Dropdown.getOrCreateInstance(el)
+        })
+      })
+    },
     async createEmptyOrder() {
       const { orderId, userId } = await createOrderRequest()
       if (orderId && userId) {

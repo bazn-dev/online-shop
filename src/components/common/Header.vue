@@ -2,15 +2,15 @@
   <header class="header">
     <div class="header__wrapper maxwidth-theme d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center">
-        <a
+        <button
+          type="button"
           data-bs-toggle="offcanvas"
-          href="#offcanvasExample"
-          role="button"
+          data-bs-target="#offcanvasExample"
           aria-controls="offcanvasExample"
-          class="d-lg-none"
+          class="header__burger d-lg-none"
         >
           <Icon name="menu" class="header__menu" />
-        </a>
+        </button>
         <router-link to="/">
           <div class="header__wrapper-logo d-flex align-items-center">
             <img src="@/assets/img/logo.png" alt="TeaHub" title="TeaHub">
@@ -164,6 +164,15 @@ export default {
       box-sizing: border-box;
     }
 
+    &__burger {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
     &__menu {
       display: flex;
       align-items: center;
@@ -197,10 +206,6 @@ export default {
       ::v-deep .icon svg {
         width: 20px;
       }
-
-      //::v-deep .icon svg path {
-      //  fill: #999;
-      //}
 
       a {
         text-decoration: none;

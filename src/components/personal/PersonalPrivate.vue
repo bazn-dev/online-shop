@@ -236,7 +236,7 @@
           </div>
           <div class="d-flex mb-3">
             <validation-provider
-              rules="required|numeric"
+              rules="required"
               v-slot="{ errors }"
               name="postcode"
               class="w-50"
