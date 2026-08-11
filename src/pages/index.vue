@@ -40,7 +40,7 @@ export default {
     }
   },
   beforeCreate() {
-    document.title = 'Интернет-магазин чая';
+    document.title = 'Купить чай в Минске. Интернет-магазин TeaHub.';
   },
   computed: {
     about() {

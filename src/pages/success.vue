@@ -15,7 +15,7 @@
           <div class="d-flex justify-content-center">
             <Icon name="check" class="success__check-icon"/>
           </div>
-          <p>Ваш заказ <b>№{{ orderId }}</b> от {{ placedOrderDateTime }} успешно создан. Номер вашей оплаты: <b>№{{ orderId }}</b></p>
+          <p>Ваш заказ <b>№{{ orderId }}</b> от {{ placedOrderDateTime }} успешно создан.</p>
           <p>Вы можете следить за выполнением заказа в Персональном разделе сайта. Обратите внимание, что для входа в этот раздел вам необходимо ввести логин и пароль пользователя сайта. Как только заказ будет отправлен, мы вышлем Вам письмо с трек-номером.</p>
 
 <!--          <div class="success__order-details">-->

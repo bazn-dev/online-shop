@@ -1,16 +1,18 @@
 <template>
   <div id="carouselIndicators" class="home-slider carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
-      <button
-        v-for="(banner, index) in banners"
-        :key="`indicator.${index}`"
-        type="button"
-        data-bs-target="#carouselIndicators"
-        :data-bs-slide-to="index"
-        :aria-current="index === 0"
-        :class="{ 'active': index === 0 }"
-        :aria-label="`Slide ${index + 1}`"
-      ></button>
+      <template v-if="banners.length > 1">
+        <button
+          v-for="(banner, index) in banners"
+          :key="`indicator.${index}`"
+          type="button"
+          data-bs-target="#carouselIndicators"
+          :data-bs-slide-to="index"
+          :aria-current="index === 0"
+          :class="{ 'active': index === 0 }"
+          :aria-label="`Slide ${index + 1}`"
+        ></button>
+      </template>
     </div>
     <div class="carousel-inner">
       <div
@@ -23,19 +25,21 @@
           <div class="home-slider__content">
             <div class="home-slider__content-title">{{ banner.header }}</div>
             <div class="home-slider__content-description">{{ banner.description }}</div>
-            <button class="home-slider__button btn btn-primary" @click="toCatalog">Перейти в каталог</button>
+            <button class="home-slider__button btn" @click="toCatalog">Перейти в каталог</button>
           </div>
         </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators"  data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Предыдущий</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators"  data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Следующий</span>
-    </button>
+    <template v-if="banners.length > 1">
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators"  data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Предыдущий</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators"  data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Следующий</span>
+      </button>
+    </template>
   </div>
 </template>
 

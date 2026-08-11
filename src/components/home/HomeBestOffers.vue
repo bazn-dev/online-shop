@@ -300,7 +300,7 @@ export default {
 
       &-info-count {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
       }
 
       &-info-count-indicator {

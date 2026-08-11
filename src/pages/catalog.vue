@@ -131,7 +131,7 @@ export default {
     }
   },
   beforeCreate() {
-    document.title = 'Каталог';
+    document.title = 'Премиальный чай с доставкой по Беларуси от интернет-магазина TeaHub';
   },
   async beforeMount() {
     await this.initData()

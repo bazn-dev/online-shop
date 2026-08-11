@@ -94,7 +94,7 @@ export default {
       this.activeSort = sort
       this.activePage = page
       this.inStockFilter = inStockFilter ? true : undefined
-      await this.getProductsByCategory()
+      await this.searchProducts()
     }
   }
 }
