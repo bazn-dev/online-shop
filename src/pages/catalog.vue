@@ -75,17 +75,21 @@ export default {
     }
   },
   computed: {
+    currentCategorySlugs() {
+      return this.$route.fullPath.split(`/${this.$route.name}/`)[1]?.split('/') || []
+    },
     currentCategoryData() {
       if (this.categories.length > 0) {
-        const categoryNames = this.$route.fullPath.split(`/${this.$route.name}/`)[1].split('/');
+        const categorySlugs = this.currentCategorySlugs;
         let current = null;
         let categories = this.categories;
-        for (let name of categoryNames) {
-          if (categoryNames.indexOf(name) === categoryNames.length - 1) {
-            current = categories?.find(item => item.name === name)
+        for (let slug of categorySlugs) {
+          const found = this.findCategoryBySlug(categories, slug)
+          if (categorySlugs.indexOf(slug) === categorySlugs.length - 1) {
+            current = found
             break
           }
-          categories = categories?.find(item => item.name === name).childCategories
+          categories = found?.childCategories
         }
         return current;
       }
@@ -109,15 +113,16 @@ export default {
         title: 'Главная'
       }]
       if (this.categories.length > 0) {
-        const categoryNames = this.$route.fullPath.split(`/${this.$route.name}/`)[1]?.split('/') || []
+        const categorySlugs = this.currentCategorySlugs
         let lastLink = '/catalog';
         let categories = this.categories;
-        for (let name of categoryNames) {
-          let data = categories?.find(item => item.name === name)
-          lastLink += `/${name}`
+        for (let slug of categorySlugs) {
+          const data = this.findCategoryBySlug(categories, slug)
+          const fallbackName = decodeURIComponent(slug)
+          lastLink += `/${this.categoryNameToSlug(data?.name || fallbackName)}`
           breadcrumbs.push({
             link: lastLink,
-            title: data?.displayName || name
+            title: data?.displayName || fallbackName
           })
           categories = data?.childCategories
         }
@@ -137,6 +142,16 @@ export default {
     await this.initData()
   },
   methods: {
+    categoryNameToSlug(name) {
+      return name ? name.replace(/\s+/g, '-') : name
+    },
+    findCategoryBySlug(categories, slug) {
+      const decoded = decodeURIComponent(slug || '')
+      return (
+          categories?.find((item) => item.name === decoded) ||
+          categories?.find((item) => item.name === decoded.replace(/-/g, ' '))
+      )
+    },
     async initData() {
       this.isLoading = true
       await this.getCategories()
@@ -151,7 +166,20 @@ export default {
       this.categories = await getCategoriesRequest()
     },
     async getProductsByCategory() {
-      const data = await getProductsByCategoryRequest(this.$route.fullPath, {
+      const categorySlugs = this.currentCategorySlugs
+      let categories = this.categories
+      const realNames = []
+      for (const slug of categorySlugs) {
+        const found = this.findCategoryBySlug(categories, slug)
+        realNames.push(found?.name || decodeURIComponent(slug))
+        categories = found?.childCategories
+      }
+      const categoryPath = realNames.join('/')
+      const requestPath = categoryPath
+          ? `/${this.$route.name}/${categoryPath}`
+          : this.$route.fullPath
+
+      const data = await getProductsByCategoryRequest(requestPath, {
         userId: localStorage.getItem("userId"),
         page: this.activePage,
         size: this.maxSize,

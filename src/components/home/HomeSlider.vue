@@ -96,6 +96,8 @@ export default {
 
       @media (max-width: 768px) {
         align-items: center;
+        padding-left: 50px;
+        padding-right: 50px;
       }
     }
 
@@ -107,6 +109,10 @@ export default {
       @media (max-width: 991px) {
         font-size: 22px;
         line-height: 30px;
+      }
+
+      @media (max-width: 767px) {
+        text-align: center;
       }
     }
 

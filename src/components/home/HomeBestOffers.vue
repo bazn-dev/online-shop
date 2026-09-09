@@ -67,8 +67,12 @@
             <div class="home-best-offers__card-info-title">{{ product.name }}</div>
             <div class="home-best-offers__card-info-additional">
               <div class="home-best-offers__card-info-count">
-                <div class="home-best-offers__card-info-count-indicator"></div>
-                <div>Много</div>
+                <div
+                  class="home-best-offers__card-info-count-indicator"
+                  :class="{'--danger': !product.inStock}"
+                ></div>
+                <div v-if="product.inStock">Много</div>
+                <div v-else>Нет в наличии</div>
               </div>
               <div class="home-best-offers__card-info-additional-text">
                 Арт.: {{ product.vendorCode }}
@@ -309,6 +313,10 @@ export default {
         background-color: #5fa800;
         border-radius: 100%;
         margin-right: 8px;
+
+        &.--danger {
+          background-color: #e10000;
+        }
       }
 
       &-info-additional-text {

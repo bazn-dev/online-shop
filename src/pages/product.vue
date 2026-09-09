@@ -112,6 +112,11 @@ export default {
       activeTab: 'description'
     }
   },
+  watch: {
+    async '$route.params.vendorCode'() {
+      await this.initData()
+    }
+  },
   computed: {
     alreadyInBasket() {
       return this.order?.entries

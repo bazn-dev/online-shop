@@ -1,8 +1,8 @@
 <template>
   <div class="catalog-card col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-6">
-    <div
-        class="catalog-card__content card"
-        @click="goToProductPage"
+    <router-link
+      :to="{ name: 'product', params: { vendorCode: product.vendorCode } }"
+      class="catalog-card__content card"
     >
       <div class="catalog-card__card-image-wrapper">
         <div class="catalog-card__card-labels">
@@ -58,7 +58,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </router-link>
     <div class="catalog-card__card-more">
       <div v-if="alreadyInBasket">
         <div class="catalog-card__card-more-btn col-sm-12" @click="goToBasket">
@@ -195,6 +195,7 @@ export default {
       margin: 0 0 -1px -1px;
       border-radius: 0;
       border: 1px solid #ececec;
+      text-decoration: none;
       cursor: pointer;
     }
 

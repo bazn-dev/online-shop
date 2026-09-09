@@ -150,6 +150,7 @@ export default {
     },
     setActivePage(page) {
       this.$emit('sort', this.activeSortItem.name, this.inStockFilter, page - 1)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     },
     async addToOrderRequest(data) {
       try {
@@ -222,6 +223,15 @@ export default {
       color: #333;
       text-transform: initial !important;
       letter-spacing: .1px !important;
+
+      &.show {
+        color: #333;
+      }
+
+      &:hover {
+        background: transparent;
+        border-color: transparent;
+      }
     }
 
     &__products {
