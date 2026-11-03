@@ -90,18 +90,11 @@ export default {
     Icon
   },
   props: {
-    order: {
-      type: Object,
-      default: () => null
-    },
-    productsData: {
-      type: Object,
-      default: () => null
-    },
-    activePage: {
-      type: Number,
-      default: 0
-    }
+    order:        { type: Object,  default: () => null },
+    productsData: { type: Object,  default: () => null },
+    activePage:   { type: Number,  default: 0 },
+    activeSort:   { type: String,  default: 'totalRating,asc' },
+    activeInStock:{ type: Boolean, default: false }
   },
   data() {
     return {
@@ -150,7 +143,6 @@ export default {
     },
     setActivePage(page) {
       this.$emit('sort', this.activeSortItem.name, this.inStockFilter, page - 1)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
     },
     async addToOrderRequest(data) {
       try {

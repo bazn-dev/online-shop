@@ -33,6 +33,8 @@
           :order="order"
           :productsData="productsData"
           :activePage="activePage"
+          :activeSort="activeSort"
+          :activeInStock="!!inStockFilter"
           @sort="sort"
           @updateOrder="setOrder"
         />
@@ -76,7 +78,7 @@ export default {
   },
   computed: {
     currentCategorySlugs() {
-      return this.$route.fullPath.split(`/${this.$route.name}/`)[1]?.split('/') || []
+      return this.$route.path.split(`/${this.$route.name}/`)[1]?.split('/') || []
     },
     currentCategoryData() {
       if (this.categories.length > 0) {
@@ -99,7 +101,7 @@ export default {
       if (this.categories.length > 0 && this.currentCategoryData?.displayName) {
         return this.currentCategoryData?.displayName
       }
-      return 'Аксессуары'
+      return ''
     },
     productsCount() {
       if (this.categories.length > 0 && this.currentCategoryData?.productsCount) {
@@ -131,17 +133,28 @@ export default {
     }
   },
   watch:{
-    async '$route'() {
+    async '$route'(to, from) {
+      // Игнорируем изменение query от $router.replace внутри sort()
+      if (to.path === from.path) return
+
+      this.activePage    = 0
+      this.activeSort    = 'totalRating,asc'
+      this.inStockFilter = undefined
       await this.initData()
     }
   },
-  beforeCreate() {
-    document.title = 'Премиальный чай с доставкой по Беларуси от интернет-магазина TeaHub';
-  },
   async beforeMount() {
+    this.restoreStateFromQuery()
     await this.initData()
+    document.title = 'Купить ' + this.currentCategoryData.displayName.toLowerCase() + ' с доставкой по Беларуси от интернет-магазина TeaHub';
   },
   methods: {
+    restoreStateFromQuery() {
+      const { page, sort, inStock } = this.$route.query
+      if (page)    this.activePage    = Number(page)
+      if (sort)    this.activeSort    = sort
+      if (inStock) this.inStockFilter = true
+    },
     categoryNameToSlug(name) {
       return name ? name.replace(/\s+/g, '-') : name
     },
@@ -194,7 +207,30 @@ export default {
       this.activeSort = sort
       this.activePage = page
       this.inStockFilter = inStockFilter ? true : undefined
+
+      // Пишем в URL — браузер сам запомнит для кнопки "назад" и F5
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          page:    page > 0     ? page    : undefined,  // page=0 не пишем
+          sort:    sort !== 'totalRating,asc' ? sort : undefined,  // дефолт не пишем
+          inStock: inStockFilter ? 'true'  : undefined
+        }
+      })
+
       await this.getProductsByCategory()
+
+      if (page > 0 && window.innerWidth < 992) {
+        await this.$nextTick()
+        // Ищем по атрибуту data-v или берём фиксированный отступ
+        const el = document.querySelector('[class^="catalog__block"]')
+            || document.querySelector('[class*="catalog__block"]')
+
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY - 50
+          window.scrollTo({ top, behavior: 'smooth' })
+        }
+      }
     }
   }
 }

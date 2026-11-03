@@ -159,7 +159,7 @@ export default {
     async initData() {
       await this.setOrder()
       this.product = await getProductByVendorCodeRequest(this.$route.params.vendorCode, localStorage.getItem('userId'))
-      document.title = this.product.name;
+      document.title = 'Купить ' + this.product.name + ' в Минске от Teahub';
       await this.getCategories()
     },
     async setOrder() {

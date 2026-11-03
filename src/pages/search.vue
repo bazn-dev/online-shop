@@ -19,6 +19,8 @@
           :order="order"
           :productsData="productsData"
           :activePage="activePage"
+          :activeSort="activeSort"
+          :activeInStock="!!inStockFilter"
           @sort="sort"
           @updateOrder="setOrder"
         />
@@ -54,8 +56,17 @@ export default {
       productsData: null
     }
   },
-  watch:{
-    async '$route'() {
+  watch: {
+    async '$route'(to, from) {
+      // Смена поискового запроса — сбрасываем стейт
+      if (to.query.query !== from.query.query) {
+        this.activePage    = 0
+        this.activeSort    = 'totalRating,asc'
+        this.inStockFilter = undefined
+      } else {
+        // Навигация назад/вперёд по page/sort
+        this.restoreStateFromQuery()
+      }
       await this.initData()
     }
   },
@@ -63,9 +74,16 @@ export default {
     document.title = 'Поиск';
   },
   async beforeMount() {
+    this.restoreStateFromQuery()
     await this.initData()
   },
   methods: {
+    restoreStateFromQuery() {
+      const { page, sort, inStock } = this.$route.query
+      if (page)    this.activePage    = Number(page)
+      if (sort)    this.activeSort    = sort
+      if (inStock) this.inStockFilter = true
+    },
     async initData() {
       await this.setOrder()
       await this.searchProducts()
@@ -94,7 +112,29 @@ export default {
       this.activeSort = sort
       this.activePage = page
       this.inStockFilter = inStockFilter ? true : undefined
+
+      this.$router.replace({
+        query: {
+          ...this.$route.query,          // сохраняем query=... от поиска
+          page:    page > 0              ? page    : undefined,
+          sort:    sort !== 'totalRating,asc' ? sort : undefined,
+          inStock: inStockFilter         ? 'true'  : undefined
+        }
+      })
+
       await this.searchProducts()
+
+      if (page > 0 && window.innerWidth < 992) {
+        await this.$nextTick()
+        // Ищем по атрибуту data-v или берём фиксированный отступ
+        const el = document.querySelector('[class^="catalog__block"]')
+            || document.querySelector('[class*="catalog__block"]')
+
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY - 20
+          window.scrollTo({ top, behavior: 'smooth' })
+        }
+      }
     }
   }
 }
