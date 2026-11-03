@@ -67,17 +67,17 @@
             {{ product.characteristics[charKey] }}
           </div>
         </li>
-        <li
-          v-if="product.weightPerItem"
-          class="product-info__characteristics-item"
-        >
-          <div class="product-info__characteristics-item-text">
-            Вес, г&nbsp;&nbsp;—&nbsp;
-          </div>
-          <div class="product-info__characteristics-item-value">
-            {{ product.weightPerItem }}
-          </div>
-        </li>
+<!--        <li-->
+<!--          v-if="product.weightPerItem"-->
+<!--          class="product-info__characteristics-item"-->
+<!--        >-->
+<!--          <div class="product-info__characteristics-item-text">-->
+<!--            Вес, г&nbsp;&nbsp;—&nbsp;-->
+<!--          </div>-->
+<!--          <div class="product-info__characteristics-item-value">-->
+<!--            {{ product.weightPerItem }}-->
+<!--          </div>-->
+<!--        </li>-->
       </ul>
     </div>
   </div>

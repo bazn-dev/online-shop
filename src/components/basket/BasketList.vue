@@ -66,9 +66,9 @@
                   </div>
                 </div>
                 <div class="basket-list__item-change-count-notion">шт</div>
-                <div class="basket-list__item-change-count-notion mt-2">
-                  <b>{{ entry.grammAmount ? entry.grammAmount + ' г' : '' }}</b>
-                </div>
+<!--                <div class="basket-list__item-change-count-notion mt-2">-->
+<!--                  <b>{{ entry.grammAmount ? entry.grammAmount + ' г' : '' }}</b>-->
+<!--                </div>-->
               </div>
             </div>
             <div class="col-lg-2 col-md-6 col-sm-6 col-6 basket-list__center-block --price">
