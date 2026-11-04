@@ -51,7 +51,7 @@
           </div>
         </div>
         <button
-          class="basket-checkout__button btn btn-primary btn-lg"
+          class="basket-checkout__button btn btn-lg"
           @click="goToOrder"
         >
           Оформить заказ
@@ -242,6 +242,7 @@ export default {
       padding: 16px 26px;
       background-color: #d6810b;
       border-color: #d6810b;
+      color: #ffffff;
       border-radius: 3px;
 
       @media (max-width: 767px) {

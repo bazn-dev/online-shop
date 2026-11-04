@@ -56,7 +56,7 @@
       </template>
     </div>
 
-    <div class="product-info__characteristics">
+    <div v-if="Object.keys(product.characteristics).length > 0" class="product-info__characteristics">
       <div class="product-info__characteristics-title">Характеристики</div>
       <ul class="product-info__characteristics-list">
         <li v-for="charKey in Object.keys(product.characteristics)" :key="charKey" class="product-info__characteristics-item">
@@ -67,17 +67,17 @@
             {{ product.characteristics[charKey] }}
           </div>
         </li>
-<!--        <li-->
-<!--          v-if="product.weightPerItem"-->
-<!--          class="product-info__characteristics-item"-->
-<!--        >-->
-<!--          <div class="product-info__characteristics-item-text">-->
-<!--            Вес, г&nbsp;&nbsp;—&nbsp;-->
-<!--          </div>-->
-<!--          <div class="product-info__characteristics-item-value">-->
-<!--            {{ product.weightPerItem }}-->
-<!--          </div>-->
-<!--        </li>-->
+        <li
+          v-if="product.weightPerItem && product.weightPerItem > 1"
+          class="product-info__characteristics-item"
+        >
+          <div class="product-info__characteristics-item-text">
+            Вес, г&nbsp;&nbsp;—&nbsp;
+          </div>
+          <div class="product-info__characteristics-item-value">
+            {{ product.weightPerItem }}
+          </div>
+        </li>
       </ul>
     </div>
   </div>

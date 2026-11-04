@@ -40,7 +40,7 @@
       </div>
 
       <button
-        class="order-main__submit-button btn btn-primary btn-lg"
+        class="order-main__submit-button btn btn-lg"
         @click="orderPlace"
         :disabled="!agree"
       >
