@@ -53,9 +53,9 @@
               {{ product.priceWithDiscount > 0 ? product.price + ' руб.' : '' }}
             </div>
           </div>
-<!--          <div class="catalog-card__card-info-weight">-->
-<!--            {{ product.weightPerItem ? product.weightPerItem + ' г' : '' }}-->
-<!--          </div>-->
+          <div class="catalog-card__card-info-weight">
+            {{ product.weightPerItem ? product.weightPerItem + ' г' : '' }}
+          </div>
         </div>
       </div>
     </router-link>

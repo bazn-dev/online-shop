@@ -87,9 +87,9 @@
                   {{ product.priceWithDiscount > 0 ? product.price + ' руб.' : '' }}
                 </div>
               </div>
-<!--              <div class="home-best-offers__card-info-weight">-->
-<!--                {{ product.weightPerItem ? product.weightPerItem + ' г' : '' }}-->
-<!--              </div>-->
+              <div class="home-best-offers__card-info-weight">
+                {{ product.weightPerItem ? product.weightPerItem + ' г' : '' }}
+              </div>
             </div>
           </div>
           <div class="home-best-offers__card-btn-details">Подробнее</div>
